@@ -43,3 +43,8 @@ generate: ## generates testdata to our local elasticsearch
 		--index_name=object \
 		--format=id:str,name:str,last_updated:ts
 
+view: ## display the indexes and load all contents
+	curl -is 'localhost:9200/_cat/indices?v'
+	@./list.sh actor | jq
+	@./list.sh verb | jq
+	@./list.sh object | jq
