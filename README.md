@@ -7,7 +7,7 @@
 * Install brew dependencies
 
   ```bash
-  brew install icu4c pv pigz
+  brew install jq pv pigz
   ```
 
 * Uninstall all non-`nvm` NodeJS installations and `nvm` installs from `brew` as those installations
