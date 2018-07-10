@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "echarts": "^4.1.0",
+    "elasticsearch": "^15.1.1",
     "vue": "^2.5.2",
     "vue-echarts": "^3.0.9",
     "vue-echarts-v3": "^1.0.19",

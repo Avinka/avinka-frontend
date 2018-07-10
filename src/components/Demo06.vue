@@ -106,16 +106,32 @@ export default {
     }
   },
   methods: {
+    // beforeMount () {
+    //   const that = this
+    // },
+    // beforeDestroy () {
+    //   const that = this
+    // }
+  },
+  mounted () {
+    const elasticsearch = require('elasticsearch')
+
+    const client = new elasticsearch.Client({
+      // this is proxied to elasticsearch
+      hosts: ['/ES']
+    })
+
+    client.ping({
+      requestTimeout: 5000
+    }, function (error) {
+      // at this point, eastic search is down, please check your Elasticsearch service
+      if (error) {
+        console.error('elasticsearch cluster is down!')
+      } else {
+        console.log('Everything is ok')
+      }
+    })
   }
-  // beforeMount () {
-  //   const that = this
-  // },
-  // mounted () {
-  //   const that = this
-  // },
-  // beforeDestroy () {
-  //   const that = this
-  // }
 }
 </script>
 
