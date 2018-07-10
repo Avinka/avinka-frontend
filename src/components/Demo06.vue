@@ -118,7 +118,7 @@ export default {
 
     const client = new elasticsearch.Client({
       // this is proxied to elasticsearch
-      hosts: ['/ES']
+      hosts: ['http://localhost:8080/ES']
     })
 
     client.ping({
@@ -131,6 +131,21 @@ export default {
         console.log('Everything is ok')
       }
     })
+
+    let body = {
+      size: 50,
+      query: {
+        match_all: {}
+      }
+    }
+
+    client.search({index: 'actor', body: body})
+      .then(results => {
+        console.log(results.hits.hits)
+      })
+      .catch(err => {
+        console.log(err)
+      })
   }
 }
 </script>
