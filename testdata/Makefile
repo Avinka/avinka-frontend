@@ -17,6 +17,8 @@ PIP := $(BASE)/.venv/bin/pip
 
 .DEFAULT_GOAL := build
 
+ITEM_NO=99
+
 
 .PHONY: build
 build:
@@ -26,4 +28,18 @@ build:
 		--isolated \
 		--disable-pip-version-check \
 		install -r requirements.txt
+
+generate: ## generates testdata to our local elasticsearch
+	$(BASE)/.venv/bin/python$(PY_VERSION) es_test_data.py \
+		--count=$(ITEM_NO) \
+		--index_name=actor \
+		--format=id:str,name:str,age:int,last_updated:ts
+	$(BASE)/.venv/bin/python$(PY_VERSION) es_test_data.py \
+		--count=$(ITEM_NO) \
+		--index_name=verb \
+		--format=id:str,name:str,last_updated:ts
+	$(BASE)/.venv/bin/python$(PY_VERSION) es_test_data.py \
+		--count=$(ITEM_NO) \
+		--index_name=object \
+		--format=id:str,name:str,last_updated:ts
 

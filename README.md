@@ -25,6 +25,20 @@
   nvm install 10
   ```
 
+## Build and Run
+
+```bash
+make 
+make dev.run
+```
+
+## Create Testdata
+
+```bash
+cd testdata
+make build generate 
+```
+
 ## Links
 
 - [The most promising charting lib](https://github.com/apache/incubator-echarts) IMO
