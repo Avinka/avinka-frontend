@@ -14,7 +14,7 @@
   are unsupported.
 
   ```bash
-  brew uninstall --force node node@8 nvm
+  brew uninstall --force node node@10 nvm
   ```
 
 * [Install `nvm`](https://github.com/creationix/nvm#install-script)
@@ -27,4 +27,5 @@
 
 ## Links
 
+- [The most promising charting lib](https://github.com/apache/incubator-echarts) IMO
 - [Where i chose](https://github.com/vuejs/awesome-vue#charts) the charting library from
