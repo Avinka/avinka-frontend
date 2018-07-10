@@ -13,97 +13,72 @@ import 'echarts/lib/chart/scatter'
 import 'echarts/lib/component/legend'
 import 'echarts/lib/component/toolbox'
 
+const _data = {
+  option: {
+    title: {
+      text: '大规模散点图'
+    },
+    tooltip: {
+      trigger: 'axis',
+      showDelay: 0,
+      axisPointer: {
+        show: true,
+        type: 'cross',
+        lineStyle: {
+          type: 'dashed',
+          width: 1
+        }
+      },
+      zlevel: 1
+    },
+    legend: {
+      data: ['sin', 'cos']
+    },
+    toolbox: {
+      show: true,
+      feature: {
+        mark: {show: true},
+        dataZoom: {show: true},
+        dataView: {show: true, readOnly: false},
+        restore: {show: true},
+        saveAsImage: {show: true}
+      }
+    },
+    xAxis: [
+      {
+        type: 'value',
+        scale: true
+      }
+    ],
+    yAxis: [
+      {
+        type: 'value',
+        scale: true
+      }
+    ],
+    series: [
+      {
+        name: 'ES',
+        type: 'scatter',
+        large: true,
+        symbolSize: 3,
+        data: [
+          {x: 1, y: 4},
+          {x: 2, y: 6},
+          {x: 3, y: 8}
+        ]
+      }
+    ]
+  }
+}
+
 export default {
   name: 'Demo06',
   components: {
     IEcharts
   },
   data () {
-    return {
-      option: {
-        title: {
-          text: '大规模散点图'
-        },
-        tooltip: {
-          trigger: 'axis',
-          showDelay: 0,
-          axisPointer: {
-            show: true,
-            type: 'cross',
-            lineStyle: {
-              type: 'dashed',
-              width: 1
-            }
-          },
-          zlevel: 1
-        },
-        legend: {
-          data: ['sin', 'cos']
-        },
-        toolbox: {
-          show: true,
-          feature: {
-            mark: {show: true},
-            dataZoom: {show: true},
-            dataView: {show: true, readOnly: false},
-            restore: {show: true},
-            saveAsImage: {show: true}
-          }
-        },
-        xAxis: [
-          {
-            type: 'value',
-            scale: true
-          }
-        ],
-        yAxis: [
-          {
-            type: 'value',
-            scale: true
-          }
-        ],
-        series: [
-          {
-            name: 'sin',
-            type: 'scatter',
-            large: true,
-            symbolSize: 3,
-            data: (function () {
-              var d = []
-              var len = 10000
-              var x = 0
-              while (len--) {
-                x = (Math.random() * 10).toFixed(3) - 0
-                d.push([
-                  x, // Math.random() * 10
-                  (Math.sin(x) - x * (len % 2 ? 0.1 : -0.1) * Math.random()).toFixed(3) - 0
-                ])
-              } // console.log(d)
-              return d
-            })()
-          },
-          {
-            name: 'cos',
-            type: 'scatter',
-            large: true,
-            symbolSize: 2,
-            data: (function () {
-              var d = []
-              var len = 20000
-              var x = 0
-              while (len--) {
-                x = (Math.random() * 10).toFixed(3) - 0
-                d.push([
-                  x, // Math.random() * 10
-                  (Math.cos(x) - x * (len % 2 ? 0.1 : -0.1) * Math.random()).toFixed(3) - 0
-                ])
-              } // console.log(d)
-              return d
-            })()
-          }
-        ]
-      }
-    }
+    return _data
   },
   methods: {
     // beforeMount () {
@@ -133,7 +108,7 @@ export default {
     })
 
     let body = {
-      size: 50,
+      size: 5000,
       query: {
         match_all: {}
       }
@@ -141,7 +116,15 @@ export default {
 
     client.search({index: 'actor', body: body})
       .then(results => {
-        console.log(results.hits.hits)
+        const newData = []
+        results.hits.hits.map(function (obj) {
+          newData.push([
+            parseInt(obj._source['last_updated']),
+            parseInt(obj._source['age'])
+          ])
+        })
+        console.log('apply %o', newData)
+        this.$data.option.series[0].data = newData
       })
       .catch(err => {
         console.log(err)
