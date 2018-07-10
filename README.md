@@ -24,3 +24,7 @@
   ```bash
   nvm install 10
   ```
+
+## Links
+
+- [Where i chose](https://github.com/vuejs/awesome-vue#charts) the charting library from

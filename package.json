@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "vue": "^2.5.2",
+    "vue-echarts": "^3.0.9",
     "vue-router": "^3.0.1",
     "yarn": "^1.7.0"
   },
