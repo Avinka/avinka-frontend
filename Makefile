@@ -18,6 +18,10 @@ yarn.install: var node_modules/.bin/yarn
 	source "$$NVM_DIR/nvm.sh"; nvm use $(NODE_VERSION); \
 		nvm exec $(NODE_VERSION) node_modules/.bin/yarn install
 
+.PHONY: dev.run
+dev.run:
+	yarn run dev
+
 
 
 node_modules/.bin/yarn:
