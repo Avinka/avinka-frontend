@@ -15,13 +15,13 @@ PYTHON := $(shell /usr/bin/which python$(PY_VERSION))
 VIRTUALENV := $(PYTHON) -m venv
 PIP := $(BASE)/.venv/bin/pip
 
-.DEFAULT_GOAL := build
+.DEFAULT_GOAL := help
 
 ITEM_NO=9999
 
 
 .PHONY: build
-build:
+build: ## Install all required packages to run
 	$(VIRTUALENV) $(BASE)/.venv
 	$(PIP) install --upgrade pip setuptools
 	$(PIP) \
@@ -48,3 +48,11 @@ view: ## display the indexes and load all contents
 	@./list.sh actor | jq
 	@./list.sh verb | jq
 	@./list.sh object | jq
+
+
+# Absolutely awesome: http://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
+help:
+	@grep -E '^[\.a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) \
+		| awk 'BEGIN {FS = ":.*?## "}; \
+			{printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+

@@ -31,10 +31,11 @@ node_modules/.bin/yarn:
 	source "$$NVM_DIR/nvm.sh"; nvm use $(NODE_VERSION); \
 		npm install --no-package-lock yarn@latest
 
-
 # Absolutely awesome: http://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
 help:
-	@grep -E '^[\.a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+	@grep -E '^[\.a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) \
+		| awk 'BEGIN {FS = ":.*?## "}; \
+			{printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 
 # Clean
