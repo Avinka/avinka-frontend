@@ -1,0 +1,12 @@
+version: '3.4'
+services:
+  es:
+    image: elasticsearch:alpine
+    ports:
+      - 127.0.0.1:9200:9200
+      - 127.0.0.1:9300:9300
+    volumes:
+      - luqs_dev_data:/usr/share/elasticsearch/data:delegated
+
+volumes:
+  luqs_dev_data:

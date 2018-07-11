@@ -13,21 +13,28 @@ NODE_VERSION := 10
 # local
 # -----
 
+.PHONY: dev.run
+dev.run: ## Run the development server
+	yarn run dev
+
 .PHONY: yarn.install
-yarn.install: var node_modules/.bin/yarn
+yarn.install: var node_modules/.bin/yarn docker.pull  ## Install all dependencies
 	source "$$NVM_DIR/nvm.sh"; nvm use $(NODE_VERSION); \
 		nvm exec $(NODE_VERSION) node_modules/.bin/yarn install
 
-.PHONY: dev.run
-dev.run:
-	yarn run dev
-
+.PHONY: docker.pull
+docker.pull:
+	docker pull elasticsearch:alpine
 
 
 node_modules/.bin/yarn:
 	source "$$NVM_DIR/nvm.sh"; nvm use $(NODE_VERSION); \
 		npm install --no-package-lock yarn@latest
 
+
+# Absolutely awesome: http://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
+help:
+	@grep -E '^[\.a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 
 # Clean
