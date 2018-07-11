@@ -13,6 +13,47 @@ import 'echarts/lib/chart/scatter'
 import 'echarts/lib/component/legend'
 import 'echarts/lib/component/toolbox'
 
+const elasticsearch = require('elasticsearch')
+
+const client = new elasticsearch.Client({
+  // this is proxied to elasticsearch
+  hosts: ['http://localhost:8080/ES']
+})
+
+function checkStatus (client) {
+  client.ping({
+    requestTimeout: 5000
+  }, function (error) {
+    // at this point, eastic search is down, please check your Elasticsearch service
+    if (error) {
+      console.error('elasticsearch cluster is down!')
+    } else {
+      console.log('Everything is ok')
+    }
+  })
+}
+
+function loadContent (scope, client) {
+  let body = {
+    size: 5000,
+    query: {
+      match_all: {}
+    }
+  }
+
+  client.search({index: 'actor', body: body})
+    .then(results => {
+      scope.$data.option.series[0].data = results.hits.hits.map(obj => [
+        parseInt(obj._source['last_updated']),
+        parseInt(obj._source['age'])
+      ])
+      console.log('new content loaded')
+    })
+    .catch(err => {
+      console.log(err)
+    })
+}
+
 const _data = {
   option: {
     title: {
@@ -62,11 +103,7 @@ const _data = {
         type: 'scatter',
         large: true,
         symbolSize: 3,
-        data: [
-          {x: 1, y: 4},
-          {x: 2, y: 6},
-          {x: 3, y: 8}
-        ]
+        data: []
       }
     ]
   }
@@ -88,47 +125,12 @@ export default {
     //   const that = this
     // }
   },
+  /**
+   * this happens each time we render the component (e.g. enter the route)
+   */
   mounted () {
-    const elasticsearch = require('elasticsearch')
-
-    const client = new elasticsearch.Client({
-      // this is proxied to elasticsearch
-      hosts: ['http://localhost:8080/ES']
-    })
-
-    client.ping({
-      requestTimeout: 5000
-    }, function (error) {
-      // at this point, eastic search is down, please check your Elasticsearch service
-      if (error) {
-        console.error('elasticsearch cluster is down!')
-      } else {
-        console.log('Everything is ok')
-      }
-    })
-
-    let body = {
-      size: 5000,
-      query: {
-        match_all: {}
-      }
-    }
-
-    client.search({index: 'actor', body: body})
-      .then(results => {
-        const newData = []
-        results.hits.hits.map(function (obj) {
-          newData.push([
-            parseInt(obj._source['last_updated']),
-            parseInt(obj._source['age'])
-          ])
-        })
-        console.log('apply %o', newData)
-        this.$data.option.series[0].data = newData
-      })
-      .catch(err => {
-        console.log(err)
-      })
+    checkStatus(client)
+    loadContent(this, client)
   }
 }
 </script>
