@@ -8,5 +8,13 @@ services:
     volumes:
       - luqs_dev_data:/usr/share/elasticsearch/data:delegated
 
+  dwnn:
+    image: registry.gitlab.com/pansen/datawithnoname:latest
+    ports:
+      - 127.0.0.1:8080:8080
+    environment:
+      - ES_HOST=es:9200
+      - ES_USER=
+      - ES_PASS=
 volumes:
   luqs_dev_data:
