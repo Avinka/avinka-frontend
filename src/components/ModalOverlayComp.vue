@@ -1,6 +1,9 @@
 <template>
   <div class="modal-container">
     <h2>Hello Overlay</h2>
+    <input v-model="compNoOfItems" placeholder="0">
+    <p><code>noOfItems</code>: {{ compNoOfItems }}</p>
+
     <button class="modal-default-button" @click="$emit('close')">
       OK
     </button>
@@ -19,7 +22,25 @@
       return _data;
     },
 
+    props: {
+      noOfItems: {
+        required: true
+      }
+    },
+
     components: {},
+
+    computed: {
+      compNoOfItems: {
+        get() {
+          return this.$props.noOfItems;
+        },
+        set(value) {
+          // see: https://stackoverflow.com/a/42161533/2741111
+          this.$emit('evt_noOfItems', value);
+        }
+      }
+    },
 
     methods: {},
 

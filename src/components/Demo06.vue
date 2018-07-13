@@ -39,7 +39,7 @@ function checkStatus (client) {
 
 function loadContent (scope, client) {
   const body = {
-    size: 5000,
+    size: _data.noOfItems,
     query: {
       match_all: {}
     }
@@ -59,6 +59,7 @@ function loadContent (scope, client) {
 }
 
 const _data = {
+  noOfItems: 5000,
   option: {
     title: {
       text: '大规模散点图'
