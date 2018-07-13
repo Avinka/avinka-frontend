@@ -27,6 +27,15 @@
 
 ## Build and Run
 
+First, start the backend services
+
+```bash
+docker-compose pull
+docker-compose up
+```
+
+Then our frontend application
+
 ```bash
 make 
 make dev.run
