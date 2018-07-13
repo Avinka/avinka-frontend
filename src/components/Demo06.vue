@@ -17,7 +17,7 @@ const elasticsearch = require('elasticsearch')
 
 const client = new elasticsearch.Client({
   // this is proxied to elasticsearch
-  hosts: ['http://localhost:8080/ES']
+  hosts: [window.location.protocol + '//' + window.location.host + '/ES']
 })
 
 function checkStatus (client) {

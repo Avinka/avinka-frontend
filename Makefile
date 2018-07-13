@@ -17,24 +17,43 @@ NODE_VERSION := 10
 dev.run: ## Run the development server
 	yarn run dev
 
+
+
+# Production goals
+# ----------------
+
+.PHONY: prod.build
+prod.build: yarn.install ## Build the optimized, production ready version
+	yarn run build
+
+
+.PHONY: prod.run
+prod.run: prod.build ## Run the production version locally via Nginx
+	docker run \
+		--name "$(CONTAINER)" \
+		--volume "$(BASE)/dist:/usr/share/nginx/html:ro" \
+		-p 127.0.0.1:8090:80 \
+		--interactive \
+		--tty \
+		--rm \
+		"nginx:latest"
+
+
 .PHONY: yarn.install
-yarn.install: var node_modules/.bin/yarn docker.pull  ## Install all dependencies
+yarn.install: var node_modules/.bin/yarn  ## Install all dependencies
 	source "$$NVM_DIR/nvm.sh"; nvm use $(NODE_VERSION); \
 		nvm exec $(NODE_VERSION) node_modules/.bin/yarn install
-
-.PHONY: docker.pull
-docker.pull:
-	docker pull elasticsearch:alpine
 
 
 node_modules/.bin/yarn:
 	source "$$NVM_DIR/nvm.sh"; nvm use $(NODE_VERSION); \
 		npm install --no-package-lock yarn@latest
 
-
 # Absolutely awesome: http://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
 help:
-	@grep -E '^[\.a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+	@grep -E '^[\.a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) \
+		| awk 'BEGIN {FS = ":.*?## "}; \
+			{printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 
 # Clean
