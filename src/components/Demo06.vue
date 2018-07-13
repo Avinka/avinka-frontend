@@ -1,9 +1,11 @@
 <template>
   <div class='echarts'>
     <h2><router-link to="/">Go Back</router-link></h2>
+    <button id="show-modal" @click="showModal()">Show Modal</button>
     <IEcharts
       :option='option'
     />
+    <modals-container/>
   </div>
 </template>
 
@@ -12,6 +14,8 @@ import IEcharts from 'vue-echarts-v3/src/lite.js';
 import 'echarts/lib/chart/scatter';
 import 'echarts/lib/component/legend';
 import 'echarts/lib/component/toolbox';
+import VModal from 'vue-js-modal';
+import ModalOverlayComp from '@/components/ModalOverlayComp';
 
 const elasticsearch = require('elasticsearch');
 
@@ -112,12 +116,21 @@ const _data = {
 export default {
   name: 'Demo06',
   components: {
-    IEcharts
+    IEcharts,
+    VModal
   },
   data () {
     return _data;
   },
   methods: {
+    showModal() {
+      // sweet, load our component in the managed overlay here
+      this.$modal.show(ModalOverlayComp, {
+      }, {
+        draggable: true
+      });
+    }
+
     // beforeMount () {
     //   const that = this
     // },
