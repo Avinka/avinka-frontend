@@ -16,6 +16,10 @@ export default new Router({
       path: '/demo06',
       name: 'Demo06',
       component: Demo06
+    }, {
+      path: '/overlay',
+      name: 'ModalOverlayComp',
+      component: ModalOverlayComp
     }
   ]
 });
