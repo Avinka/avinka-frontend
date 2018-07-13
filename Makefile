@@ -47,7 +47,7 @@ yarn.install: var node_modules/.bin/yarn  ## Install all dependencies
 
 node_modules/.bin/yarn:
 	source "$$NVM_DIR/nvm.sh"; nvm use $(NODE_VERSION); \
-		npm install --no-package-lock yarn@latest
+		npm install --no-package-lock --save-dev yarn@latest
 
 # Absolutely awesome: http://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
 help:
