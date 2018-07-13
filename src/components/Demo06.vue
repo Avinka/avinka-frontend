@@ -8,50 +8,50 @@
 </template>
 
 <script>
-import IEcharts from 'vue-echarts-v3/src/lite.js'
-import 'echarts/lib/chart/scatter'
-import 'echarts/lib/component/legend'
-import 'echarts/lib/component/toolbox'
+import IEcharts from 'vue-echarts-v3/src/lite.js';
+import 'echarts/lib/chart/scatter';
+import 'echarts/lib/component/legend';
+import 'echarts/lib/component/toolbox';
 
-const elasticsearch = require('elasticsearch')
+const elasticsearch = require('elasticsearch');
 
 const client = new elasticsearch.Client({
   // this is proxied to elasticsearch
   hosts: [window.location.protocol + '//' + window.location.host + '/ES']
-})
+});
 
 function checkStatus (client) {
   client.ping({
     requestTimeout: 5000
-  }, function (error) {
+  }, (error) => {
     // at this point, eastic search is down, please check your Elasticsearch service
     if (error) {
-      console.error('elasticsearch cluster is down!')
+      console.error('elasticsearch cluster is down!');
     } else {
-      console.log('Everything is ok')
+      console.log('Everything is ok');
     }
-  })
+  });
 }
 
 function loadContent (scope, client) {
-  let body = {
+  const body = {
     size: 5000,
     query: {
       match_all: {}
     }
-  }
+  };
 
-  client.search({index: 'actor', body: body})
+  client.search({index: 'actor', body})
     .then(results => {
       scope.$data.option.series[0].data = results.hits.hits.map(obj => [
         parseInt(obj._source['last_updated']),
         parseInt(obj._source['age'])
-      ])
-      console.log('new content loaded')
+      ]);
+      console.log('new content loaded');
     })
     .catch(err => {
-      console.log(err)
-    })
+      console.log(err);
+    });
 }
 
 const _data = {
@@ -107,7 +107,7 @@ const _data = {
       }
     ]
   }
-}
+};
 
 export default {
   name: 'Demo06',
@@ -115,7 +115,7 @@ export default {
     IEcharts
   },
   data () {
-    return _data
+    return _data;
   },
   methods: {
     // beforeMount () {
@@ -129,10 +129,10 @@ export default {
    * this happens each time we render the component (e.g. enter the route)
    */
   mounted () {
-    checkStatus(client)
-    loadContent(this, client)
+    checkStatus(client);
+    loadContent(this, client);
   }
-}
+};
 </script>
 
 <!-- Add 'scoped' attribute to limit CSS to this component only -->
