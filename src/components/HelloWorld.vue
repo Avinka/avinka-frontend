@@ -39,14 +39,9 @@ export default {
 </script>
 
 <style lang="scss">
-  $modal_width: 450px;
-  $modal_height: 350px;
-  $modal_z_index: 10000;
-
   .v--modal-box {
     border-radius: 2px;
     box-shadow: 0 2px 18px rgba(188, 0, 0, .33);
-    transition: all .3s ease;
     font-family: Helvetica, Arial, sans-serif;
   }
 
