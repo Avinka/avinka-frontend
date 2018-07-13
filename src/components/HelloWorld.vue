@@ -32,7 +32,10 @@ export default {
   methods: {
     showModal() {
       // sweet, load our component in the managed overlay here
-      this.$modal.show(ModalOverlayComp);
+      this.$modal.show(ModalOverlayComp, {
+      }, {
+        draggable: true
+      });
     }
   }
 };
