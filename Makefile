@@ -17,6 +17,28 @@ NODE_VERSION := 10
 dev.run: ## Run the development server
 	yarn run dev
 
+
+
+# Production goals
+# ----------------
+
+.PHONY: prod.build
+prod.build: yarn.install ## Build the optimized, production ready version
+	yarn run build
+
+
+.PHONY: prod.run
+prod.run: prod.build ## Run the production version locally via Nginx
+	docker run \
+		--name "$(CONTAINER)" \
+		--volume "$(BASE)/dist:/usr/share/nginx/html:ro" \
+		-p 127.0.0.1:8090:80 \
+		--interactive \
+		--tty \
+		--rm \
+		"nginx:latest"
+
+
 .PHONY: yarn.install
 yarn.install: var node_modules/.bin/yarn  ## Install all dependencies
 	source "$$NVM_DIR/nvm.sh"; nvm use $(NODE_VERSION); \

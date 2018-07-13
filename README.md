@@ -41,6 +41,11 @@ make
 make dev.run
 ```
 
+### Production Build Locally
+
+We can create a production build and test this via a Docker container locally. This 
+works by calling `make prod.run`.
+
 ## Create Testdata
 
 ```bash
