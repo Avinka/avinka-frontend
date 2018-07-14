@@ -48,6 +48,34 @@ function loadContent (scope, client) {
     size: scope.$data.noOfItems,
     query: {
       match_all: {}
+    },
+    aggs: {
+      // TODO andi: find out how this works
+      // - https://gist.github.com/jpountz/cebb8452648c36099cee
+      // - https://discuss.elastic.co/t/display-concurrency-in-data-on-kibana/26006/2
+      // my_histo: {
+      //   date_histogram: {
+      //     script: "start = doc['start'].value; duration = doc['last_updated'].value * 1000; l = []; for (long i = 0; i < duration; i += interval) { l.add(start + i); }; return l;",
+      //     params: {
+      //       interval: 3600
+      //     },
+      //     interval: 'hour'
+      //   }
+      // }
+
+      // this looks like:
+      // ```
+      // "aggregations": {
+      //   "update_stats": {
+      //     "count": 20097,
+      //     "min": 1.528652066E+12,
+      //     "max": 1.534153994E+12,
+      //     "avg": 1531422662273.3245,
+      //     "sum": 3.0777001243707E+16
+      //   }
+      // }
+      // ```
+      update_stats: { stats: { field: 'last_updated' } }
     }
   };
 
