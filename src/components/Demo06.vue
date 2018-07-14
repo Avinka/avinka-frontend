@@ -117,6 +117,8 @@ const _data = {
   }
 };
 
+var _loadContentId = null;
+
 export default {
   name: 'Demo06',
   components: {
@@ -150,6 +152,24 @@ export default {
   /**
    * this happens each time we render the component (e.g. enter the route)
    */
+  watch: {
+    // via: https://stackoverflow.com/a/51176290/2741111
+    noOfItems: {
+      // the callback will be called immediately after the start of the observation
+      immediate: true,
+      handler (newVal, oldVal) {
+        console.log('OUTER `noOfItems` changed: %o | was: %o', newVal, oldVal);
+        this.$data.noOfItems = newVal;
+        // avoid calling the backend once for the removed char and the added char
+        if (!_loadContentId) {
+          _loadContentId = window.setTimeout(() => {
+            loadContent(this, client);
+            _loadContentId = null;
+          }, 200);
+        }
+      }
+    }
+  },
   mounted () {
     checkStatus(client);
     loadContent(this, client);
