@@ -49,6 +49,11 @@ view: ## display the indexes and load all contents
 	@./list.sh verb | jq
 	@./list.sh object | jq
 
+reset_indexes: ## drop and re-create indexes with mappings about basic properties
+	@./index.sh actor
+	@./index.sh verb
+	@./index.sh object
+
 
 # Absolutely awesome: http://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
 help:
