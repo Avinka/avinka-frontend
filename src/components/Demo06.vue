@@ -2,6 +2,7 @@
   <div class='echarts'>
     <h2><router-link to="/">Go Back</router-link></h2>
     <button id="show-modal" @click="showModal()">Show Modal</button>
+    <p><code>noOfItems</code>: {{ noOfItems }}</p>
 
     <IEcharts
       :option='option'
@@ -128,16 +129,15 @@ export default {
   methods: {
     showModal() {
       // sweet, load our component in the managed overlay here
-      this.$modal.show(ModalOverlayComp, {
-        noOfItems: _data.noOfItems
-        // 'v-bind:noOfItems': _data.noOfItems
-      }, {
+      this.$modal.show(ModalOverlayComp,
+      this.$data,
+      {
         draggable: true
       });
     },
     _onNoOfItems(numOf) {
       console.log('_onNoOfItems: %o', numOf);
-      _data.noOfItems = numOf;
+      this.$data.noOfItems = numOf;
     }
 
       // beforeMount () {
