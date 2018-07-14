@@ -8,7 +8,9 @@
       :option='option'
     />
     <modals-container
-      v-on:evt_noOfItems="_onNoOfItems" />
+      v-on:evt_noOfItems="_onNoOfItems"
+      v-on:evt_divident="_onDivident"
+    />
   </div>
 </template>
 
@@ -51,7 +53,7 @@ function loadContent (scope, client) {
   client.search({index: 'actor', body})
     .then(results => {
       scope.$data.option.series[0].data = results.hits.hits.map(obj => [
-        parseInt(obj._source['last_updated']),
+        (new Date(parseInt(obj._source['last_updated']) * 1000)).getHours() / _data.divident,
         parseInt(obj._source['age'])
       ]);
       console.log('new content loaded');
@@ -63,6 +65,7 @@ function loadContent (scope, client) {
 
 const _data = {
   noOfItems: 5000,
+  divident: 1,
   option: {
     title: {
       text: '大规模散点图'
@@ -119,6 +122,16 @@ const _data = {
 
 var _loadContentId = null;
 
+function loadWithDelay() {
+  // avoid calling the backend once for the removed char and the added char
+  if (!_loadContentId) {
+    _loadContentId = window.setTimeout(() => {
+      loadContent(this, client);
+      _loadContentId = null;
+    }, 200);
+  }
+}
+
 export default {
   name: 'Demo06',
   components: {
@@ -134,12 +147,16 @@ export default {
       this.$modal.show(ModalOverlayComp,
       this.$data,
       {
-        draggable: true
+        draggable: true,
+        resizable: true,
+        height: 200
       });
     },
     _onNoOfItems(numOf) {
-      console.log('_onNoOfItems: %o', numOf);
       this.$data.noOfItems = numOf;
+    },
+    _onDivident(numOf) {
+      this.$data.divident = numOf;
     }
 
       // beforeMount () {
@@ -149,26 +166,14 @@ export default {
     //   const that = this
     // }
   },
+
   /**
    * this happens each time we render the component (e.g. enter the route)
    */
   watch: {
     // via: https://stackoverflow.com/a/51176290/2741111
-    noOfItems: {
-      // the callback will be called immediately after the start of the observation
-      immediate: true,
-      handler (newVal, oldVal) {
-        console.log('OUTER `noOfItems` changed: %o | was: %o', newVal, oldVal);
-        this.$data.noOfItems = newVal;
-        // avoid calling the backend once for the removed char and the added char
-        if (!_loadContentId) {
-          _loadContentId = window.setTimeout(() => {
-            loadContent(this, client);
-            _loadContentId = null;
-          }, 200);
-        }
-      }
-    }
+    noOfItems: loadWithDelay,
+    divident: loadWithDelay
   },
   mounted () {
     checkStatus(client);
