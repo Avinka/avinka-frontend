@@ -54,7 +54,7 @@ function loadContent (scope, client) {
   client.search({index: 'actor', body})
     .then(results => {
       scope.$data.option.series[0].data = results.hits.hits.map(obj => [
-        (new Date(parseInt(obj._source['last_updated']) * 1000)).getHours() / scope.$data.divident,
+        (new Date(parseInt(obj._source['last_updated']) * 1000)) / scope.$data.divident,
         parseInt(obj._source['age'])
       ]);
       console.log('new content loaded');
