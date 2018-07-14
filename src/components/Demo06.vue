@@ -6,6 +6,7 @@
 
     <IEcharts
       :option='option'
+      :resizable="true"
     />
     <modals-container
       v-on:evt_noOfItems="_onNoOfItems"
@@ -185,7 +186,7 @@ export default {
 <!-- Add 'scoped' attribute to limit CSS to this component only -->
 <style scoped>
   .echarts {
-    width: 800px;
+    width: 80%;
     height: 800px;
     margin: 0 auto;
   }
