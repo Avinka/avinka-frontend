@@ -43,7 +43,7 @@ function checkStatus (client) {
   });
 }
 
-function loadContent (scope, client) {
+function loadContent (scope, client, xName, yName) {
   const body = {
     size: scope.$data.noOfItems,
     query: {
@@ -75,15 +75,21 @@ function loadContent (scope, client) {
       //   }
       // }
       // ```
-      update_stats: { stats: { field: 'last_updated' } }
+      // update_stats: { stats: { field: 'last_updated' } }
     }
   };
+
+  // assign the `y-property` name to collect stats to `<y-property>_stats`
+  // TODO andi: make a second graph out of it, containing lines
+  const _ass = {};
+  _ass[yName + '_stats'] = { stats: { field: yName } };
+  Object.assign(body['aggs'], _ass);
 
   client.search({index: 'actor', body})
     .then(results => {
       scope.$data.option.series[0].data = results.hits.hits.map(obj => [
-        (new Date(parseInt(obj._source['last_updated']) * 1000)) / scope.$data.divident,
-        parseInt(obj._source['age'])
+        (new Date(parseInt(obj._source[xName]) * 1000)) / scope.$data.divident,
+        parseInt(obj._source[yName])
       ]);
       console.log('new content loaded');
     })
@@ -150,12 +156,14 @@ const _data = {
 };
 
 var _loadContentId = null;
+const xAxisProperty = 'last_updated';
+const yAxisProperty = 'age';
 
 function loadWithDelay() {
   // avoid calling the backend once for the removed char and the added char
   if (!_loadContentId) {
     _loadContentId = window.setTimeout(() => {
-      loadContent(this, client);
+      loadContent(this, client, xAxisProperty, yAxisProperty);
       _loadContentId = null;
     }, 200);
   }
@@ -206,7 +214,7 @@ export default {
   },
   mounted () {
     checkStatus(client);
-    loadContent(this, client);
+    loadContent(this, client, xAxisProperty, yAxisProperty);
   }
 };
 </script>
