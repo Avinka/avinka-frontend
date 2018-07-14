@@ -51,6 +51,8 @@ function loadContent (scope, client, xName, yName) {
     },
     aggs: {
       // TODO andi: find out how this works
+      // - https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-datehistogram-aggregation.html
+      //   **it can only be applied on date values**
       // - https://gist.github.com/jpountz/cebb8452648c36099cee
       // - https://discuss.elastic.co/t/display-concurrency-in-data-on-kibana/26006/2
       // my_histo: {
