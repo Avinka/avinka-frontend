@@ -30,6 +30,8 @@
 First, start the backend services
 
 ```bash
+docker login registry.gitlab.com
+
 docker-compose pull
 docker-compose up
 ```
