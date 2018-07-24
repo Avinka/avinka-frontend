@@ -15,7 +15,8 @@ NODE_VERSION := 10
 
 .PHONY: dev.run
 dev.run: ## Run the development server
-	yarn run dev
+	source "$$NVM_DIR/nvm.sh"; nvm use $(NODE_VERSION); \
+		nvm exec $(NODE_VERSION) node_modules/.bin/yarn run dev
 
 
 
