@@ -78,6 +78,34 @@ function loadContent (scope, client, xName, yName) {
       // }
       // ```
       // update_stats: { stats: { field: 'last_updated' } }
+
+      // age_over_time: {
+      //   date_histogram: {
+      //     field: xName,
+      //     interval: 'minute'
+      //   }
+      // }
+
+      // TODO andi: howto limit the aggregations
+      // 'ages_per_x': {
+      //   'date_histogram': {
+      //     'field': 'last_updated',
+      //     'interval': 'day'
+      //     // 'total': scope.$data.noOfItems
+      //   },
+      //   'aggs': {
+      //     'ages': {
+      //       'sum': {
+      //         'field': 'age'
+      //       }
+      //     }
+      //   }
+      // },
+      // 'sum_monthly_ages': {
+      //   'sum_bucket': {
+      //     'buckets_path': 'ages_per_x>ages'
+      //   }
+      // }
     }
   };
 
