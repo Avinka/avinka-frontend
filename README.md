@@ -40,7 +40,7 @@ Create testdata
 
 ```bash
 cd testdata
-make build generate
+make build reset_indexes generate
 ```
 
 Then our frontend application
