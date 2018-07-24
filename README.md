@@ -34,6 +34,13 @@ docker-compose pull
 docker-compose up
 ```
 
+Create testdata
+
+```bash
+cd testdata
+make build generate
+```
+
 Then our frontend application
 
 ```bash
