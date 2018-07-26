@@ -5,6 +5,7 @@
     <ul>
       <li><button id="show-modal" @click="showModal()">Show Modal</button></li>
       <li><router-link to="/demo06">Demo 06</router-link></li>
+      <li><router-link to="/data-admin">Data Admin</router-link></li>
     </ul>
 
     <modals-container/>
@@ -16,7 +17,7 @@ import VModal from 'vue-js-modal';
 import ModalOverlayComp from '@/components/ModalOverlayComp';
 
 const _data = {
-  msg: 'Welcome to Your Vue.js App'
+  msg: 'Dashboard'
 };
 
 export default {
