@@ -50,7 +50,7 @@
     });
   }
 
-  async function generateData(client) {
+    async function generateData(client) {
     const requestBody = {
       'actor': {
         'id': 'P:123',
