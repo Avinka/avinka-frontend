@@ -1,8 +1,10 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import HelloWorld from '@/components/HelloWorld';
-import Demo06 from '@/components/Demo06';
+import Home from '@/components/Home';
+import Dashboard from '@/components/Dashboard';
 import DataAdmin from '@/components/DataAdmin';
+import Objects from '@/components/Objects';
+import AnalyticsOverview from '@/components/AnalyticsOverview';
 
 Vue.use(Router);
 
@@ -10,14 +12,22 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
+      name: 'Home',
+      component: Home
     }, {
-      path: '/demo06',
-      name: 'Demo06',
-      component: Demo06
+      path: '/analytics/',
+      name: 'AnalyticsOverview',
+      component: AnalyticsOverview
     }, {
-      path: '/data-admin',
+      path: '/analytics/dashboards',
+      name: 'Dashboard',
+      component: Dashboard
+    }, {
+      path: '/analytics/objects',
+      name: 'Objects',
+      component: Objects
+    }, {
+      path: '/analytics/data-admin',
       name: 'DataAdmin',
       component: DataAdmin
     }

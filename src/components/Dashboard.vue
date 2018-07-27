@@ -1,30 +1,101 @@
 <template>
-  <div class='echarts'>
-    <h2>
-      <router-link to="/">Go Back</router-link>
-    </h2>
-    <button id="show-modal" @click="showModal()">Show Modal</button>
-    <p><code>noOfItems</code>: {{ noOfItems }}</p>
+  <div class='dashboard'>
+    <div class="md-layout md-gutter">
+      <div class="md-layout-item">
 
-    <IEcharts
-      :option='option'
-      :resizable="true"
-    />
-    <line-chart :data="chartData"></line-chart>
-    <modals-container
-      v-on:evt_noOfItems="_onNoOfItems"
-      v-on:evt_divident="_onDivident"
-    />
+        <md-card style="padding-top: 10px">
+          <md-card-header>
+            <md-card-header-text>
+              <div class="md-title">Your Dashboards</div>
+            </md-card-header-text>
+          </md-card-header>
+          <md-card-content>
+            <md-list class="md-triple-line">
+              <md-list-item>
+                <md-icon class="md-primary">timeline</md-icon>
+                <div class="md-list-item-text">
+                  <span>Investor Summary User Growth</span>
+                  <p>
+                    A bunch of user growth related graphs
+                  </p>
+                </div>
+                <md-card-actions>
+                  <md-button class="md-icon-button">
+                    <md-icon>share</md-icon>
+                  </md-button>
+
+                  <md-button class="md-icon-button">
+                    <md-icon>delete</md-icon>
+                  </md-button>
+                </md-card-actions>
+              </md-list-item>
+
+              <md-divider></md-divider>
+
+              <md-list-item>
+                <md-icon class="md-primary">attach_money</md-icon>
+                <div class="md-list-item-text">
+                  <span>Revenue up</span>
+                  <p>Revenue is going through the roof ... hopefully</p>
+                </div>
+                <md-card-actions>
+                  <md-button class="md-icon-button">
+                    <md-icon>share</md-icon>
+                  </md-button>
+
+                  <md-button class="md-icon-button">
+                    <md-icon>delete</md-icon>
+                  </md-button>
+                </md-card-actions>
+              </md-list-item>
+
+
+            </md-list>
+          </md-card-content>
+        </md-card>
+
+        <md-card>
+          <form novalidate>
+            <md-card-content>
+              <md-field>
+                <label>Name</label>
+                <md-input v-model="initial"></md-input>
+              </md-field>
+              <md-field>
+                <label>Description</label>
+                <md-textarea v-model="textarea"></md-textarea>
+              </md-field>
+            </md-card-content>
+
+            <md-card-actions>
+              <md-button type="submit" class="md-primary" :disabled="sending">Create Dashboard</md-button>
+            </md-card-actions>
+          </form>
+
+        </md-card>
+      </div>
+
+      <div class="md-layout-item">
+        <md-toolbar :md-elevation="1">
+          <span class="md-title">New hot graphs</span>
+        </md-toolbar>
+        <md-subheader>Person login App</md-subheader>
+        <line-chart :data="chartData"></line-chart>
+        <md-subheader>Person create Dashboard</md-subheader>
+        <line-chart :data="chartData"></line-chart>
+      </div>
+    </div>
+    <md-list>
+
+
+    </md-list>
   </div>
 </template>
 
 <script>
-  import IEcharts from 'vue-echarts-v3/src/full.js';
-
   import Vue from 'vue';
   import VueChartkick from 'vue-chartkick';
   import Highcharts from 'highcharts';
-
   import VModal from 'vue-js-modal';
   import ModalOverlayComp from '@/components/ModalOverlayComp';
 
@@ -48,43 +119,6 @@
         console.log('Everything is ok');
       }
     });
-  }
-
-    async function generateData(client) {
-    const requestBody = {
-      'actor': {
-        'id': 'P:123',
-        'type': 'Person'
-      },
-      'object': {
-        'id': 'Bot:123',
-        'type': 'Bot'
-      },
-      'type': 'Login',
-      'published': ''// '2018-06-01T12:12:17'
-    };
-
-    for (let i = 0; i < 10000; i++) {
-      const randomIntHour = getRandomInt(1, 23);
-      const hour = randomIntHour < 10 ? '0' + randomIntHour : randomIntHour;
-
-      const randomIntMinute = getRandomInt(1, 59);
-      const minute = randomIntMinute < 10 ? '0' + randomIntMinute : randomIntMinute;
-
-      const randomIntSecond = getRandomInt(1, 59);
-      const second = randomIntSecond < 10 ? '0' + randomIntSecond : randomIntSecond;
-      requestBody.published = '2018-06-01T' + hour + ':' + minute + ':' + second;
-      await client.create({
-        index: 'active-objects-current',
-        id: i.toString(),
-        type: 'doc',
-        body: requestBody
-      });
-    }
-  }
-
-  function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
   function loadContent(scope, client, xName, yName) {
@@ -122,10 +156,6 @@
     client.search({index: 'active-objects-current', body})
       .then(results => {
         console.log(results);
-        scope.$data.option.series[0].data = results.aggregations.grouping.buckets.map(obj => [
-          (new Date(parseInt(obj['key']) * 1000)) / scope.$data.divident,
-          parseInt(obj['doc_count'])
-        ]);
 
         scope.$data.chartData = results.aggregations.grouping.buckets.map(obj => [
           obj['key_as_string'],
@@ -139,60 +169,7 @@
   }
 
   const _data = {
-    chartData: [],
-    noOfItems: 5000,
-    divident: 1,
-    option: {
-      title: {
-        text: '大规模散点图'
-      },
-      tooltip: {
-        trigger: 'axis',
-        showDelay: 0,
-        axisPointer: {
-          show: true,
-          type: 'cross',
-          lineStyle: {
-            type: 'dashed',
-            width: 1
-          }
-        },
-        zlevel: 1
-      },
-      legend: {
-        data: ['sin', 'cos']
-      },
-      toolbox: {
-        show: true,
-        feature: {
-          mark: {show: true},
-          dataZoom: {show: true},
-          dataView: {show: true, readOnly: false},
-          restore: {show: true},
-          saveAsImage: {show: true}
-        }
-      },
-      xAxis: [
-        {
-          type: 'value',
-          scale: true
-        }
-      ],
-      yAxis: [
-        {
-          type: 'value',
-          scale: true
-        }
-      ],
-      series: [
-        {
-          name: 'ES',
-          type: 'line',
-          symbolSize: 20,
-          data: []
-        }
-      ]
-    }
+    chartData: []
   };
 
   var _loadContentId = null;
@@ -210,9 +187,8 @@
   }
 
   export default {
-    name: 'Demo06',
+    name: 'Dashboard',
     components: {
-      IEcharts,
       VModal
     },
     data() {
@@ -228,14 +204,7 @@
             resizable: true,
             height: 200
           });
-      },
-      _onNoOfItems(numOf) {
-        this.$data.noOfItems = numOf;
-      },
-      _onDivident(numOf) {
-        this.$data.divident = numOf;
       }
-
       // beforeMount () {
       //   const that = this
       // },
@@ -262,11 +231,6 @@
 
 <!-- Add 'scoped' attribute to limit CSS to this component only -->
 <style scoped>
-  .echarts {
-    width: 80%;
-    height: 800px;
-    margin: 0 auto;
-  }
 
   h1, h2 {
     font-weight: normal;
@@ -284,5 +248,24 @@
 
   a {
     color: #42b983;
+  }
+</style>
+
+<style lang="scss" scoped>
+
+  .md-layout-item {
+    height: 40px;
+
+    &:nth-child(1) {
+      background: md-get-palette-color(grey, 300);
+    }
+
+    &:nth-child(2) {
+      background: md-get-palette-color(grey, 400);
+    }
+
+    &:nth-child(3) {
+      background: md-get-palette-color(grey, 500);
+    }
   }
 </style>

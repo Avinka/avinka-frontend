@@ -3,9 +3,7 @@
 
     <h1>{{ msg }}</h1>
     <ul>
-      <li><button id="show-modal" @click="showModal()">Show Modal</button></li>
-      <li><router-link to="/demo06">Demo 06</router-link></li>
-      <li><router-link to="/data-admin">Data Admin</router-link></li>
+      <!-- <li><button id="show-modal" @click="showModal()">Show Modal</button></li> -->
     </ul>
 
     <modals-container/>
@@ -17,7 +15,7 @@ import VModal from 'vue-js-modal';
 import ModalOverlayComp from '@/components/ModalOverlayComp';
 
 const _data = {
-  msg: 'Dashboard'
+  msg: 'Analytics Overview'
 };
 
 export default {
@@ -41,15 +39,6 @@ export default {
   }
 };
 </script>
-
-<style lang="scss">
-  .v--modal-box {
-    border-radius: 2px;
-    box-shadow: 0 2px 18px rgba(188, 0, 0, .33);
-    font-family: Helvetica, Arial, sans-serif;
-  }
-
-</style>
 
 <style scoped>
 h1, h2 {
