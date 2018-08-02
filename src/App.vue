@@ -17,7 +17,7 @@
             <span class="md-list-item-text">Overview</span>
           </md-list-item>
 
-          <md-list-item to="/analytics/dashboards">
+          <md-list-item to="/analytics/dashboard-overview">
             <md-icon class="md-primary">dashboard</md-icon>
             <span class="md-list-item-text">Dashboards</span>
           </md-list-item>

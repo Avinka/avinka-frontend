@@ -3,7 +3,7 @@
 
     <h1>{{ msg }}</h1>
     <div class="md-layout md-gutter">
-      <div class="md-layout-item">
+      <div class="md-layout-item md-xsmall-size-100 md-small-size-50 md-medium-size-50">
         <md-card>
           <md-card-header>
             <md-card-header-text>
@@ -14,20 +14,48 @@
             <md-card-media>
               <img src="/static/graph_medium.png">
             </md-card-media>
-
-            <md-card-actions>
-              <md-button class="md-icon-button">
-                <md-icon>favorite</md-icon>
-              </md-button>
-
-              <md-button class="md-icon-button">
-                <md-icon>bookmark</md-icon>
-              </md-button>
-
-              <md-button class="md-icon-button">
-                <md-icon>share</md-icon>
-              </md-button>
-            </md-card-actions>
+          </md-card-media-actions>
+        </md-card>
+      </div>
+      <div class="md-layout-item md-xsmall-size-100 md-small-size-50 md-medium-size-50">
+        <md-card>
+          <md-card-header>
+            <md-card-header-text>
+              Analytics
+            </md-card-header-text>
+          </md-card-header>
+          <md-card-media-actions>
+            <md-card-media>
+              <img src="/static/graph_medium.png">
+            </md-card-media>
+          </md-card-media-actions>
+        </md-card>
+      </div>
+      <div class="md-layout-item md-xsmall-size-100 md-small-size-50 md-medium-size-50">
+        <md-card>
+          <md-card-header>
+            <md-card-header-text>
+              Analytics
+            </md-card-header-text>
+          </md-card-header>
+          <md-card-media-actions>
+            <md-card-media>
+              <img src="/static/graph_medium.png">
+            </md-card-media>
+          </md-card-media-actions>
+        </md-card>
+      </div>
+      <div class="md-layout-item md-xsmall-size-100 md-small-size-50 md-medium-size-50">
+        <md-card>
+          <md-card-header>
+            <md-card-header-text>
+              Analytics
+            </md-card-header-text>
+          </md-card-header>
+          <md-card-media-actions>
+            <md-card-media>
+              <img src="/static/graph_medium.png">
+            </md-card-media>
           </md-card-media-actions>
         </md-card>
       </div>

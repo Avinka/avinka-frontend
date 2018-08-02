@@ -1,8 +1,9 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Home from '@/components/Home';
-import Dashboard from '@/components/Dashboard';
+import DashboardOverview from '@/components/DashboardOverview';
 import DataAdmin from '@/components/DataAdmin';
+import DashboardDetail from '@/components/DashboardDetail';
 import Objects from '@/components/Objects';
 import AnalyticsOverview from '@/components/AnalyticsOverview';
 
@@ -19,9 +20,13 @@ export default new Router({
       name: 'AnalyticsOverview',
       component: AnalyticsOverview
     }, {
-      path: '/analytics/dashboards',
-      name: 'Dashboard',
-      component: Dashboard
+      path: '/analytics/dashboard-overview',
+      name: 'DashboardOverview',
+      component: DashboardOverview
+    }, {
+      path: '/analytics/dashboards/:id',
+      name: 'DashboardDetail',
+      component: DashboardDetail
     }, {
       path: '/analytics/objects',
       name: 'Objects',
