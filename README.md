@@ -30,8 +30,17 @@
 First, start the backend services
 
 ```bash
+docker login registry.gitlab.com
+
 docker-compose pull
 docker-compose up
+```
+
+Create testdata
+
+```bash
+cd testdata
+make build reset_indexes generate
 ```
 
 Then our frontend application

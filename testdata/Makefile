@@ -17,7 +17,7 @@ PIP := $(BASE)/.venv/bin/pip
 
 .DEFAULT_GOAL := help
 
-ITEM_NO=9999
+ITEM_NO=1
 
 
 .PHONY: build
@@ -48,6 +48,11 @@ view: ## display the indexes and load all contents
 	@./list.sh actor | jq
 	@./list.sh verb | jq
 	@./list.sh object | jq
+
+reset_indexes: ## drop and re-create indexes with mappings about basic properties
+	@./index.sh actor
+	@./index.sh verb
+	@./index.sh object
 
 
 # Absolutely awesome: http://marmelab.com/blog/2016/02/29/auto-documented-makefile.html

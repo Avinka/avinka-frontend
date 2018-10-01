@@ -62,18 +62,3 @@
     }
   };
 </script>
-
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
-  .modal-container {
-    padding-left: 10px;
-    padding-right: 10px;
-  }
-
-  button.modal-ok-button {
-    position: absolute;
-    right: 10px;
-    bottom: 10px;
-  }
-</style>

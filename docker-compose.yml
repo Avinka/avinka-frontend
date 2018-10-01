@@ -1,20 +1,11 @@
 version: '3.4'
 services:
   es:
-    image: elasticsearch:alpine
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.1.4
     ports:
       - 127.0.0.1:9200:9200
       - 127.0.0.1:9300:9300
-    volumes:
-      - luqs_dev_data:/usr/share/elasticsearch/data:delegated
-
-  dwnn:
-    image: registry.gitlab.com/pansen/datawithnoname:latest
-    ports:
-      - 127.0.0.1:8080:8080
     environment:
-      - ES_HOST=es:9200
-      - ES_USER=
-      - ES_PASS=
+      - discovery.type:single-node
 volumes:
   luqs_dev_data:
