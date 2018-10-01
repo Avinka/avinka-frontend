@@ -17,7 +17,7 @@ PIP := $(BASE)/.venv/bin/pip
 
 .DEFAULT_GOAL := help
 
-ITEM_NO=9999
+ITEM_NO=1
 
 
 .PHONY: build

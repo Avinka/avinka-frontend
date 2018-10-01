@@ -2,7 +2,6 @@
   <md-list class="md-triple-line">
     <dashboard-list-item v-for="dashboard in dashboards"
                          :dashboard="dashboard"></dashboard-list-item>
-    <md-divider></md-divider>
   </md-list>
 </template>
 

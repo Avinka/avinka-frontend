@@ -27,10 +27,6 @@
         <graph-list></graph-list>
       </div>
     </div>
-    <md-list>
-
-
-    </md-list>
   </div>
 </template>
 

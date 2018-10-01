@@ -5,7 +5,6 @@ import DashboardOverview from '@/components/DashboardOverview';
 import DataAdmin from '@/components/DataAdmin';
 import DashboardDetail from '@/components/DashboardDetail';
 import Objects from '@/components/Objects';
-import AnalyticsOverview from '@/components/AnalyticsOverview';
 
 Vue.use(Router);
 
@@ -17,10 +16,6 @@ export default new Router({
       component: Home
     }, {
       path: '/analytics/',
-      name: 'AnalyticsOverview',
-      component: AnalyticsOverview
-    }, {
-      path: '/analytics/dashboard-overview',
       name: 'DashboardOverview',
       component: DashboardOverview
     }, {

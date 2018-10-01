@@ -3,7 +3,7 @@
 
     <h1>{{ msg }}</h1>
     <div class="md-layout md-gutter">
-      <div class="md-layout-item md-xsmall-size-100 md-small-size-50 md-medium-size-50">
+      <div class="md-layout-item md-xsmall-size-100 md-small-size-50 md-medium-size-50 md-large-size-50">
         <md-card>
           <md-card-header>
             <md-card-header-text>
@@ -17,11 +17,11 @@
           </md-card-media-actions>
         </md-card>
       </div>
-      <div class="md-layout-item md-xsmall-size-100 md-small-size-50 md-medium-size-50">
+      <div class="md-layout-item md-xsmall-size-100 md-small-size-50 md-medium-size-50 md-large-size-50">
         <md-card>
           <md-card-header>
             <md-card-header-text>
-              Analytics
+              A/B Testing
             </md-card-header-text>
           </md-card-header>
           <md-card-media-actions>
@@ -31,11 +31,11 @@
           </md-card-media-actions>
         </md-card>
       </div>
-      <div class="md-layout-item md-xsmall-size-100 md-small-size-50 md-medium-size-50">
+      <div class="md-layout-item md-xsmall-size-100 md-small-size-50 md-medium-size-50 md-large-size-50">
         <md-card>
           <md-card-header>
             <md-card-header-text>
-              Analytics
+              Notifications
             </md-card-header-text>
           </md-card-header>
           <md-card-media-actions>
@@ -45,11 +45,11 @@
           </md-card-media-actions>
         </md-card>
       </div>
-      <div class="md-layout-item md-xsmall-size-100 md-small-size-50 md-medium-size-50">
+      <div class="md-layout-item md-xsmall-size-100 md-small-size-50 md-medium-size-50 md-large-size-50">
         <md-card>
           <md-card-header>
             <md-card-header-text>
-              Analytics
+              Administration
             </md-card-header-text>
           </md-card-header>
           <md-card-media-actions>
@@ -102,6 +102,9 @@ li {
 a {
   color: #42b983;
 }
+  .md-layout-item{
+    padding-top: 2em;
+  }
 </style>
 
 

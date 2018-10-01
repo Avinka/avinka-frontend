@@ -1,6 +1,7 @@
 <template>
-  <div>
-    <md-subheader>{{graph.title}}</md-subheader>
+  <div class="graph md-elevation-2">
+    <md-subheader  class="md-primary">{{graph.title}} <md-icon>settings</md-icon></md-subheader>
+    <br />
     <line-chart :data="chartData"></line-chart>
   </div>
 </template>
@@ -125,4 +126,9 @@
     }
   };
 </script>
-
+<style scoped>
+  .graph {
+    padding-top: 2em;
+    padding-bottom: 2em;
+  }
+</style>

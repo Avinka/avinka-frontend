@@ -2,9 +2,6 @@
   <div id="App" class="page-container">
     <md-app md-mode="reveal">
       <md-app-toolbar class="md-primary">
-        <md-button class="md-icon-button" @click="menuVisible = !menuVisible">
-          <md-icon>menu</md-icon>
-        </md-button>
         <span class="md-title">Active Graph</span>
       </md-app-toolbar>
 
