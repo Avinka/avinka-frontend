@@ -1,10 +1,10 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Home from '@/components/Home';
-import DashboardOverview from '@/components/DashboardOverview';
-import DataAdmin from '@/components/DataAdmin';
-import DashboardDetail from '@/components/DashboardDetail';
-import Objects from '@/components/Objects';
+import Home from '@/public/components/Home';
+import DashboardOverview from '@/public/components/DashboardOverview';
+import DataAdmin from '@/public/components/DataAdmin';
+import DashboardDetail from '@/public/components/DashboardDetail';
+import Objects from '@/public/components/Objects';
 
 Vue.use(Router);
 
