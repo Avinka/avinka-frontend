@@ -10,7 +10,7 @@ selenium-debug.log
 /var/transfer
 /VERSION
 /ITERATION
-
+/idea
 # Editor directories and files
 # recommendation from intellij
 **/.idea/workspace.xml
