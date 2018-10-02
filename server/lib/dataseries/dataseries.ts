@@ -12,7 +12,7 @@ export interface IDataseriesModel extends IDataseries, Document {
 
 export const DataseriesSchema: Schema = new Schema({
     name: String,
-    createdAt: Date,
+    createdAt: { type: Date, default: Date.now },
     query: String,
     indexName: String
 });
