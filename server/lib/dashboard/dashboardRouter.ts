@@ -10,7 +10,7 @@ export class DashboardRouter {
         app.route('/dashboard')
             .get(async (req: Request, res: Response) => {
                 let result = await this.Dashboard.find().exec();
-                res.status(200).send(result.toString())
+                res.status(200).send(result)
             })
             .post(async (req: Request, res: Response) => {
                 // TODO add validation
