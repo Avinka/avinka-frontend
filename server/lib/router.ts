@@ -3,7 +3,7 @@ import {DashboardRouter} from "./dashboard/dashboardRouter";
 import {GraphRouter} from "./graph/graphRouter";
 import {DataseriesRouter} from "./dataseries/dataseriesRouter";
 import {ActivityRouter} from "./activity/activityRouter";
-import {ActivityService} from "./activity/ActivityService";
+import {ActivityService} from "./activity/activityService";
 import {Client} from "elasticsearch";
 
 export class Router {

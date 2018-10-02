@@ -1,6 +1,6 @@
 import {Request, Response} from "express";
-import {ActivityService} from "./ActivityService";
-import {EntityResult} from "./activity";
+import {ActivityService} from "./activityService";
+import {EntityResult} from "../util/result";
 
 export class ActivityRouter {
 
