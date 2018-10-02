@@ -19,6 +19,7 @@ selenium-debug.log
 # those files contain information about the local interpreter, which is not a shared thing
 **/.idea/*.iml
 **/.idea/misc.xml
+**/.idea
 
 **/ITERATION
 
