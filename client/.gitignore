@@ -1,6 +1,6 @@
 .DS_Store
 node_modules/
-**/dist/
+/dist/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -10,7 +10,7 @@ selenium-debug.log
 /var/transfer
 /VERSION
 /ITERATION
-/idea
+
 # Editor directories and files
 # recommendation from intellij
 **/.idea/workspace.xml
@@ -19,9 +19,6 @@ selenium-debug.log
 # those files contain information about the local interpreter, which is not a shared thing
 **/.idea/*.iml
 **/.idea/misc.xml
-.idea/codeStyles/
-.idea/dbnavigator.xml
-**/.idea
 
 **/ITERATION
 

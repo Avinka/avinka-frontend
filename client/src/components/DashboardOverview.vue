@@ -32,10 +32,10 @@
 
 <script>
   import VModal from 'vue-js-modal';
-  import ModalOverlayComp from '@/public/components/ModalOverlayComp';
-  import DashboardList from '@/public/components/DashboardList';
-  import DashboardAddForm from '@/public/components/DashboardAddForm';
-  import GraphList from '@/public/components/GraphList';
+  import ModalOverlayComp from '@/components/ModalOverlayComp';
+  import DashboardList from '@/components/DashboardList';
+  import DashboardAddForm from '@/components/DashboardAddForm';
+  import GraphList from '@/components/GraphList';
 
   export default {
     name: 'DashboardOverview',

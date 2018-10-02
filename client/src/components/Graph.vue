@@ -89,7 +89,7 @@
   const yAxisProperty = 'age';
 
   function loadWithDelay() {
-    // avoid calling the backend once for the removed char and the added char
+    // avoid calling the server once for the removed char and the added char
     if (!_loadContentId) {
       _loadContentId = window.setTimeout(() => {
         loadContent(this, client, xAxisProperty, yAxisProperty);
