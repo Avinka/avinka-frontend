@@ -13,5 +13,5 @@ export interface IDashboardModel extends IDashboard, Document {
 export const DashboardSchema: Schema = new Schema({
     name: String,
     createdAt: { type: Date, default: Date.now },
-    graphs: { type: Schema.Types.ObjectId, ref: 'Graphs' }
+    graphs: [{ type: Schema.Types.ObjectId, ref: 'Graph' }]
 });

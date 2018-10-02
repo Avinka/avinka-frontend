@@ -20,7 +20,8 @@ export class DashboardRouter {
         app.route('/dashboard/:id')
             .get(async (req: Request, res: Response) => {
                 const id = req.params.id;
-                let result = await this.Dashboard.find({_id: id}).exec();
+                let findOne = this.Dashboard.findOne({_id: id});
+                let result = await findOne.populate('graphs').exec();
                 res.status(200).send(result.toString())
             })
             .delete(async (req: Request, res: Response) => {
@@ -33,5 +34,15 @@ export class DashboardRouter {
                 let result = await this.Dashboard.updateOne({_id: id}, req.body).exec();
                 res.status(200).send(result.toString())
             });
+        app.route('/dashboard/:id/graph')
+            .post(async (req: Request, res: Response) => {
+                // TODO add validation
+                const dashboardId = req.params.id;
+                let result = await this.Dashboard.findOne({_id: dashboardId});
+                result.graphs.push(req.body._id);
+                await result.save();
+                res.status(200).send(result.toString())
+            });
+
     }
 }
