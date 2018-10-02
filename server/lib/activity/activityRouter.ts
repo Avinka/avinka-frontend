@@ -1,11 +1,14 @@
 import {Request, Response} from "express";
-import {Client} from "elasticsearch";
 import {ActivityService} from "./ActivityService";
 import {EntityResult} from "./activity";
 
 export class ActivityRouter {
 
-    activityService = new ActivityService(new Client({hosts: ["127.0.0.1:9200"]}), 'active-objects-current');
+    readonly activityService;
+
+    constructor(activityService: ActivityService) {
+        this.activityService = activityService;
+    }
 
     public routes(app): void {
         app.route('/activity')

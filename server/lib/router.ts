@@ -3,13 +3,20 @@ import {DashboardRouter} from "./dashboard/dashboardRouter";
 import {GraphRouter} from "./graph/graphRouter";
 import {DataseriesRouter} from "./dataseries/dataseriesRouter";
 import {ActivityRouter} from "./activity/activityRouter";
+import {ActivityService} from "./activity/ActivityService";
+import {Client} from "elasticsearch";
 
 export class Router {
 
+    activityService = new ActivityService(
+        new Client({hosts: ["127.0.0.1:9200"]}),
+        'active-objects-current',
+        "activity");
+
+    public activityRouter: ActivityRouter = new ActivityRouter(this.activityService);
     public dashboardRouter: DashboardRouter = new DashboardRouter();
     public graphRouter: GraphRouter = new GraphRouter();
     public dataSeriesRouter: DataseriesRouter = new DataseriesRouter();
-    public activityRouter: ActivityRouter = new ActivityRouter();
 
     public routes(app): void {
         app.route('/')

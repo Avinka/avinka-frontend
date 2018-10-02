@@ -1,26 +1,25 @@
-import {Client, CreateDocumentResponse, SearchResponse} from "elasticsearch";
+import {Client} from "elasticsearch";
 import {v4 as uuid} from 'uuid';
 import {Activity} from "./activity";
-import {ApplicationError} from "../util/error";
 
 export class ActivityService {
 
     readonly client: Client;
     readonly indexName;
-    readonly indexType = 'activity';
+    readonly indexType;
 
-    constructor(client: Client, indexName) {
+    constructor(client: Client, indexName: string, indexType: string) {
         this.client = client;
         this.indexName = indexName;
+        this.indexType = indexType;
     }
 
     async get(query: string): Promise<Array<Activity>> {
-            const result = await this.client.search<Activity>({
-                index: this.indexName,
-                type: this.indexType,
-                body: query
-            });
-            return result.hits.hits.map(a => a._source);
+        return (await this.client.search<Activity>({
+            index: this.indexName,
+            type: this.indexType,
+            body: query
+        })).hits.hits.map(a => a._source);
     }
 
     async create(activity: Activity): Promise<Activity> {
@@ -30,16 +29,12 @@ export class ActivityService {
         if (!activity.published) {
             activity.published = new Date();
         }
-        try {
-            await this.client.create({
-                index: this.indexName,
-                id: activity.id,
-                type: this.indexType,
-                body: activity
-            });
-        } catch (err) {
-            throw new ApplicationError("Cannot create activity for " + activity.toString(), 500);
-        }
+        await this.client.create({
+            index: this.indexName,
+            id: activity.id,
+            type: this.indexType,
+            body: activity
+        });
         return activity;
     }
 }
