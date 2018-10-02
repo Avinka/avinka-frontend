@@ -10,12 +10,20 @@ export class ActivityRouter {
     public routes(app): void {
         app.route('/activity')
             .get(async (req: Request, res: Response) => {
-                let result = await this.activityService.get(req.body);
-                res.status(200).send(new EntityResult(result))
+                try {
+                    let result = await this.activityService.get(req.body);
+                    res.status(200).send(new EntityResult(result))
+                } catch (err) {
+                    res.status(400).send(err.toString());
+                }
             })
             .post(async (req: Request, res: Response) => {
-                let result = await this.activityService.create(req.body);
-                res.status(200).send(result)
+                try {
+                    let result = await this.activityService.create(req.body);
+                    res.status(200).send(result)
+                } catch (err) {
+                    res.status(400).send(err.toString());
+                }
             });
     }
 }

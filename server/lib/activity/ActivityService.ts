@@ -1,6 +1,7 @@
 import {Client, CreateDocumentResponse, SearchResponse} from "elasticsearch";
 import {v4 as uuid} from 'uuid';
 import {Activity} from "./activity";
+import {ApplicationError} from "../util/error";
 
 export class ActivityService {
 
@@ -14,16 +15,12 @@ export class ActivityService {
     }
 
     async get(query: string): Promise<Array<Activity>> {
-        try {
-            return (await this.client.search<Activity>({
+            const result = await this.client.search<Activity>({
                 index: this.indexName,
                 type: this.indexType,
                 body: query
-            })).hits.hits.map(a => a._source);
-        } catch (err) {
-            //TODO error handling
-            console.log(err)
-        }
+            });
+            return result.hits.hits.map(a => a._source);
     }
 
     async create(activity: Activity): Promise<Activity> {
@@ -41,8 +38,7 @@ export class ActivityService {
                 body: activity
             });
         } catch (err) {
-            //TODO error handling
-            console.log(err)
+            throw new ApplicationError("Cannot create activity for " + activity.toString(), 500);
         }
         return activity;
     }
