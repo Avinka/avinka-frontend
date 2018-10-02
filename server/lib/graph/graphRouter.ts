@@ -42,6 +42,7 @@ export class GraphRouter {
                 // TODO add validation
                 const graphId = req.params.id;
                 let result = await this.Graph.findOne({_id: graphId});
+                // @ts-ignore
                 result.graphs.push(req.body._id);
                 await result.save();
                 res.status(201).send(result)
@@ -49,6 +50,7 @@ export class GraphRouter {
             .get(async (req: Request, res: Response) => {
                 const id = req.params.id;
                 let result = await this.Graph.findOne({_id: id},'dataseries').populate('dataseries').exec();
+                // @ts-ignore
                 res.status(200).send(result.graphs)
             });
 
