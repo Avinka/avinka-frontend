@@ -14,6 +14,10 @@ module.exports = {
       "/ES": {
         target: "http://localhost:9200",
         pathRewrite: {"^/ES" : ""}
+      },
+      "/api": {
+        target: "http://localhost:3000",
+        pathRewrite: {"^/api" : ""}
       }
     },
 
