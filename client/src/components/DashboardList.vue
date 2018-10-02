@@ -7,33 +7,20 @@
 
 <script>
   import DashboardListItem from './DashboardListItem';
-
+  import axios from 'axios';
   export default {
     name: 'DashboardList',
     components: {DashboardListItem},
     data() {
       return {
         dashboards: [
-          {
-            id: 1,
-            title: 'Investor Summary User Growth',
-            icon: 'monetization_on',
-            description: 'A bunch of user growth related graphs'
-          },
-          {
-            id: 2,
-            title: 'So much growth!11',
-            icon: 'timeline',
-            description: 'Exponential shit'
-          },
-          {
-            id: 3,
-            title: 'Winning',
-            icon: 'done',
-            description: 'whoop whoop unicorns pooping rainbows'
-          }
         ]
       };
+    },
+    created: async function () {
+      const result = await axios.get('http://localhost:8080/api/dashboard');
+      console.log(result);
+      this.dashboards = result.data;
     }
   };
 </script>
