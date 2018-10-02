@@ -12,7 +12,7 @@
     </md-card-content>
 
     <md-card-actions>
-      <md-button type="submit" class="md-primary" v-on:click="hello()">Create Dashboard</md-button>
+      <md-button type="submit" class="md-primary" v-on:click="create()">Create Dashboard</md-button>
     </md-card-actions>
   </form>
 </template>
@@ -26,12 +26,14 @@
       return {
         name: null,
         description: null
-      }
+      };
     },
     methods: {
-      hello: function() {
-        axios.post('http://localhost:8080/api/dashboard/', {name: this.name});
-        console.log("Hello: " + this.name);
+      create: async function() {
+        const result = await axios.post('http://localhost:8080/api/dashboard/', {name: this.name});
+        this.$router.push({name: 'DashboardDetail', params: {id: result.data._id}});
+
+        console.log(result.data);
       }
     }
   };
