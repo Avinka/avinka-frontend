@@ -17,5 +17,21 @@ export class DataseriesRouter {
             let result = await this.Dataseries.create(req.body);
             res.status(200).send(result.toString())
         });
+        app.route('/dataseries/:id')
+            .get(async (req: Request, res: Response) => {
+                const id = req.params.id;
+                let result = await this.Dataseries.find({_id: id}).exec();
+                res.status(200).send(result.toString())
+            })
+            .delete(async (req: Request, res: Response) => {
+                const id = req.params.id;
+                let result = await this.Dataseries.deleteOne({_id: id}).exec();
+                res.status(200).send(result.toString())
+            })
+            .put(async (req: Request, res: Response) => {
+                const id = req.params.id;
+                let result = await this.Dataseries.updateOne({_id: id}, req.body).exec();
+                res.status(200).send(result.toString())
+            });
     }
 }
