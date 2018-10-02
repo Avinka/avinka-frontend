@@ -16,8 +16,8 @@ module.exports = {
   cacheBusting: config.dev.cacheBusting,
   transformToRequire: {
     video: ['src', 'poster'],
-    source: 'src/public',
-    img: 'src/public',
+    source: 'src',
+    img: 'src',
     image: 'xlink:href'
   }
 }
