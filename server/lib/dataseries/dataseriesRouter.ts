@@ -2,7 +2,6 @@ import {Request, Response} from "express";
 import * as mongoose from "mongoose";
 import {DataseriesSchema} from "./dataseries";
 
-
 export class DataseriesRouter {
     Dataseries = mongoose.model('Dataseries', DataseriesSchema);
 
