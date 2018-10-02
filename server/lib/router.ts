@@ -4,10 +4,9 @@ import * as mongoose from "mongoose";
 
 
 export class Routes {
-
     Dashboard = mongoose.model('Dashboard', DashboardSchema);
 
-     constructor() {
+    constructor() {
         let newDashboard = new this.Dashboard({name: "test"});
         newDashboard.save()
     }
