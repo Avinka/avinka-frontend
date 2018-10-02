@@ -11,6 +11,11 @@ export class DataseriesRouter {
             .get(async (req: Request, res: Response) => {
                 let result = await this.Dataseries.find().exec();
                 res.status(200).send(result.toString())
-            });
+            })
+            .post(async (req: Request, res: Response) => {
+            // TODO add validation
+            let result = await this.Dataseries.create(req.body);
+            res.status(200).send(result.toString())
+        });
     }
 }
