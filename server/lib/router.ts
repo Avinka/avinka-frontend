@@ -1,15 +1,13 @@
 import {Request, Response} from "express";
-import {DashboardSchema} from "./models/dashboard";
-import * as mongoose from "mongoose";
+import {DashboardRouter} from "./dashboard/dashboardRouter";
+import {GraphRouter} from "./graph/graphRouter";
+import {DataseriesRouter} from "./dataseries/dataseriesRouter";
 
+export class Router {
 
-export class Routes {
-    Dashboard = mongoose.model('Dashboard', DashboardSchema);
-
-    constructor() {
-        let newDashboard = new this.Dashboard({name: "test"});
-        newDashboard.save()
-    }
+    public dashboardRouter: DashboardRouter = new DashboardRouter();
+    public graphRouter: GraphRouter = new GraphRouter();
+    public dataSeriesRouter: DataseriesRouter = new DataseriesRouter();
 
     public routes(app): void {
         app.route('/')
@@ -18,10 +16,9 @@ export class Routes {
                     message: 'GET request successfulll!!!!'
                 })
             });
-        app.route('/dashboard')
-            .get(async (req: Request, res: Response) => {
-                let result = await this.Dashboard.find().exec();
-                res.status(200).send(result.toString())
-            });
+
+        this.dashboardRouter.routes(app);
+        this.graphRouter.routes(app);
+        this.dataSeriesRouter.routes(app);
     }
 }
