@@ -41,11 +41,6 @@ export class ActivityService {
         }));
     }
 
-    async bulk(as: Array<Activity>): Promise<void> {
-        //TODO use client.bulk here
-        as.map(x => this.create(x))
-    }
-
     preProcess(a: Activity): Activity {
         if (!a.id) {
             a.id = uuid();
@@ -57,8 +52,8 @@ export class ActivityService {
     }
 
     async generateData(): Promise<void> {
-        let activities = []
         for (let i = 0; i < 10000; i++) {
+            
             let activity: Activity = new Activity();
             activity.actor = {'id': 'P:123', 'type': 'Person'};
             activity.object = {'id': 'Bot:123', 'type': 'Bot'};
@@ -74,11 +69,9 @@ export class ActivityService {
             const second = randomIntSecond < 10 ? '0' + randomIntSecond : randomIntSecond;
             const dateString = '2018-06-01T' + hour + ':' + minute + ':' + second;
             activity.published = new Date(dateString);
-
-            activities.push(activity)
+            //TODO use bulk api
+            await this.create(activity)
         }
-
-        this.bulk(activities);
 
         function getRandomInt(min, max) {
             return Math.floor(Math.random() * (max - min + 1)) + min;

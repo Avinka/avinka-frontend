@@ -5,7 +5,7 @@ import {DataseriesRouter} from "./dataseries/dataseriesRouter";
 import {ActivityRouter} from "./activity/activityRouter";
 import {ActivityService} from "./activity/activityService";
 import {Client} from "elasticsearch";
-import {AdminRouter} from "admin/adminRouter";
+import {AdminRouter} from "./admin/adminRouter";
 
 export class Router {
 
@@ -15,7 +15,7 @@ export class Router {
         "activity");
 
     public activityRouter: ActivityRouter = new ActivityRouter(this.activityService);
-    public admin: AdminRouter = new AdminRouter(this.activityService);
+    public adminRouter: AdminRouter = new AdminRouter(this.activityService);
     public dashboardRouter: DashboardRouter = new DashboardRouter();
     public graphRouter: GraphRouter = new GraphRouter();
     public dataSeriesRouter: DataseriesRouter = new DataseriesRouter();
@@ -28,9 +28,10 @@ export class Router {
                 })
             });
 
-        this.dashboardRouter.routes(app);
-        this.graphRouter.routes(app);
-        this.dataSeriesRouter.routes(app);
         this.activityRouter.routes(app);
+        this.adminRouter.routes(app);
+        this.dashboardRouter.routes(app);
+        this.dataSeriesRouter.routes(app);
+        this.graphRouter.routes(app);
     }
 }
