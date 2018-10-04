@@ -5,7 +5,6 @@
 </template>
 
 <script>
-  import axios from 'axios';
   import { mapState, mapActions } from 'vuex';
   import DashboardListItem from './DashboardListItem';
 
@@ -13,23 +12,10 @@
     name: 'DashboardList',
     components: {DashboardListItem},
     computed: mapState({
-      products: state => state.products.all
+      dashboards: state => state.dashboards.all
     }),
-    methods: mapActions('cart', [
-      'addProductToCart'
-    ]),
     async created() {
-      this.$store.dispatch('dashboards/getAllDashboards');
-
-      const result = await axios.get('http://localhost:8080/api/dashboard');
-      this.$log.debug(result);
-      this.dashboards = result.data;
-    },
-    data() {
-      return {
-        dashboards: [
-        ]
-      };
+      await this.$store.dispatch('dashboards/getAllDashboards');
     }
   };
 </script>

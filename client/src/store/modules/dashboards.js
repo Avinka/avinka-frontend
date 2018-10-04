@@ -1,3 +1,4 @@
+import dashboardService from '../../api/dashboard';
 // initial state
 const state = {
   all: []
@@ -8,7 +9,9 @@ const getters = {};
 
 // actions
 const actions = {
-  getAllDashboards ({ commit }) {
+  async getAllDashboards ({ commit }) {
+    const dashboards = await dashboardService.getAllDashboards();
+    commit('setDashboards', dashboards);
   }
 };
 
@@ -16,11 +19,6 @@ const actions = {
 const mutations = {
   setDashboards (state, dashboards) {
     state.all = dashboards;
-  },
-
-  decrementProductInventory (state, { id }) {
-    const product = state.all.find(product => product.id === id);
-    product.inventory--;
   }
 };
 
