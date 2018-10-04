@@ -53,7 +53,7 @@ export class ActivityService {
 
     async generateData(): Promise<void> {
         for (let i = 0; i < 10000; i++) {
-            
+
             let activity: Activity = new Activity();
             activity.actor = {'id': 'P:123', 'type': 'Person'};
             activity.object = {'id': 'Bot:123', 'type': 'Bot'};
