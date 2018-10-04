@@ -10,6 +10,7 @@
       <p>
         {{detail.description}}
       </p>
+      <graph-add-form></graph-add-form>
       <graph-list></graph-list>
 
     </md-content>
@@ -19,9 +20,23 @@
 
 <script>
   import GraphList from './GraphList';
+  import GraphAddForm from '@/components/GraphAddForm';
+
+  import axios from 'axios';
+
   export default {
     name: 'DashboardDetail',
-    components: {GraphList},
+    components: {
+      GraphList,
+      GraphAddForm
+    },
+    async beforeMount() {
+      this.$log.debug(this.$route.params);
+      const result = await axios.get('http://localhost:8080/api/dashboard/' + this.$route.params.id + '?full=true');
+      // TODO handle 404 etc
+      this.$log.debug(result);
+      this.dashboards = result.data;
+    },
     data() {
       return {
         detail: {
