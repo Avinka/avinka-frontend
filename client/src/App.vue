@@ -29,9 +29,9 @@
             <span class="md-list-item-text">Predictive shit</span>
           </md-list-item>
 
-          <md-list-item to="/analytics/data-admin">
+          <md-list-item to="/admin">
             <md-icon class="md-primary">build</md-icon>
-            <span class="md-list-item-text">Data admin</span>
+            <span class="md-list-item-text">Admin</span>
           </md-list-item>
         </md-list>
       </md-app-drawer>

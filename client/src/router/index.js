@@ -5,6 +5,7 @@ import DashboardOverview from '@/components/DashboardOverview';
 import DataAdmin from '@/components/DataAdmin';
 import DashboardDetail from '@/components/DashboardDetail';
 import Objects from '@/components/Objects';
+import Admin from '@/components/Admin';
 
 Vue.use(Router);
 
@@ -30,6 +31,10 @@ export default new Router({
       path: '/analytics/data-admin',
       name: 'DataAdmin',
       component: DataAdmin
+    }, {
+      path: '/admin',
+      name: 'Admin',
+      component: Admin
     }
   ]
 });
