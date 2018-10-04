@@ -25,8 +25,7 @@
       deleteIndex() {
         adminService.deleteIndex();
       }
-    },
-
+    }
   };
 </script>
 
