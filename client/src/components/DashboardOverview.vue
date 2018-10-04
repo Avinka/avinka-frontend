@@ -32,7 +32,6 @@
 
 <script>
   import VModal from 'vue-js-modal';
-  import ModalOverlayComp from '@/components/ModalOverlayComp';
   import DashboardList from '@/components/DashboardList';
   import DashboardAddForm from '@/components/DashboardAddForm';
   import GraphList from '@/components/GraphList';
@@ -49,16 +48,6 @@
       return {};
     },
     methods: {
-      showModal() {
-        // sweet, load our component in the managed overlay here
-        this.$modal.show(ModalOverlayComp,
-          this.$data,
-          {
-            draggable: true,
-            resizable: true,
-            height: 200
-          });
-      }
     },
 
     watch: {
