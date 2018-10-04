@@ -1,8 +1,8 @@
 <template>
   <div class='admin'>
-    <button v-on:click="generateData()">Generate Data</button>
-    <button v-on:click="deleteData()">Delete Data</button>
-    <button v-on:click="deleteIndex()">Delete Index</button>
+    <md-button class="md-raised" v-on:click="generateData()">Generate Data</md-button>
+    <md-button class="md-raised" v-on:click="deleteData()">Delete Data</md-button>
+    <md-button class="md-raised" v-on:click="deleteIndex()">Delete Index</md-button>
   </div>
 </template>
 
