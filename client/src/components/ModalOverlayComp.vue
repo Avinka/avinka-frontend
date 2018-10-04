@@ -58,7 +58,7 @@
      * VueJS managed function
      */
     mounted () {
-      console.log('ModalOverlayComp mounted');
+      this.$log.debug('ModalOverlayComp mounted');
     }
   };
 </script>

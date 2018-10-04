@@ -22,18 +22,16 @@
 
   export default {
     name: 'DashboardAddForm',
-    data: function() {
+    data() {
       return {
         name: null,
         description: null
       };
     },
     methods: {
-      create: async function() {
+      async create() {
         const result = await axios.post('http://localhost:8080/api/dashboard/', {name: this.name});
         this.$router.push({name: 'DashboardDetail', params: {id: result.data._id}});
-
-        console.log(result.data);
       }
     }
   };

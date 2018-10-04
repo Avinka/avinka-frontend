@@ -26,9 +26,9 @@
     }, (error) => {
       // at this point, eastic search is down, please check your Elasticsearch service
       if (error) {
-        console.error('elasticsearch cluster is down!');
+        Vue.$log.error('elasticsearch cluster is down!');
       } else {
-        console.log('Everything is ok');
+        Vue.$log.debug('Everything is ok');
       }
     });
   }
@@ -67,16 +67,16 @@
 
     client.search({index: 'active-objects-current', body})
       .then(results => {
-        console.log(results);
+        Vue.$log.debug(results);
 
         scope.$data.chartData = results.aggregations.grouping.buckets.map(obj => [
           obj['key_as_string'],
           parseInt(obj['doc_count'])
         ]);
-        console.log('new content loaded');
+        Vue.$log.debug('new content loaded');
       })
       .catch(err => {
-        console.log(err);
+        Vue.$log.debug(err);
       });
   }
 

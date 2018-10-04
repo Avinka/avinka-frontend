@@ -28,7 +28,7 @@
       dashboard: {}
     },
     methods: {
-      deleteDashboard: function (id, event) {
+      deleteDashboard(id, event) {
         if (event) event.preventDefault();
         axios.delete('http://localhost:8080/api/dashboard/' + id);
         // TODO emit event after successful delete
