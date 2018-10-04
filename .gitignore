@@ -11,6 +11,7 @@ selenium-debug.log
 /VERSION
 /ITERATION
 /idea
+/data
 # Editor directories and files
 # recommendation from intellij
 **/.idea/workspace.xml

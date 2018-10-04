@@ -6,12 +6,3 @@ export class Activity {
     object?: Object;
     target?: Object;
 }
-
-export class EntityResult<A> {
-    readonly result: Array<A>;
-
-    constructor(result: Array<A>) {
-        this.result = result;
-    }
-
-}
