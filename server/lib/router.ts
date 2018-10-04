@@ -5,6 +5,7 @@ import {DataseriesRouter} from "./dataseries/dataseriesRouter";
 import {ActivityRouter} from "./activity/activityRouter";
 import {ActivityService} from "./activity/activityService";
 import {Client} from "elasticsearch";
+import {AdminRouter} from "admin/adminRouter";
 
 export class Router {
 
@@ -14,6 +15,7 @@ export class Router {
         "activity");
 
     public activityRouter: ActivityRouter = new ActivityRouter(this.activityService);
+    public admin: AdminRouter = new AdminRouter(this.activityService);
     public dashboardRouter: DashboardRouter = new DashboardRouter();
     public graphRouter: GraphRouter = new GraphRouter();
     public dataSeriesRouter: DataseriesRouter = new DataseriesRouter();

@@ -1,10 +1,10 @@
 import {Request, Response} from "express";
 import {ActivityService} from "./activityService";
-import {EntityResult} from "../util/result";
+import {Result} from "../util/result";
 
 export class ActivityRouter {
 
-    readonly activityService;
+    readonly activityService: ActivityService;
 
     constructor(activityService: ActivityService) {
         this.activityService = activityService;
@@ -15,7 +15,7 @@ export class ActivityRouter {
             .get(async (req: Request, res: Response) => {
                 try {
                     let result = await this.activityService.get(req.body);
-                    res.status(200).send(new EntityResult(result))
+                    res.status(200).send(new Result(result))
                 } catch (err) {
                     res.status(400).send(err.toString());
                 }

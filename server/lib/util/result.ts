@@ -1,8 +1,8 @@
-export class EntityResult<A> {
-    readonly result: Array<A>;
+export class Result<A> {
+    readonly data: Array<A>;
 
-    constructor(result: Array<A>) {
-        this.result = result;
+    constructor(data: Array<A>) {
+        this.data = data;
     }
 
 }

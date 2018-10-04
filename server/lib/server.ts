@@ -10,7 +10,7 @@ app.listen(PORT, () => {
         if (err) {
             console.log(err.message);
         } else {
-            console.log("Succesfully Connected!")
+            console.log("Succesfully connected to " + uri)
         }
     });
 
