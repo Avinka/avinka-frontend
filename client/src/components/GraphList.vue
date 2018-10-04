@@ -1,6 +1,15 @@
 <template>
   <div>
-    <graph v-for="graph in graphs" :graph="graph"></graph>
+    <md-empty-state
+      md-icon="devices_other"
+      md-label="Add your first graph"
+      md-description="To to fill this dashboard with amazing graphs an visualizations"
+      v-if="graphs.length === 0"
+    >
+    </md-empty-state>
+    <div>
+      <graph v-for="graph in graphs" :graph="graph"></graph>
+    </div>
   </div>
 </template>
 
@@ -14,28 +23,9 @@
     },
     data() {
       return {
-        meta: {
-          title: 'New hot graphs'
-        },
         graphs: [
-          {
-            id: 1,
-            title: 'User log in Application'
-          },
-          {
-            id: 2,
-            title: 'User follow User'
-          },
-          {
-            id: 3,
-            title: 'User removes Right User'
-          }
         ]
       };
-    },
-    methods: {},
-    watch: {},
-    mounted() {
     }
   };
 </script>
