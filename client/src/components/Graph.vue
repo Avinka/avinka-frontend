@@ -4,7 +4,7 @@
       <md-icon>settings</md-icon>
     </md-subheader>
     <br/>
-    <line-chart :data="chartData"></line-chart>
+    <line-chart v-bind:data="chartData"></line-chart>
   </div>
 </template>
 
@@ -18,7 +18,8 @@
   Vue.use(VueChartkick, {adapter: Highcharts});
 
   function loadContent(scope) {
-    scope.$data.chartData = counterService.getCounters();
+    const counters = counterService.getCounters();
+    scope.$data.chartData = counters.data;
     Vue.$log.debug('new content loaded');
   }
 
@@ -62,7 +63,7 @@
       divident: loadWithDelay
     },
     mounted() {
-      loadContent(this, client);
+      loadContent(this);
     }
   };
 </script>
