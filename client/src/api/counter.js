@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export default {
-  async getCounters() {
+  getCounters() {
     const query = {
       'match': {
         'object.type': {
@@ -10,6 +10,7 @@ export default {
         }
       }
     };
-    return axios.get('http://localhost:8080/api/counter?query=' + encodeURIComponent(JSON.stringify(query))).data;
+    const result = axios.get('http://localhost:8080/api/counter?query=' + encodeURIComponent(JSON.stringify(query)));
+    return result;
   }
 };

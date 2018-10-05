@@ -4,7 +4,7 @@
       <md-icon>settings</md-icon>
     </md-subheader>
     <br/>
-    <line-chart v-bind:data="chartData"></line-chart>
+    <line-chart v-bind:data="myData"></line-chart>
   </div>
 </template>
 
@@ -17,30 +17,6 @@
 
   Vue.use(VueChartkick, {adapter: Highcharts});
 
-  function loadContent(scope) {
-    const counters = counterService.getCounters();
-    scope.$data.chartData = counters.data;
-    Vue.$log.debug('new content loaded');
-  }
-
-  const _data = {
-    chartData: []
-  };
-
-  let _loadContentId = null;
-  const xAxisProperty = 'last_updated';
-  const yAxisProperty = 'age';
-
-  function loadWithDelay() {
-    // avoid calling the server once for the removed char and the added char
-    if (!_loadContentId) {
-      _loadContentId = window.setTimeout(() => {
-        loadContent(this);
-        _loadContentId = null;
-      }, 200);
-    }
-  }
-
   export default {
     name: 'Graph',
     components: {
@@ -50,20 +26,13 @@
       graph: {}
     },
     data() {
-      return _data;
+      return {myData: {}};
     },
-    methods: {},
-
-    /**
-     * this happens each time we render the component (e.g. enter the route)
-     */
-    watch: {
-      // via: https://stackoverflow.com/a/51176290/2741111
-      noOfItems: loadWithDelay,
-      divident: loadWithDelay
-    },
-    mounted() {
-      loadContent(this);
+    created() {
+      const _this = this;
+      counterService.getCounters().then(function (result) {
+        _this.myData = result.data;
+      });
     }
   };
 </script>

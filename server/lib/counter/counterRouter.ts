@@ -17,7 +17,7 @@ export class CounterRouter {
                     const decoded = decodeURIComponent(req.query.query);
                     const query = JSON.parse(decoded);
                     let result = await this.counterService.get(query);
-                    res.status(200).send(new Result(result));
+                    res.status(200).send(result);
                 } catch (err) {
                     res.status(400).send(err.toString());
                 }

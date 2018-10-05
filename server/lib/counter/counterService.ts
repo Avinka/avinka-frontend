@@ -13,7 +13,7 @@ export class CounterService {
         this.indexType = indexType;
     }
 
-    async get(query: Object): Promise<Array<Array<any>>> {
+    async get(query: Object): Promise<Object> {
         const agg = {
             'grouping': {
                 'date_histogram': {
@@ -37,7 +37,13 @@ export class CounterService {
             body: body
         });
         const buckets = aggregation.aggregations.grouping.buckets;
-        const counts = buckets.map(x => [x['key_as_string'], parseInt(x['doc_count'])]);
+        let counts = {};
+        buckets.map(x => {
+            const a = x['key_as_string'];
+            const b = x['doc_count'];
+            counts[a] = b;
+
+        });
         return counts;
     }
 }
