@@ -1,5 +1,4 @@
-import dashboardService from '../../api/dashboard';
-import Vue from 'vue';
+import graphService from '../../api/graph';
 // initial state
 const state = {
   all: []
@@ -11,29 +10,29 @@ const getters = {};
 // actions
 const actions = {
   async getAllDashboards ({ commit }) {
-    const dashboards = await dashboardService.getAllDashboards();
-    commit('setDashboards', dashboards);
+    const graphs = await graphService.getAllDashboards();
+    commit('setGraphs', graphs);
   },
   async deleteDashboard ({ state, commit }, dashboard) {
-    await dashboardService.deleteDashboard(dashboard);
-    commit('deleteDashboard', dashboard);
+    await graphService.deleteDashboard(dashboard);
+    commit('deleteGraph', dashboard);
   },
   async createDashboard ({ commit }, dashboard) {
-    const newDashboard = await dashboardService.createDashboard(dashboard);
-    commit('createDashboard', newDashboard);
+    const newGraph = await graphService.createGraph(dashboard);
+    commit('createGraph', newGraph);
   }
 };
 
 // mutations
 const mutations = {
-  setDashboards (state, dashboards) {
-    state.all = dashboards;
+  setGraphs (state, graphs) {
+    state.all = graphs;
   },
-  deleteDashboard (state, dashboard) {
-    state.all = state.all.filter(item => item._id !== dashboard._id);
+  deleteGraph (state, graph) {
+    state.all = state.all.filter(item => item._id !== graph._id);
   },
-  createDashboard (state, dashboard) {
-    state.all.push(dashboard);
+  createGraph (state, graph) {
+    state.all.push(graph);
   }
 };
 

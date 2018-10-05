@@ -1,5 +1,4 @@
 import dashboardService from '../../api/dashboard';
-import Vue from 'vue';
 // initial state
 const state = {
   all: []

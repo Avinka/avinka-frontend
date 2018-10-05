@@ -1,5 +1,4 @@
-import graphService from '../../api/graph';
-import Vue from 'vue';
+import dataseriesService from '../../api/dataseries';
 // initial state
 const state = {
   all: []
@@ -11,29 +10,29 @@ const getters = {};
 // actions
 const actions = {
   async getAllDashboards ({ commit }) {
-    const graphs = await graphService.getAllDashboards();
-    commit('setGraphs', graphs);
+    const graphs = await dataseriesService.getAllDataserieses();
+    commit('setDataseries', graphs);
   },
-  async deleteDashboard ({ state, commit }, dashboard) {
-    await graphService.deleteDashboard(dashboard);
-    commit('deleteGraph', dashboard);
+  async deleteDashboard ({ state, commit }, dataseries) {
+    await dataseriesService.deleteDataseries(dataseries);
+    commit('deleteDataseries', dataseries);
   },
-  async createDashboard ({ commit }, dashboard) {
-    const newGraph = await graphService.createGraph(dashboard);
-    commit('createGraph', newGraph);
+  async createDashboard ({ commit }, dataseries) {
+    const newDataseries = await dataseriesService.createDataseries(dataseries);
+    commit('createDataseries', newDataseries);
   }
 };
 
 // mutations
 const mutations = {
-  setGraphs (state, graphs) {
-    state.all = graphs;
+  setDataserieses (state, newDataserieses) {
+    state.all = newDataserieses;
   },
-  deleteGraph (state, graph) {
-    state.all = state.all.filter(item => item._id !== graph._id);
+  deleteDataseries (state, newDataseries) {
+    state.all = state.all.filter(item => item._id !== newDataseries._id);
   },
-  createGraph (state, graph) {
-    state.all.push(graph);
+  createDataseries (state, newDataseries) {
+    state.all.push(newDataseries);
   }
 };
 
