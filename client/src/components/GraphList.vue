@@ -3,7 +3,7 @@
     <md-empty-state
       md-icon="devices_other"
       md-label="Add your first graph"
-      md-description="To to fill this dashboard with amazing graphs an visualizations"
+      md-description="Time to fill this dashboard with amazing graphs and visualizations"
       v-if="graphs.length === 0"
     >
     </md-empty-state>
@@ -14,6 +14,7 @@
 </template>
 
 <script>
+  import { mapState, mapActions } from 'vuex';
   import Graph from './Graph';
 
   export default {
@@ -21,11 +22,11 @@
     components: {
       Graph
     },
-    data() {
-      return {
-        graphs: [
-        ]
-      };
+    computed: mapState({
+      graphs: state => state.graphs.all
+    }),
+    async created() {
+      await this.$store.dispatch('graphs/getAllGraphs');
     }
   };
 </script>
