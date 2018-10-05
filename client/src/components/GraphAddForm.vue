@@ -7,11 +7,11 @@
       <md-card-content>
         <md-field>
           <label>Name</label>
-          <md-input v-model="name"></md-input>
+          <md-input v-model="graph.name"></md-input>
         </md-field>
         <md-field>
           <label>Description</label>
-          <md-textarea v-model="description"></md-textarea>
+          <md-textarea v-model="graph.description"></md-textarea>
         </md-field>
       </md-card-content>
 
@@ -23,24 +23,23 @@
 </template>
 
 <script>
-  import axios from 'axios';
-
   export default {
     name: 'GraphAddForm',
     data() {
       return {
-        name: null,
-        description: null,
-        formVisible: false
+        graph: {
+          name: '',
+          description: ''
+        },
+        formVisible: true
       };
     },
     methods: {
       async create() {
-        const result = await axios.post('http://localhost:8080/api/graph/', {
+        await this.$store.dispatch('graphs/createGraph', {
           name: this.name,
           description: this.description
         });
-        // TODO error handling
       }
     }
   };

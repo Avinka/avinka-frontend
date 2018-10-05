@@ -9,15 +9,15 @@ const getters = {};
 
 // actions
 const actions = {
-  async getAllDashboards ({ commit }) {
-    const graphs = await graphService.getAllDashboards();
+  async getAllGraphs ({ commit }) {
+    const graphs = await graphService.getAllGraphs();
     commit('setGraphs', graphs);
   },
-  async deleteDashboard ({ state, commit }, dashboard) {
-    await graphService.deleteDashboard(dashboard);
-    commit('deleteGraph', dashboard);
+  async deleteGraph ({ state, commit }, graph) {
+    await graphService.deleteGraph(graph);
+    commit('deleteGraph', graph);
   },
-  async createDashboard ({ commit }, dashboard) {
+  async createGraph ({ commit }, dashboard) {
     const newGraph = await graphService.createGraph(dashboard);
     commit('createGraph', newGraph);
   }

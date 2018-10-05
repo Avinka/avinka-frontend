@@ -3,32 +3,14 @@
     <md-content>
       <md-toolbar class="md-accent" md-elevation="1">
         <h3 class="md-title" style="flex: 1">{{dashboard.name}}</h3>
-        <md-button class="md-primary md-raised" @click="showAddGraphDialog=true">Add graph</md-button>
+        <md-button class="md-primary md-raised" v-on:click="toggleForm()">Add graph</md-button>
       </md-toolbar>
       <p>
         {{dashboard.description}}
       </p>
-      <graph-add-form></graph-add-form>
       <graph-list></graph-list>
-
     </md-content>
-    <div>
-      <md-dialog :md-active.sync="showAddGraphDialog">
-        <md-dialog-title>Preferences</md-dialog-title>
-
-        <md-tabs md-dynamic-height>
-          <md-tab md-label="Find">
-          </md-tab>
-
-          <md-tab md-label="Create">
-          </md-tab>
-        </md-tabs>
-
-        <md-dialog-actions>
-          <md-button class="md-primary" @click="showAddGraphDialog=false">Close</md-button>
-        </md-dialog-actions>
-      </md-dialog>
-    </div>
+    <create-or-find-graph-dialog v-bind:show-add-graph-dialog-prop="showAddGraphDialogProp"></create-or-find-graph-dialog>
   </div>
 
 </template>
@@ -36,27 +18,34 @@
 <script>
   import GraphList from './GraphList';
   import GraphAddForm from '@/components/GraphAddForm';
-
-  import axios from 'axios';
+  import CreateOrFindGraphDialog from './CreateOrFindGraphDialog';
 
   export default {
     name: 'DashboardDetail',
     components: {
+      CreateOrFindGraphDialog,
       GraphList,
       GraphAddForm
     },
-    async beforeMount() {
-      this.$log.debug(this.$route.params);
-      const result = await axios.get('http://localhost:8080/api/dashboard/' + this.$route.params.id + '?full=true');
-      // TODO handle 404 etc
-      this.$log.debug(result);
-      this.dashboard = result.data;
+    computed: {
+      dashboard () {
+        return this.$store.getters['dashboards/byId'](this.$route.params.id);
+      }
+    },
+    created() {
+      this.$store.dispatch('dashboards/getDashboard', this.$route.params.id);
     },
     data() {
       return {
-        showAddGraphDialog: false,
-        dashboard: null
+        showAddGraphDialogProp: false
       };
+    },
+    methods: {
+      toggleForm() {
+        // FIXME this horrible hack is there because I needed a break
+        this.showAddGraphDialogProp = false;
+        this.showAddGraphDialogProp = true;
+      }
     }
   };
 </script>
