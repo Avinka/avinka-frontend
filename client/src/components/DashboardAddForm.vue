@@ -30,8 +30,7 @@
     },
     methods: {
       async create() {
-        const result = await axios.post('http://localhost:8080/api/dashboard/', {name: this.name});
-        this.$router.push({name: 'DashboardDetail', params: {id: result.data._id}});
+        await this.$store.dispatch('dashboards/createDashboard', {name: this.name});
       }
     }
   };

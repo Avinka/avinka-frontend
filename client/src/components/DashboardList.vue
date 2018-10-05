@@ -1,7 +1,9 @@
 <template>
-  <md-list class="md-triple-line">
-    <dashboard-list-item v-for="dashboard in dashboards" :dashboard="dashboard"></dashboard-list-item>
-  </md-list>
+  <div>
+    <md-list class="md-triple-line">
+      <dashboard-list-item v-for="dashboard in dashboards" :dashboard="dashboard"></dashboard-list-item>
+    </md-list>
+  </div>
 </template>
 
 <script>

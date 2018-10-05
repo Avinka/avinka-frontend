@@ -12,7 +12,7 @@
         <md-icon>share</md-icon>
       </md-button>
 
-      <md-button class="md-icon-button" v-on:click="deleteDashboard(dashboard._id, $event);">
+      <md-button class="md-icon-button" v-on:click="deleteDashboard(dashboard, $event);">
         <md-icon>delete</md-icon>
       </md-button>
     </md-card-actions>
@@ -20,19 +20,15 @@
 </template>
 
 <script>
-  import axios from 'axios';
-
   export default {
     name: 'DashboardListItem',
     props: {
       dashboard: {}
     },
     methods: {
-      deleteDashboard(id, event) {
+      async deleteDashboard(dashboard, event) {
         if (event) event.preventDefault();
-        axios.delete('http://localhost:8080/api/dashboard/' + id);
-        // TODO emit event after successful delete
-        return false;
+        await this.$store.dispatch('dashboards/deleteDashboard', dashboard);
       }
     }
   };

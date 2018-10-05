@@ -1,10 +1,20 @@
 <template>
   <div>
-    <graph v-for="graph in graphs" :graph="graph"></graph>
+    <md-empty-state
+      md-icon="devices_other"
+      md-label="Add your first graph"
+      md-description="Time to fill this dashboard with amazing graphs and visualizations"
+      v-if="graphs.length === 0"
+    >
+    </md-empty-state>
+    <div>
+      <graph v-for="graph in graphs" :graph="graph"></graph>
+    </div>
   </div>
 </template>
 
 <script>
+  import { mapState, mapActions } from 'vuex';
   import Graph from './Graph';
 
   export default {
@@ -12,30 +22,11 @@
     components: {
       Graph
     },
-    data() {
-      return {
-        meta: {
-          title: 'New hot graphs'
-        },
-        graphs: [
-          {
-            id: 1,
-            title: 'User log in Application'
-          },
-          {
-            id: 2,
-            title: 'User follow User'
-          },
-          {
-            id: 3,
-            title: 'User removes Right User'
-          }
-        ]
-      };
-    },
-    methods: {},
-    watch: {},
-    mounted() {
+    computed: mapState({
+      graphs: state => state.graphs.all
+    }),
+    async created() {
+      await this.$store.dispatch('graphs/getAllGraphs');
     }
   };
 </script>

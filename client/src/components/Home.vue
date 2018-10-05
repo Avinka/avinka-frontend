@@ -66,7 +66,6 @@
 </template>
 
 <script>
-import VModal from 'vue-js-modal';
 
 const _data = {
   msg: 'Welcome to Active Graph'
@@ -79,8 +78,6 @@ export default {
   },
   // add here, what Vue should load for us
   components: {
-    // TODO andi: this does not work, we need to put it in `main.js`
-    VModal
   },
   methods: {
   }
