@@ -5,7 +5,8 @@ const state = {
 };
 
 // getters
-const getters = {};
+const getters = {
+};
 
 // actions
 const actions = {
@@ -13,9 +14,9 @@ const actions = {
     const graphs = await dataseriesService.getAllDataserieses();
     commit('setDataseries', graphs);
   },
-  async deleteDashboard ({ state, commit }, dataseries) {
-    await dataseriesService.deleteDataseries(dataseries);
-    commit('deleteDataseries', dataseries);
+  async deleteDashboard ({ state, commit }, dataserieses) {
+    await dataseriesService.deleteDataseries(dataserieses);
+    commit('deleteDataseries', dataserieses);
   },
   async createDashboard ({ commit }, dataseries) {
     const newDataseries = await dataseriesService.createDataseries(dataseries);
