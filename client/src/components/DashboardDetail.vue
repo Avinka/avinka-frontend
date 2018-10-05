@@ -25,7 +25,7 @@
         </md-tabs>
 
         <md-dialog-actions>
-          <md-button class="md-primary" @click="showAddGraphDialog = false">Close</md-button>
+          <md-button class="md-primary" @click="showAddGraphDialog=false">Close</md-button>
         </md-dialog-actions>
       </md-dialog>
     </div>
