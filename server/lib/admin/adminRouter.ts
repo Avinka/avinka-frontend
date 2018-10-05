@@ -1,6 +1,5 @@
 import {Request, Response} from "express";
 import {ActivityService} from "activity/activityService";
-import {Result} from "../util/result";
 
 export class AdminRouter {
 

@@ -3,6 +3,7 @@ import * as mongoose from "mongoose";
 import {DataseriesSchema} from "./dataseries";
 
 export class DataseriesRouter {
+
     Dataseries = mongoose.model('Dataseries', DataseriesSchema);
 
     public routes(app): void {
@@ -12,10 +13,10 @@ export class DataseriesRouter {
                 res.status(200).send(result)
             })
             .post(async (req: Request, res: Response) => {
-            // TODO add validation
-            let result = await this.Dataseries.create(req.body);
-            res.status(200).send(result)
-        });
+                // TODO add validation
+                let result = await this.Dataseries.create(req.body);
+                res.status(200).send(result)
+            });
         app.route('/dataseries/:id')
             .get(async (req: Request, res: Response) => {
                 const id = req.params.id;

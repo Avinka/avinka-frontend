@@ -33,6 +33,7 @@ export class ActivityService {
         });
         return activity;
     }
+
     async delete(query: string): Promise<void> {
         (await this.client.deleteByQuery({
             index: this.indexName,
@@ -46,7 +47,7 @@ export class ActivityService {
             a.id = uuid();
         }
         if (!a.published) {
-            a.published = new Date();
+            //a.published = new Date().toISOString()
         }
         return a;
     }
@@ -68,7 +69,8 @@ export class ActivityService {
             const randomIntSecond = getRandomInt(1, 59);
             const second = randomIntSecond < 10 ? '0' + randomIntSecond : randomIntSecond;
             const dateString = '2018-06-01T' + hour + ':' + minute + ':' + second;
-            activity.published = new Date(dateString);
+            activity.published = dateString;
+            //activity.published = new Date(dateString);
             //TODO use bulk api
             await this.create(activity)
         }

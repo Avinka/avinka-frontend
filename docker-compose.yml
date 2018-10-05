@@ -1,12 +1,23 @@
 version: '3.4'
 services:
-  es:
+  elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:6.1.4
     ports:
       - 127.0.0.1:9200:9200
       - 127.0.0.1:9300:9300
     environment:
+      - transport.host=127.0.0.1
       - discovery.type:single-node
+      - http.port=9200
+      - http.cors.allow-origin=*
+      - http.cors.enabled=true
+  dejavu:
+    image: appbaseio/dejavu:latest
+    container_name: dejavu
+    ports:
+      - "1358:1358"
+    links:
+      - elasticsearch
   mongodb:
     image: mongo:latest
     container_name: "mongodb"

@@ -5,6 +5,19 @@ tsc && DEBUG=express:* node --inspect dist/server.js
 ```bash
 curl -d '{"actor":{"id":"P:123","type":"Person"},"object":{"id":"Bot:123","type":"Bot"},"type":"Login"}' -H "Content-Type: application/json" -X POST http://localhost:3000/activity
 curl -X GET "localhost:3000/activity" -H 'Content-Type: application/json' -d'{"query": {"match_all": {}}}'
+
+
+curl -X GET "localhost:3000/activity" -H 'Content-Type: application/json' -d '{"query":{"match":{"object.type":{"query":"Bot","operator":"OR","prefix_length":0,"max_expansions":50,"fuzzy_transpositions":true,"lenient":false,"zero_terms_query":"NONE","auto_generate_synonyms_phrase_query":true,"boost":1}}}}'
+
+curl -X GET "localhost:3000/activity" -H 'Content-Type: application/json' -d '{"query":{"match":{"object.type":{"query":"Bot","operator":"OR","prefix_length":0,"max_expansions":50,"fuzzy_transpositions":true,"lenient":false,"zero_terms_query":"NONE","auto_generate_synonyms_phrase_query":true,"boost":1}}},"_source":false,"aggregations":{"grouping":{"date_histogram":{"field":"published","interval":3600000,"offset":0,"order":{"_key":"asc"},"keyed":false,"min_doc_count":0}}}}
+'
+
+```
+
+### Counter queries ###
+
+```bash
+curl -X GET "localhost:3000/counter" -H 'Content-Type: application/json' -d '{"match":{"object.type":{"query":"Bot"}}}'
 ```
 
 ### Admin queries ###

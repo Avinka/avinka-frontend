@@ -53,7 +53,5 @@ export class GraphRouter {
                 // @ts-ignore
                 res.status(200).send(result.graphs)
             });
-
-
     }
 }

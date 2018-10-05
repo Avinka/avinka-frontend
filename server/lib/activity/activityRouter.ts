@@ -15,7 +15,7 @@ export class ActivityRouter {
             .get(async (req: Request, res: Response) => {
                 try {
                     let result = await this.activityService.get(req.body);
-                    res.status(200).send(new Result(result))
+                    res.status(200).send(new Result(result));
                 } catch (err) {
                     res.status(400).send(err.toString());
                 }
@@ -28,5 +28,6 @@ export class ActivityRouter {
                     res.status(400).send(err.toString());
                 }
             });
+
     }
 }

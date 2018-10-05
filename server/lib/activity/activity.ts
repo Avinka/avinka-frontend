@@ -1,6 +1,6 @@
 export class Activity {
     id?: string
-    published?: Date;
+    published?: string;
     type: string;
     actor?: Object;
     object?: Object;

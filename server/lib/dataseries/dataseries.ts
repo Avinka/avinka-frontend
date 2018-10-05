@@ -5,6 +5,7 @@ export interface IDataseries {
     createdAt: Date;
     query: string;
     indexName: string;
+    data: Array<Array<any>>
 }
 
 export interface IDataseriesModel extends IDataseries, Document {

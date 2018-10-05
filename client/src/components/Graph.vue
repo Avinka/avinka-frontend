@@ -1,7 +1,9 @@
 <template>
   <div class="graph md-elevation-2">
-    <md-subheader  class="md-primary">{{graph.title}} <md-icon>settings</md-icon></md-subheader>
-    <br />
+    <md-subheader class="md-primary">{{graph.title}}
+      <md-icon>settings</md-icon>
+    </md-subheader>
+    <br/>
     <line-chart :data="chartData"></line-chart>
   </div>
 </template>
@@ -11,73 +13,13 @@
   import VueChartkick from 'vue-chartkick';
   import Highcharts from 'highcharts';
   import Graph from './Graph';
-  const elasticsearch = require('elasticsearch');
+  import counterService from '../api/counter.js';
 
   Vue.use(VueChartkick, {adapter: Highcharts});
 
-  const client = new elasticsearch.Client({
-    // this is proxied to elasticsearch
-    hosts: [window.location.protocol + '//' + window.location.host + '/ES']
-  });
-
-  function checkStatus(client) {
-    client.ping({
-      requestTimeout: 5000
-    }, (error) => {
-      // at this point, eastic search is down, please check your Elasticsearch service
-      if (error) {
-        Vue.$log.error('elasticsearch cluster is down!');
-      } else {
-        Vue.$log.debug('Everything is ok');
-      }
-    });
-  }
-
-  function loadContent(scope, client, xName, yName) {
-    const body = {
-      'query': {
-        'match': {
-          'object.type': {
-            'query': 'Bot',
-            'operator': 'OR',
-            'prefix_length': 0,
-            'max_expansions': 50,
-            'fuzzy_transpositions': true,
-            'lenient': false,
-            'zero_terms_query': 'NONE',
-            'auto_generate_synonyms_phrase_query': true,
-            'boost': 1.0
-          }
-        }
-      },
-      '_source': false,
-      'aggregations': {
-        'grouping': {
-          'date_histogram': {
-            'field': 'published',
-            'interval': 3600000,
-            'offset': 0,
-            'order': {'_key': 'asc'},
-            'keyed': false,
-            'min_doc_count': 0
-          }
-        }
-      }
-    };
-
-    client.search({index: 'active-objects-current', body})
-      .then(results => {
-        Vue.$log.debug(results);
-
-        scope.$data.chartData = results.aggregations.grouping.buckets.map(obj => [
-          obj['key_as_string'],
-          parseInt(obj['doc_count'])
-        ]);
-        Vue.$log.debug('new content loaded');
-      })
-      .catch(err => {
-        Vue.$log.debug(err);
-      });
+  function loadContent(scope) {
+    scope.$data.chartData = counterService.getCounters();
+    Vue.$log.debug('new content loaded');
   }
 
   const _data = {
@@ -92,7 +34,7 @@
     // avoid calling the server once for the removed char and the added char
     if (!_loadContentId) {
       _loadContentId = window.setTimeout(() => {
-        loadContent(this, client, xAxisProperty, yAxisProperty);
+        loadContent(this);
         _loadContentId = null;
       }, 200);
     }
@@ -109,8 +51,7 @@
     data() {
       return _data;
     },
-    methods: {
-    },
+    methods: {},
 
     /**
      * this happens each time we render the component (e.g. enter the route)
@@ -121,8 +62,7 @@
       divident: loadWithDelay
     },
     mounted() {
-      checkStatus(client);
-      loadContent(this, client, xAxisProperty, yAxisProperty);
+      loadContent(this, client);
     }
   };
 </script>

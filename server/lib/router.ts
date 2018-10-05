@@ -6,19 +6,24 @@ import {ActivityRouter} from "./activity/activityRouter";
 import {ActivityService} from "./activity/activityService";
 import {Client} from "elasticsearch";
 import {AdminRouter} from "./admin/adminRouter";
+import {CounterRouter} from "./counter/counterRouter";
+import {CounterService} from "./counter/counterService";
 
 export class Router {
 
-    activityService = new ActivityService(
-        new Client({hosts: ["127.0.0.1:9200"]}),
-        'active-objects-current',
-        "activity");
+    readonly indexName = 'active-objects-current';
+    readonly indexType = 'activity'
+    readonly elasticSearchClient: Client = new Client({hosts: ["127.0.0.1:9200"]})
 
-    public activityRouter: ActivityRouter = new ActivityRouter(this.activityService);
-    public adminRouter: AdminRouter = new AdminRouter(this.activityService);
-    public dashboardRouter: DashboardRouter = new DashboardRouter();
-    public graphRouter: GraphRouter = new GraphRouter();
-    public dataSeriesRouter: DataseriesRouter = new DataseriesRouter();
+    readonly activityService = new ActivityService(this.elasticSearchClient, this.indexName, this.indexType);
+    readonly counterService = new CounterService(this.elasticSearchClient, this.indexName, this.indexType);
+
+    readonly activityRouter: ActivityRouter = new ActivityRouter(this.activityService);
+    readonly adminRouter: AdminRouter = new AdminRouter(this.activityService);
+    readonly counterRouter: CounterRouter = new CounterRouter(this.counterService);
+    readonly dashboardRouter: DashboardRouter = new DashboardRouter();
+    readonly graphRouter: GraphRouter = new GraphRouter();
+    readonly dataSeriesRouter: DataseriesRouter = new DataseriesRouter();
 
     public routes(app): void {
         app.route('/')
@@ -33,5 +38,6 @@ export class Router {
         this.dashboardRouter.routes(app);
         this.dataSeriesRouter.routes(app);
         this.graphRouter.routes(app);
+        this.counterRouter.routes(app);
     }
 }

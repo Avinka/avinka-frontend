@@ -4,5 +4,4 @@ export class Result<A> {
     constructor(data: Array<A>) {
         this.data = data;
     }
-
 }
