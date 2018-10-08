@@ -10,7 +10,7 @@
       </p>
       <graph-list></graph-list>
     </md-content>
-    <create-or-find-graph-dialog v-bind:show-add-graph-dialog-prop="showAddGraphDialogProp"></create-or-find-graph-dialog>
+    <create-or-find-graph-dialog v-on:graph-created="onGraphCreated" v-bind:show-add-graph-dialog-prop="showAddGraphDialogProp"></create-or-find-graph-dialog>
   </div>
 
 </template>
@@ -45,6 +45,13 @@
         // FIXME this horrible hack is there because I needed a break
         this.showAddGraphDialogProp = false;
         this.showAddGraphDialogProp = true;
+      },
+      onGraphCreated(event) {
+        this.$log.debug('Got an event', event);
+        this.$store.dispatch('dashboards/addGraphToDashboard', {
+          dashboardId: this.$route.params.id,
+          graphId: event._id
+        }, event);
       }
     }
   };
