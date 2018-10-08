@@ -26,7 +26,8 @@
       graphs: state => state.graphs.all
     }),
     async created() {
-      await this.$store.dispatch('graphs/getAllGraphs');
+      console.log('here');
+      await this.$store.dispatch('graphs/getAllDashboardGraphs', this.$route.params.id);
     }
   };
 </script>
