@@ -36,10 +36,12 @@
     },
     methods: {
       async create() {
-        await this.$store.dispatch('graphs/createGraph', {
-          name: this.name,
-          description: this.description
+        const graph = await this.$store.dispatch('graphs/createGraph', {
+          name: this.graph.name,
+          description: this.graph.description
         });
+        this.$log.debug('Got graph created data', graph);
+        this.$emit('graph-created', graph);
       }
     }
   };
