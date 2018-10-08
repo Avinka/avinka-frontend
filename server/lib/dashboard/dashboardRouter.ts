@@ -43,13 +43,13 @@ export class DashboardRouter {
                 const dashboardId = req.params.id;
                 let result = await this.Dashboard.findOne({_id: dashboardId});
                 // @ts-ignore
-                result.graphs.push(req.body._id);
+                result.graphs.push(req.body.graphId);
                 await result.save();
                 res.status(201).send(result)
             })
             .get(async (req: Request, res: Response) => {
                 const id = req.params.id;
-                let result = await this.Dashboard.findOne({_id: id},'graphs').populate('graphs').exec();
+                let result = await this.Dashboard.findOne({_id: id}).populate('graphs').exec();
                 // @ts-ignore
                 res.status(200).send(result.graphs)
             });
