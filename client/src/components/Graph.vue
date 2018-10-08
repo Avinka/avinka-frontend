@@ -1,8 +1,19 @@
 <template>
   <div class="graph md-elevation-2">
-    <md-subheader class="md-primary">{{graph.title}}
-      <md-icon>settings</md-icon>
-    </md-subheader>
+    <div class="md-layout md-gutter  md-alignment-top-right">
+      <div class="md-layout-item">
+        <span class="md-title">{{graph.name}}</span></div>
+      <div class="md-layout-item ">
+        <md-button class="md-icon-button md-alignment-top-right" @click="deleteGraph()">
+          <md-icon class="md-alignment-top-right">settings</md-icon>
+        </md-button>
+        <md-button class="md-icon-button md-alignment-top-right" @click="deleteGraph()">
+          <md-icon>delete</md-icon>
+        </md-button>
+      </div>
+    </div>
+
+
     <br/>
     <line-chart v-bind:data="myData"></line-chart>
   </div>
@@ -30,9 +41,14 @@
     },
     created() {
       const _this = this;
-      counterService.getCounters().then(function (result) {
+      counterService.getCounters().then((result) => {
         _this.myData = result.data;
       });
+    },
+    methods: {
+      deleteGraph() {
+        this.$store.dispatch('graphs/deleteGraph', this.graph._id);
+      }
     }
   };
 </script>
