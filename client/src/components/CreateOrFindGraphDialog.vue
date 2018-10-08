@@ -8,7 +8,7 @@
         </md-tab>
 
         <md-tab md-label="Create">
-          <graph-add-form></graph-add-form>
+          <graph-add-form v-on:graph-created="onGraphCreated"></graph-add-form>
         </md-tab>
       </md-tabs>
 
@@ -36,6 +36,13 @@
           return this.showAddGraphDialogProp;
         }
         return false;
+      }
+    },
+    methods: {
+      onGraphCreated(event) {
+        this.$log.debug('Got an event', event);
+        this.$log.debug('Rethrowing to parent');
+        this.$emit('graph-created', event);
       }
     }
   };
