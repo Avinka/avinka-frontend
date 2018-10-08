@@ -28,6 +28,10 @@ const actions = {
   async createDashboard ({ commit }, dashboard) {
     const newDashboard = await dashboardService.createDashboard(dashboard);
     commit('createDashboard', newDashboard);
+  },
+  async addGraphToDashboard({ commit }, {dashboardId, graphId}) {
+    const graphDashboardMapping = await dashboardService.addGraphToDashboard(dashboardId, graphId);
+    commit('createGraphDashboardMapping', graphDashboardMapping);
   }
 };
 
@@ -45,6 +49,9 @@ const mutations = {
   },
   createDashboard (state, dashboard) {
     state.all.push(dashboard);
+  },
+  createGraphDashboardMapping(state, graphDashboardMapping) {
+    // TODO fill with logic
   }
 };
 
