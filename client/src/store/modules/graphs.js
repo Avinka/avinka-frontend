@@ -5,21 +5,30 @@ const state = {
 };
 
 // getters
-const getters = {};
+const getters = {
+  all: (state) => {
+    return state.all;
+  }
+};
 
 // actions
 const actions = {
-  async getAllDashboards ({ commit }) {
-    const graphs = await graphService.getAllDashboards();
+  async getAllGraphs ({ commit }) {
+    const graphs = await graphService.getAllGraphs();
     commit('setGraphs', graphs);
   },
-  async deleteDashboard ({ state, commit }, dashboard) {
-    await graphService.deleteDashboard(dashboard);
-    commit('deleteGraph', dashboard);
+  async getAllDashboardGraphs ({ commit }, dashboardId) {
+    const graphs = await graphService.getAllDashboardGraphs(dashboardId);
+    commit('setGraphs', graphs);
   },
-  async createDashboard ({ commit }, dashboard) {
-    const newGraph = await graphService.createGraph(dashboard);
+  async deleteGraph ({ state, commit }, graph) {
+    await graphService.deleteGraph(graph);
+    commit('deleteGraph', graph);
+  },
+  async createGraph ({ commit }, graphId) {
+    const newGraph = await graphService.createGraph(graphId);
     commit('createGraph', newGraph);
+    return newGraph;
   }
 };
 
@@ -28,8 +37,8 @@ const mutations = {
   setGraphs (state, graphs) {
     state.all = graphs;
   },
-  deleteGraph (state, graph) {
-    state.all = state.all.filter(item => item._id !== graph._id);
+  deleteGraph (state, graphId) {
+    state.all = state.all.filter(item => item._id !== graphId);
   },
   createGraph (state, graph) {
     state.all.push(graph);

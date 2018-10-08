@@ -16,8 +16,8 @@
     computed: mapState({
       dashboards: state => state.dashboards.all
     }),
-    async created() {
-      await this.$store.dispatch('dashboards/getAllDashboards');
+    created() {
+      this.$store.dispatch('dashboards/getAllDashboards');
     }
   };
 </script>
