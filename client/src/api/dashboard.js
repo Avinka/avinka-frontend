@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Vue from 'vue';
 
 // TODO error handling
 export default {
@@ -18,6 +19,11 @@ export default {
   },
   async createDashboard(dashboard) {
     const result = await axios.post('http://localhost:8080/api/dashboard/', dashboard);
+    Vue.$log.debug(result);
+    return result.data;
+  },
+  async addGraphToDashboard(dashboardId, graphId) {
+    const result = await axios.post('http://localhost:8080/api/dashboard/' + dashboardId + '/graph', {graphId});
     Vue.$log.debug(result);
     return result.data;
   }
