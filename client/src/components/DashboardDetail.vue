@@ -1,7 +1,7 @@
 <template>
   <div>
     <md-content>
-      <md-toolbar class="md-accent" md-elevation="1">
+      <md-toolbar md-elevation="1">
         <h3 class="md-title" style="flex: 1">{{dashboard.name}}</h3>
         <md-button class="md-primary md-raised" v-on:click="toggleForm()">Add graph</md-button>
       </md-toolbar>
