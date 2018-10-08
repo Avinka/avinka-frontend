@@ -1,10 +1,11 @@
 import {Request, Response} from "express";
 import * as mongoose from "mongoose";
-import {GraphSchema} from "./graph";
-
+import {GraphSchema, IGraphModel} from "./graph";
+import {Model} from "mongoose";
 
 export class GraphRouter {
-    Graph = mongoose.model('Graph', GraphSchema);
+
+    readonly Graph: Model<IGraphModel> = mongoose.model<IGraphModel>('Graph', GraphSchema);
 
     public routes(app): void {
         app.route('/graph')

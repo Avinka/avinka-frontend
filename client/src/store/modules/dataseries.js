@@ -25,7 +25,7 @@ const actions = {
 
 // mutations
 const mutations = {
-  setDataserieses (state, newDataserieses) {
+  setDataseries (state, newDataseries) {
     state.all = newDataserieses;
   },
   deleteDataseries (state, newDataseries) {

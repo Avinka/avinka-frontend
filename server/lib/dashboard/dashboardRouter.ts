@@ -1,10 +1,12 @@
 import {Request, Response} from "express";
 import * as mongoose from "mongoose";
-import {DashboardSchema} from "./dashboard";
+import {DashboardSchema, IDashboardModel} from "./dashboard";
+import {Model} from "mongoose";
 
 
 export class DashboardRouter {
-    Dashboard = mongoose.model('Dashboard', DashboardSchema);
+
+    readonly Dashboard: Model<IDashboardModel> = mongoose.model<IDashboardModel>('Dashboard', DashboardSchema);
 
     public routes(app): void {
         app.route('/dashboard')

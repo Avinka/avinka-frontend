@@ -39,10 +39,9 @@ export class CounterService {
         const buckets = aggregation.aggregations.grouping.buckets;
         let counts = {};
         buckets.map(x => {
-            const a = x['key_as_string'];
-            const b = x['doc_count'];
-            counts[a] = b;
-
+            const date = x['key_as_string'];
+            const value = x['doc_count'];
+            counts[date] = value;
         });
         return counts;
     }

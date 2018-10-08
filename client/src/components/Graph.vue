@@ -30,7 +30,7 @@
     },
     created() {
       const _this = this;
-      counterService.getCounters().then(function (result) {
+      counterService.getCounters().then(result => {
         _this.myData = result.data;
       });
     }
