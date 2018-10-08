@@ -24,7 +24,7 @@
             New hot graphs
           </h3>
         </md-toolbar>
-        <graph-list></graph-list>
+        <graph-list :graphs="graphs"></graph-list>
       </div>
     </div>
   </div>
@@ -35,6 +35,7 @@
   import DashboardList from '@/components/DashboardList';
   import DashboardAddForm from '@/components/DashboardAddForm';
   import GraphList from '@/components/GraphList';
+  import { mapState, mapActions } from 'vuex';
 
   export default {
     name: 'DashboardOverview',
@@ -47,12 +48,11 @@
     data() {
       return {};
     },
-    methods: {
-    },
-
-    watch: {
-    },
-    mounted() {
+    computed: mapState({
+      graphs: state => state.graphs.all
+    }),
+    async created() {
+      await this.$store.dispatch('graphs/getAllGraphs');
     }
   };
 </script>

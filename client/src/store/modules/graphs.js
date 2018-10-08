@@ -5,7 +5,11 @@ const state = {
 };
 
 // getters
-const getters = {};
+const getters = {
+  all: (state) => {
+    return state.all;
+  }
+};
 
 // actions
 const actions = {

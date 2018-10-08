@@ -8,7 +8,7 @@
       <p>
         {{dashboard.description}}
       </p>
-      <graph-list></graph-list>
+      <graph-list :graphs="graphs"></graph-list>
     </md-content>
     <create-or-find-graph-dialog v-on:graph-created="onGraphCreated" v-bind:show-add-graph-dialog-prop="showAddGraphDialogProp"></create-or-find-graph-dialog>
   </div>
@@ -30,10 +30,14 @@
     computed: {
       dashboard () {
         return this.$store.getters['dashboards/byId'](this.$route.params.id);
+      },
+      graphs() {
+        return this.$store.getters['graphs/all'];
       }
     },
     created() {
       this.$store.dispatch('dashboards/getDashboard', this.$route.params.id);
+      this.$store.dispatch('graphs/getAllDashboardGraphs', this.$route.params.id);
     },
     data() {
       return {
