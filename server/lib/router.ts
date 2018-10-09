@@ -8,7 +8,7 @@ import {Client} from "elasticsearch";
 import {AdminRouter} from "./admin/adminRouter";
 import {CounterRouter} from "./counter/counterRouter";
 import {CounterService} from "./counter/counterService";
-import {DataseriesService} from "dataseries/dataseriesService";
+import {DataseriesService} from "./dataseries/dataseriesService";
 import {Model} from "mongoose";
 import {DataseriesSchema, IDataseriesModel} from "./dataseries/dataseries";
 import * as mongoose from "mongoose";

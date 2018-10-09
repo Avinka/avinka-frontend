@@ -42,5 +42,14 @@ export class DataseriesRouter {
                 let result = await this.Dataseries.updateOne({_id: id}, req.body).exec();
                 res.status(200).send(result)
             });
+        app.route('/dataseries/:id/selectors')
+            .post(async (req: Request, res: Response) => {
+                const dataseriesId = req.params.id;
+                let result = await this.Dataseries.findOne({_id: dataseriesId});
+                // @ts-ignore
+                result.selectors.push(req.body._id);
+                await result.save();
+                res.status(200).send(result);
+            });
     }
 }

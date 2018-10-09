@@ -19,14 +19,9 @@
 
   export default {
     name: 'GraphList',
+    props: ['graphs'],
     components: {
       Graph
-    },
-    computed: mapState({
-      graphs: state => state.graphs.all
-    }),
-    async created() {
-      await this.$store.dispatch('graphs/getAllGraphs');
     }
   };
 </script>

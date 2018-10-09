@@ -23,7 +23,7 @@
 
 <script>
 import 'vue-material/dist/vue-material.min.css';
-import 'vue-material/dist/theme/black-green-light.css';
+import 'vue-material/dist/theme/default.css'; // This line here
 import 'material-icons';
 
 export default {
@@ -58,4 +58,5 @@ html, body { height: 100%}
     border: 1px solid rgba(#000, .26);
     background: rgba(#000, .06);
   }
+
 </style>
