@@ -9,12 +9,26 @@
         <md-icon>delete</md-icon>
       </md-button>
     </md-toolbar>
-    <div v-show="showGraphEditor">
-      <graph-editor :graph="graph"></graph-editor>
-    </div>
-    <div style="padding-top: 1em">
+
+    <div v-if="myData" style="padding-top: 1em">
       <line-chart v-bind:data="myData"></line-chart>
     </div>
+    <md-list>
+      <md-list-item v-if="!graph.dataseries || graph.dataseries.length===0">
+        <graph-editor :graph="graph"></graph-editor>
+      </md-list-item>
+      <md-list-item v-for="dataseries in graph.dataseries">
+        <div>
+          <md-button @click="showGraphEditor=!showGraphEditor">
+            Dataseries (color)
+          </md-button>
+        </div>
+        <div v-show="showGraphEditor">
+          <graph-editor :graph="graph"></graph-editor>
+        </div>
+      </md-list-item>
+    </md-list>
+
   </div>
 </template>
 
@@ -37,15 +51,15 @@
     },
     data() {
       return {
-        myData: {},
+        myData: null,
         showGraphEditor: false
       };
     },
     created() {
       const _this = this;
-      counterService.getCounters().then((result) => {
+      /** counterService.getCounters().then((result) => {
         _this.myData = result.data;
-      });
+      });*/
     },
     methods: {
       deleteGraph() {
