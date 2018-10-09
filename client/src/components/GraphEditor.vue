@@ -84,7 +84,7 @@
       }
     },
     async created() {
-      await this.$store.dispatch('graphs/getAllGraphs');
+      await this.$store.dispatch('graphs/getGraphSelectors', this.graph.id);
     }
   };
 </script>

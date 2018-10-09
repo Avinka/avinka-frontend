@@ -8,6 +8,7 @@ export default {
     Vue.$log.debug(result);
     return result.data;
   },
+  // TODO move to dashboard
   async getAllDashboardGraphs(dashboardId) {
     const result = await axios.get('http://localhost:8080/api/dashboard/' + dashboardId + '/graph');
     Vue.$log.debug(result);

@@ -18,7 +18,6 @@ export class Router {
     readonly indexName = 'active-objects-current';
     readonly indexType = 'activity';
     readonly elasticSearchClient: Client = new Client({hosts: ["127.0.0.1:9200"]});
-
     readonly Dataseries: Model<IDataseriesModel> = mongoose.model<IDataseriesModel>('Dataseries', DataseriesSchema);
 
     readonly activityService = new ActivityService(this.elasticSearchClient, this.indexName, this.indexType);
