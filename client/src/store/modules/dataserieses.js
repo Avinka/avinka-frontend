@@ -27,7 +27,7 @@ const actions = {
 // mutations
 const mutations = {
   setDataseries (state, newDataseries) {
-    state.all = newDataserieses;
+    state.all = newDataseries;
   },
   deleteDataseries (state, newDataseries) {
     state.all = state.all.filter(item => item._id !== newDataseries._id);
