@@ -25,9 +25,6 @@
     props: {
       graph: {}
     },
-    data() {
-      return {myData: {}};
-    },
     created() {
       const _this = this;
       counterService.getCounters().then(result => {

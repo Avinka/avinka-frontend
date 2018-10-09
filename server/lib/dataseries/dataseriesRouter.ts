@@ -1,16 +1,16 @@
 import {Request, Response} from "express";
 import * as mongoose from "mongoose";
-import {DataSeries, DataseriesSchema, IDataseries, IDataseriesModel} from "./dataseries";
-import {CounterService} from "counter/counterService";
+import {DataseriesSchema, IDataseries, IDataseriesModel} from "./dataseries";
 import {Model} from "mongoose";
+import {DataseriesService} from "./dataseriesService";
 
 export class DataseriesRouter {
 
     readonly Dataseries: Model<IDataseriesModel> = mongoose.model<IDataseriesModel>('Dataseries', DataseriesSchema);
-    readonly counterService: CounterService
+    readonly dataseriesService: DataseriesService;
 
-    constructor(counterService: CounterService) {
-        this.counterService = counterService;
+    constructor(dataseriesService: DataseriesService) {
+        this.dataseriesService = dataseriesService;
     }
 
     public routes(app): void {
@@ -25,13 +25,9 @@ export class DataseriesRouter {
             });
         app.route('/dataseries/:id')
             .get(async (req: Request, res: Response) => {
-                const id = req.params.id;
-                let result: IDataseries = await this.Dataseries.findOne({_id: id}).exec();
-                if (result != null && result.query != null) {
-                    const data = await this.counterService.get(result.query);
-                    let dataseries: DataSeries = new DataSeries(result)
-                    dataseries.data = data;
-                    res.status(200).send(dataseries)
+                const result: IDataseries = await this.dataseriesService.get(req.params.id);
+                if(result != null) {
+                    res.status(200).send(result)
                 } else {
                     res.status(404)
                 }

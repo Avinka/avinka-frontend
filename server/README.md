@@ -20,6 +20,12 @@ curl -X GET "localhost:3000/activity" -H 'Content-Type: application/json' -d '{"
 curl -X GET "localhost:3000/counter" -H 'Content-Type: application/json' -d '{"match":{"object.type":{"query":"Bot"}}}'
 ```
 
+### Dataseries query ###
+
+```bash
+curl -X GET "localhost:3000/counter" -H 'Content-Type: application/json' -d '{"match":{"object.type":{"query":"Bot"}}}'
+```
+
 ### Admin queries ###
 
 ```bash
