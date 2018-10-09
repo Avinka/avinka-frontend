@@ -7,7 +7,7 @@ import {Model} from "mongoose";
 export class DataseriesRouter {
 
     readonly Dataseries: Model<IDataseriesModel> = mongoose.model<IDataseriesModel>('Dataseries', DataseriesSchema);
-    readonly counterService: CounterService
+    readonly counterService: CounterService;
 
     constructor(counterService: CounterService) {
         this.counterService = counterService;
@@ -29,7 +29,7 @@ export class DataseriesRouter {
                 let result: IDataseries = await this.Dataseries.findOne({_id: id}).exec();
                 if (result != null && result.query != null) {
                     const data = await this.counterService.get(result.query);
-                    let dataseries: DataSeries = new DataSeries(result)
+                    let dataseries: DataSeries = new DataSeries(result);
                     dataseries.data = data;
                     res.status(200).send(dataseries)
                 } else {
@@ -45,6 +45,15 @@ export class DataseriesRouter {
                 const id = req.params.id;
                 let result = await this.Dataseries.updateOne({_id: id}, req.body).exec();
                 res.status(200).send(result)
+            });
+        app.route('/dataseries/:id/selectors')
+            .post(async (req: Request, res: Response) => {
+                const dataseriesId = req.params.id;
+                let result = await this.Dataseries.findOne({_id: dataseriesId});
+                // @ts-ignore
+                result.selectors.push(req.body._id);
+                await result.save();
+                res.status(200).send(result);
             });
     }
 }
