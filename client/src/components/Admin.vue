@@ -7,7 +7,7 @@
 </template>
 
 <script>
-  import adminService from '../api/admin.js';
+  import adminService from '../api/adminApi.js';
 
   export default {
     name: 'Admin',

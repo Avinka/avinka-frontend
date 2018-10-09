@@ -1,4 +1,4 @@
-import dashboardService from '../../api/dashboard';
+import dashboardService from '../../api/dashboardApi';
 // initial state
 const state = {
   all: []

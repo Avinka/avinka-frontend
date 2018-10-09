@@ -54,6 +54,9 @@
         showGraphEditor: false
       };
     },
+    created() {
+      this.$store.dispatch('dataseries/getDataseries', this.graph.dataseries);
+    },
     methods: {
       deleteGraph() {
         this.$store.dispatch('graphs/deleteGraph', this.graph._id);

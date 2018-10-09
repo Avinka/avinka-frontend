@@ -3,7 +3,7 @@ import Vuex from 'vuex';
 
 import dashboards from './modules/dashboards';
 import graphs from './modules/graphs';
-import dataserieses from './modules/dataserieses';
+import dataserieses from './modules/dataseries';
 
 Vue.use(Vuex);
 

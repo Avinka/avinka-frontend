@@ -1,4 +1,4 @@
-import dataseriesService from '../../api/dataseries';
+import dataseriesApi from '../../api/dataseriesApi';
 // initial state
 const state = {
   all: []
@@ -10,16 +10,16 @@ const getters = {
 
 // actions
 const actions = {
-  async getAllDashboards ({ commit }) {
-    const graphs = await dataseriesService.getAllDataserieses();
-    commit('setDataseries', graphs);
+  async getDataseries ({ commit }) {
+    const data = await dataseriesApi.getAllDataseries();
+    commit('setDataseries', data);
   },
-  async deleteDashboard ({ state, commit }, dataserieses) {
-    await dataseriesService.deleteDataseries(dataserieses);
-    commit('deleteDataseries', dataserieses);
+  async deleteDataseries ({ state, commit }, dataseries) {
+    await dataseriesApi.deleteDataseries(dataseries);
+    commit('deleteDataseries', dataseries);
   },
-  async createDashboard ({ commit }, dataseries) {
-    const newDataseries = await dataseriesService.createDataseries(dataseries);
+  async createDataseries ({ commit }, dataseries) {
+    const newDataseries = await dataseriesApi.createDataseries(dataseries);
     commit('createDataseries', newDataseries);
   }
 };

@@ -1,4 +1,4 @@
-import graphService from '../../api/graph';
+import graphService from '../../api/graphApi';
 // initial state
 const state = {
   all: []

@@ -7,7 +7,7 @@
               Dataseries:
             </span>
             <span v-if="!selectors || selectors.length===0">
-              Add a selector to create a new data series
+              Add a selectorApi to create a new data series
             </span>
           </div>
           <div class="md-layout md-gutter md-alignment-left">
@@ -79,7 +79,7 @@
           value: this.selector.value,
           operator: this.selector.operator
         });
-        this.$log.debug('Got selector created data', selector);
+        this.$log.debug('Got selector created data', selectorApi);
         this.$emit('selector-created', selector);
       }
     },
