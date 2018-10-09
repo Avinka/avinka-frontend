@@ -16,8 +16,8 @@ import * as mongoose from "mongoose";
 export class Router {
     //TODO move this into an own class
     readonly indexName = 'active-objects-current';
-    readonly indexType = 'activity'
-    readonly elasticSearchClient: Client = new Client({hosts: ["127.0.0.1:9200"]})
+    readonly indexType = 'activity';
+    readonly elasticSearchClient: Client = new Client({hosts: ["127.0.0.1:9200"]});
 
     readonly Dataseries: Model<IDataseriesModel> = mongoose.model<IDataseriesModel>('Dataseries', DataseriesSchema);
 
