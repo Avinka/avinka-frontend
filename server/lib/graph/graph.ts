@@ -13,5 +13,5 @@ export interface IGraphModel extends IGraph, Document {
 export const GraphSchema: Schema = new Schema({
     name: String,
     createdAt: { type: Date, default: Date.now },
-    dataSeries: { type: Schema.Types.ObjectId, ref: 'DataSeries' }
+    dataSeries: [{ type: Schema.Types.ObjectId, ref: 'DataSeries' }]
 });
