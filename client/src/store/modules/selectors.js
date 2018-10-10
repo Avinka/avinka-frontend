@@ -1,4 +1,4 @@
-import selectorService from '../../api/selector';
+import selectorService from '../../api/selectorApi';
 // initial state
 const state = {
   all: []
