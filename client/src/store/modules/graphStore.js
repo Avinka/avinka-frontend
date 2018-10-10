@@ -48,20 +48,19 @@ const actions = {
     // TODO delete dataseries mapping
     commit('deleteDataseries', dataseriesId);
   },
-  async createGraphDataseries ({ commit }, dataseries) {
+  async createGraphDataseries ({ commit }, {graphId, dataseries}) {
     const newDataseries = await dataseriesApi.createDataseries(dataseries);
-    // TODO create dataseries mapping
-    commit('createDataseries', newDataseries);
+    const newGraphDataseriesMapping = await graphService.addDataseriesToGraph(graphId, dataseries);
+    commit('createGraphDataseries', {graphId, newDataseries});
   },
   async addSelectorToDataseries({ commit }, {dataseriesId, selector}) {
-    // TODO create selector
     const newSelector = selectorApi.createSelector(selector);
     const selectorDataseriesMapping = await dataseriesApi.addSelectorToDataseries(dataseriesId, newSelector._id);
-    commit('addSelectorToDataseries', selectorDataseriesMapping);
+    commit('addSelectorToDataseries', {dataseriesId, newSelector});
   },
   async removeSelectorFromDataseries({ commit }, {dataseriesId, selectorId}) {
-    // TODO delete selector
-    const selectorDataseriesMapping = await dataseriesApi.addSelectorToDataseries(dataseriesId, selectorId);
+    const selectorDataseriesMapping = await dataseriesApi.removeSelectorFromDataseries(dataseriesId, selectorId);
+    const deleted = selectorApi.deleteSelector(selectorId);
     commit('addSelectorToDataseries', selectorDataseriesMapping);
   }
 };

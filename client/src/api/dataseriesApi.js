@@ -3,7 +3,7 @@ import Vue from 'vue';
 
 // TODO error handling
 export default {
-  async getAllDataserieses() {
+  async getAllDataseries() {
     const result = await axios.get('http://localhost:8080/api/dataseries?full=true');
     Vue.$log.debug(result);
     return result.data;
@@ -19,6 +19,11 @@ export default {
   },
   async addSelectorToDataseries(dataseriesId, selectorId) {
     const result = await axios.post('http://localhost:8080/api/dataseries/' + dataseriesId + '/selector', {_id: selectorId});
+    Vue.$log.debug(result);
+    return result.data;
+  },
+  async removeSelectorFromDataseries(dataseriesId, selectorId) {
+    const result = await axios.delete('http://localhost:8080/api/dataseries/' + dataseriesId + '/selector/' + selectorId);
     Vue.$log.debug(result);
     return result.data;
   }
