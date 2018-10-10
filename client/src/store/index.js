@@ -3,7 +3,8 @@ import Vuex from 'vuex';
 
 import dashboards from './modules/dashboards';
 import graphs from './modules/graphs';
-import dataserieses from './modules/dataseries';
+import dataseries from './modules/dataseries';
+import selectors from './modules/selectors';
 
 Vue.use(Vuex);
 
@@ -13,7 +14,8 @@ export default new Vuex.Store({
   modules: {
     dashboards,
     graphs,
-    dataserieses
+    dataseries,
+    selectors
   },
   strict: debug
 });

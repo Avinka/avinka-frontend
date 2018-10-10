@@ -1,4 +1,4 @@
-import selectorService from '../../api/selector';
+import selectorService from '../../api/selectorApi';
 // initial state
 const state = {
   all: []
@@ -15,11 +15,11 @@ const getters = {
 const actions = {
   async getAllSelectors ({ commit }) {
     const graphs = await selectorService.getAllSelectors();
-    commit('setGraphs', graphs);
+    commit('setSelectors', graphs);
   },
-  async deleteSelector ({ state, commit }, graph) {
-    await selectorService.deleteSelector(graph);
-    commit('deleteSelector', graph);
+  async deleteSelector ({ state, commit }, selector) {
+    await selectorService.deleteSelector(selector);
+    commit('deleteSelector', selector);
   },
   async createSelector ({ commit }, selector) {
     const newSelector = await selectorService.createSelector(selector);

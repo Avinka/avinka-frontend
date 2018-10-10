@@ -1,4 +1,6 @@
 import graphService from '../../api/graphApi';
+import dataseriesApi from '../../api/dataseriesApi';
+import selectorApi from '../../api/selectorApi';
 
 const state = {
   graphs: {},
@@ -16,7 +18,8 @@ const getters = {
   getDataPointsByDataseriesId: (state) => (id) => {
     return state.datapoints[id];
   }
-}
+};
+
 // actions
 const actions = {
   async getAllGraphs({commit}) {
@@ -36,11 +39,30 @@ const actions = {
     commit('addGraph', newGraph);
     return newGraph;
   },
-  async addDataseries({commit}, graphId, dataseries) {
-
+  async getGraphDataseries ({ commit }, graphId) {
+    const data = await dataseriesApi.getGraphDataseries(graphId);
+    commit('setGraphDataseries', data);
   },
-  async deleteDataseries({commit}, graphId, dataseries) {
-
+  async deleteGraphDataseries ({ state, commit }, dataseriesId) {
+    await dataseriesApi.deleteDataseries(dataseriesId);
+    // TODO delete dataseries mapping
+    commit('deleteDataseries', dataseriesId);
+  },
+  async createGraphDataseries ({ commit }, dataseries) {
+    const newDataseries = await dataseriesApi.createDataseries(dataseries);
+    // TODO create dataseries mapping
+    commit('createDataseries', newDataseries);
+  },
+  async addSelectorToDataseries({ commit }, {dataseriesId, selector}) {
+    // TODO create selector
+    const newSelector = selectorApi.createSelector(selector);
+    const selectorDataseriesMapping = await dataseriesApi.addSelectorToDataseries(dataseriesId, newSelector._id);
+    commit('addSelectorToDataseries', selectorDataseriesMapping);
+  },
+  async removeSelectorFromDataseries({ commit }, {dataseriesId, selectorId}) {
+    // TODO delete selector
+    const selectorDataseriesMapping = await dataseriesApi.addSelectorToDataseries(dataseriesId, selectorId);
+    commit('addSelectorToDataseries', selectorDataseriesMapping);
   }
 };
 

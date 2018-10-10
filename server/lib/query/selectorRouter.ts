@@ -3,7 +3,7 @@ import * as mongoose from "mongoose";
 import {Selector, SelectorSchema, ISelector, ISelectorModel} from "./selector";
 import {Model} from "mongoose";
 
-export class DataseriesRouter {
+export class SelectorRouter {
 
     readonly Selector: Model<ISelectorModel> = mongoose.model<ISelectorModel>('Selector', SelectorSchema);
 
@@ -17,7 +17,7 @@ export class DataseriesRouter {
                 let result = await this.Selector.create(req.body);
                 res.status(200).send(result)
             });
-        app.route('/dataseries/:id')
+        app.route('/selector/:id')
             .get(async (req: Request, res: Response) => {
                 const id = req.params.id;
                 let result: ISelector = await this.Selector.findOne({_id: id}).exec();

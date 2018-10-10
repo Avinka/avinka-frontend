@@ -2,6 +2,7 @@ import {Request, Response} from "express";
 import {DashboardRouter} from "./dashboard/dashboardRouter";
 import {GraphRouter} from "./graph/graphRouter";
 import {DataseriesRouter} from "./dataseries/dataseriesRouter";
+import {SelectorRouter} from "./query/selectorRouter";
 import {ActivityRouter} from "./activity/activityRouter";
 import {ActivityService} from "./activity/activityService";
 import {Client} from "elasticsearch";
@@ -30,6 +31,7 @@ export class Router {
     readonly dashboardRouter: DashboardRouter = new DashboardRouter();
     readonly graphRouter: GraphRouter = new GraphRouter();
     readonly dataSeriesRouter: DataseriesRouter = new DataseriesRouter(this.dataSeriesService);
+    readonly selectorRouter: SelectorRouter = new SelectorRouter();
 
     public routes(app): void {
         app.route('/')
@@ -45,5 +47,6 @@ export class Router {
         this.dataSeriesRouter.routes(app);
         this.graphRouter.routes(app);
         this.counterRouter.routes(app);
+        this.selectorRouter.routes(app);
     }
 }

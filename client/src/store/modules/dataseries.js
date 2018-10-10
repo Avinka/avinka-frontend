@@ -1,4 +1,5 @@
 import dataseriesApi from '../../api/dataseriesApi';
+
 // initial state
 const state = {
   all: []
@@ -25,6 +26,10 @@ const actions = {
   async createDataseries({commit}, dataseries) {
     const newDataseries = await dataseriesApi.createDataseries(dataseries);
     commit('createDataseries', newDataseries);
+  },
+  async addSelectorToDataseries({ commit }, {dataseriesId, selectorId}) {
+    const selectorDataseriesMapping = await dataseriesApi.addSelectorToDataseries(dataseriesId, selectorId);
+    commit('addSelectorToDataseries', selectorDataseriesMapping);
   }
 };
 
