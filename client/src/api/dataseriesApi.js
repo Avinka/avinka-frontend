@@ -3,7 +3,13 @@ import Vue from 'vue';
 
 // TODO error handling
 export default {
-  async getAllDataserieses() {
+  async getDataseries(id) {
+    Vue.$log.debug(id);
+    const result = await axios.get('http://localhost:8080/api/dataseries/' + id);
+    Vue.$log.debug(result);
+    return result.data;
+  },
+  async getAllDataseries() {
     const result = await axios.get('http://localhost:8080/api/dataseries?full=true');
     Vue.$log.debug(result);
     return result.data;

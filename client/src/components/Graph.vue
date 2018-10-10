@@ -54,8 +54,14 @@
         showGraphEditor: false
       };
     },
+
+    computed: {
+      dashboard () {
+        return this.$store.getters['dataseries/byId'](this.$route.params.id);
+      },
+    },
     created() {
-      this.$store.dispatch('dataseries/getDataseries', this.graph.dataseries);
+      this.$store.dispatch('dataseries/getDataseries', this.graph.dataseries[0]()._id);
     },
     methods: {
       deleteGraph() {

@@ -25,7 +25,8 @@ export class DataseriesRouter {
             });
         app.route('/dataseries/:id')
             .get(async (req: Request, res: Response) => {
-                const result: IDataseries = await this.dataseriesService.get(req.params.id);
+                const id = req.params.id;
+                const result: IDataseries = await this.Dataseries.findOne({_id: id}).exec();
                 if(result != null) {
                     res.status(200).send(result)
                 } else {

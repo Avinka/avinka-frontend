@@ -2,7 +2,7 @@ import graphService from '../../api/graphApi';
 
 const state = {
   graphs: {},
-  counters: {}
+  datapoints: {}
 };
 
 // getters
@@ -13,8 +13,8 @@ const getters = {
   getByGraphById: (state) => (id) => {
     return state.graph[id];
   },
-  getCountersByDataseriesId: (state) => (id) => {
-    return state.counter[id];
+  getDataPointsByDataseriesId: (state) => (id) => {
+    return state.datapoints[id];
   }
 }
 // actions
