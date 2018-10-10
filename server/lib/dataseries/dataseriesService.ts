@@ -1,5 +1,5 @@
 import {Model} from "mongoose";
-import {IDataseriesModel, DataSeries, IDataseries} from "./dataseries";
+import {IDataseriesModel, IDataseries} from "./dataseries";
 import {DatapointService} from "../datapoint/datapointService";
 
 export class DataseriesService {

@@ -3,6 +3,7 @@ import * as mongoose from "mongoose";
 import {DataseriesSchema, IDataseries, IDataseriesModel} from "./dataseries";
 import {Model} from "mongoose";
 import {DatapointService} from "../datapoint/datapointService";
+import {DataPoints} from "../datapoint/datapoints";
 
 export class DataseriesRouter {
 
@@ -58,7 +59,7 @@ export class DataseriesRouter {
                 const dataseries: IDataseries = await this.Dataseries.findOne({_id: id}).exec();
                 if (dataseries != null && dataseries.query != null) {
                     const result = await this.datapointService.get(dataseries.query);
-                    res.status(200).send(result);
+                    res.status(200).send(new DataPoints(id, result));
                 } else {
                     res.status(404);
                 }
