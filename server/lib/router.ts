@@ -2,17 +2,16 @@ import {Request, Response} from "express";
 import {DashboardRouter} from "./dashboard/dashboardRouter";
 import {GraphRouter} from "./graph/graphRouter";
 import {DataseriesRouter} from "./dataseries/dataseriesRouter";
-import {SelectorRouter} from "./query/selectorRouter";
 import {ActivityRouter} from "./activity/activityRouter";
 import {ActivityService} from "./activity/activityService";
 import {Client} from "elasticsearch";
 import {AdminRouter} from "./admin/adminRouter";
-import {CounterRouter} from "./counter/counterRouter";
-import {CounterService} from "./counter/counterService";
-import {DataseriesService} from "./dataseries/dataseriesService";
 import {Model} from "mongoose";
 import {DataseriesSchema, IDataseriesModel} from "./dataseries/dataseries";
 import * as mongoose from "mongoose";
+import {DatapointService} from "./datapoint/datapointService";
+import {DatapointRouter} from "./datapoint/datapointRouter";
+import {SelectorRouter} from "./query/selectorRouter";
 
 export class Router {
     //TODO move this into an own class
@@ -22,15 +21,14 @@ export class Router {
     readonly Dataseries: Model<IDataseriesModel> = mongoose.model<IDataseriesModel>('Dataseries', DataseriesSchema);
 
     readonly activityService = new ActivityService(this.elasticSearchClient, this.indexName, this.indexType);
-    readonly counterService = new CounterService(this.elasticSearchClient, this.indexName, this.indexType);
-    readonly dataSeriesService = new DataseriesService(this.Dataseries, this.counterService);
+    readonly datapointService = new DatapointService(this.elasticSearchClient, this.indexName, this.indexType);
 
     readonly activityRouter: ActivityRouter = new ActivityRouter(this.activityService);
     readonly adminRouter: AdminRouter = new AdminRouter(this.activityService);
-    readonly counterRouter: CounterRouter = new CounterRouter(this.counterService);
+    readonly datapointRounter: DatapointRouter = new DatapointRouter(this.datapointService);
     readonly dashboardRouter: DashboardRouter = new DashboardRouter();
     readonly graphRouter: GraphRouter = new GraphRouter();
-    readonly dataSeriesRouter: DataseriesRouter = new DataseriesRouter(this.dataSeriesService);
+    readonly dataSeriesRouter: DataseriesRouter = new DataseriesRouter(this.datapointService);
     readonly selectorRouter: SelectorRouter = new SelectorRouter();
 
     public routes(app): void {
@@ -46,7 +44,7 @@ export class Router {
         this.dashboardRouter.routes(app);
         this.dataSeriesRouter.routes(app);
         this.graphRouter.routes(app);
-        this.counterRouter.routes(app);
+        this.datapointRounter.routes(app);
         this.selectorRouter.routes(app);
     }
 }

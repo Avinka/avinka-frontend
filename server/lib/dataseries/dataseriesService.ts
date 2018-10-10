@@ -1,25 +1,22 @@
 import {Model} from "mongoose";
 import {IDataseriesModel, DataSeries, IDataseries} from "./dataseries";
-import {CounterService} from "../counter/counterService";
+import {DatapointService} from "../datapoint/datapointService";
 
 export class DataseriesService {
 
     readonly Dataseries: Model<IDataseriesModel>;
-    readonly counterService: CounterService;
+    readonly dataPointService: DatapointService;
 
-    constructor(Dataseries: Model<IDataseriesModel>, counterService: CounterService) {
+    constructor(Dataseries: Model<IDataseriesModel>, dataPointService: DatapointService) {
         this.Dataseries = Dataseries;
-        this.counterService = counterService;
+        this.dataPointService = dataPointService;
     }
 
-    async get(id: any): Promise<IDataseries> {
-        const result: IDataseries = await this.Dataseries.findOne({_id: id}).exec();
-        if (result != null && result.query != null) {
-            const data = await this.counterService.get(result.query);
-            let dataseries: DataSeries = new DataSeries(result);
-            dataseries.data = data;
-            return dataseries;
+    async get(id: any): Promise<Object> {
+        const dataseries: IDataseries = await this.Dataseries.findOne({_id: id}).exec();
+        if (dataseries != null && dataseries.query != null) {
+            return await this.dataPointService.get(dataseries.query);
         }
-        return result;
+        return null;
     }
 }
