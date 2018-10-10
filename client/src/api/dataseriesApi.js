@@ -27,5 +27,10 @@ export default {
     const result = await axios.post('http://localhost:8080/api/dataseries/' + dataseriesId + '/selector', {_id: selectorId});
     Vue.$log.debug(result);
     return result.data;
+  },
+  async removeSelectorFromDataseries(dataseriesId, selectorId) {
+    const result = await axios.delete('http://localhost:8080/api/dataseries/' + dataseriesId + '/selector/' + selectorId);
+    Vue.$log.debug(result);
+    return result.data;
   }
 };
