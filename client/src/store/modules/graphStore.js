@@ -10,7 +10,7 @@ const state = {
 // getters
 const getters = {
   all: (state) => {
-    return state.graphs.values;
+    return state.graphs;
   },
   getByGraphById: (state) => (id) => {
     return state.graph[id];
@@ -75,4 +75,12 @@ const mutations = {
   addGraph(state, graph) {
     state.graphs[graph._id] = graph;
   }
+};
+
+export default {
+  namespaced: true,
+  state,
+  getters,
+  actions,
+  mutations
 };

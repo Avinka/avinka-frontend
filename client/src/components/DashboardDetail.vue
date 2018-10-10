@@ -32,12 +32,15 @@
         return this.$store.getters['dashboards/byId'](this.$route.params.id);
       },
       graphs() {
-        return this.$store.getters['graphs/all'];
+        const graphs = this.$store.getters['graphStore/all'];
+        console.log('computed');
+        console.log(graphs);
+        return graphs;
       }
     },
     created() {
       this.$store.dispatch('dashboards/getDashboard', this.$route.params.id);
-      this.$store.dispatch('graphs/getAllDashboardGraphs', this.$route.params.id);
+      this.$store.dispatch('graphStore/getAllDashboardGraphs', this.$route.params.id);
     },
     data() {
       return {

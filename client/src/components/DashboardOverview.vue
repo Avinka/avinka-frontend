@@ -35,7 +35,6 @@
   import DashboardList from '@/components/DashboardList';
   import DashboardAddForm from '@/components/DashboardAddForm';
   import GraphList from '@/components/GraphList';
-  import { mapState, mapActions } from 'vuex';
 
   export default {
     name: 'DashboardOverview',
@@ -48,11 +47,13 @@
     data() {
       return {};
     },
-    computed: mapState({
-      graphs: state => state.graphs.all
-    }),
-    async created() {
-      await this.$store.dispatch('graphs/getAllGraphs');
+    computed: {
+      graphs() {
+        return this.$store.getters['graphStore/all'];
+      }
+    },
+    created() {
+      this.$store.dispatch('graphStore/getAllGraphs');
     }
   };
 </script>
