@@ -3,8 +3,8 @@ import dataseriesApi from '../../api/dataseriesApi';
 import selectorApi from '../../api/selectorApi';
 
 const state = {
-  graphs: {},
-  datapoints: {}
+  graphs: [],
+  counters: []
 };
 
 // getters
@@ -13,10 +13,10 @@ const getters = {
     return state.graphs;
   },
   getByGraphById: (state) => (id) => {
-    return state.graph[id];
+    return state.graph.find((graph) => graph._id === id);
   },
-  getDataPointsByDataseriesId: (state) => (id) => {
-    return state.datapoints[id];
+  getCountersByDataseriesId: (state) => (id) => {
+    return state.counters.find((counter) => counter._id === id);
   }
 };
 
@@ -67,13 +67,13 @@ const actions = {
 
 const mutations = {
   addGraphs(state, graphs) {
-    graphs.map((x) => { state.graphs[x._id] = x });
+    state.graphs = graphs;
   },
   deleteGraph(state, graphId) {
-    delete state.graphs[graphId];
+    state.graphs.splice(state.graphs.find((graph) => graph._id === graphId));
   },
   addGraph(state, graph) {
-    state.graphs[graph._id] = graph;
+    state.graphs.push(graph);
   }
 };
 
