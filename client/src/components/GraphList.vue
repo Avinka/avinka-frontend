@@ -8,7 +8,7 @@
     >
     </md-empty-state>
     <div>
-      <graph v-for="graph in Object.values(graphs)" :graph="graph"></graph>
+      <graph v-for="graph in graphs" :graph="graph"></graph>
     </div>
   </div>
 </template>
