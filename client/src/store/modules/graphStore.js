@@ -70,7 +70,7 @@ const mutations = {
     state.graphs = graphs;
   },
   deleteGraph(state, graphId) {
-    state.graphs.splice(state.graph.find((graph) => graph._id === graphId));
+    state.graphs.splice(state.graphs.find((graph) => graph._id === graphId));
   },
   addGraph(state, graph) {
     state.graphs.push(graph);
