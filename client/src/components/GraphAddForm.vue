@@ -38,7 +38,7 @@
     },
     methods: {
       async create() {
-        const graph = await this.$store.dispatch('graphs/createGraph', {
+        const graph = await this.$store.dispatch('graphStore/createGraph', {
           name: this.graph.name,
           description: this.graph.description
         });

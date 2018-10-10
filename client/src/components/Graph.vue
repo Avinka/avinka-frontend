@@ -59,7 +59,7 @@
     },
     methods: {
       deleteGraph() {
-        this.$store.dispatch('graphs/deleteGraph', this.graph._id);
+        this.$store.dispatch('graphStore/deleteGraph', this.graph._id);
       }
     }
   };
