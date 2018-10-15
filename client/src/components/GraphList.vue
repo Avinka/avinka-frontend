@@ -8,7 +8,7 @@
     >
     </md-empty-state>
     <div>
-      <graph v-for="graph in graphs" :graph="graph"></graph>
+      <graph v-on:deleted="onGraphDeleted" v-for="graph in graphs" :graph="graph"></graph>
     </div>
   </div>
 </template>
@@ -25,6 +25,13 @@
     },
     created() {
       console.log(this.graphs);
+    },
+    methods: {
+      onGraphDeleted(event) {
+        this.$log.debug('Got an event', event);
+        this.$log.debug('Rethrowing to parent');
+        this.$emit('graph-deleted', event);
+      }
     }
   };
 </script>
