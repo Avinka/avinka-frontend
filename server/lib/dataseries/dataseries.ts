@@ -6,28 +6,8 @@ export interface IDataseries {
     createdAt: Date;
     query: Object;
     indexName: string;
-    data: Object;
     selectors: ISelector[];
     //aggregators: IAggregators[];
-}
-
-export class DataSeries implements IDataseries {
-    name: string;
-    createdAt: Date;
-    query: Object;
-    indexName: string;
-    data: Object;
-    selectors: ISelector[];
-    //aggregators: IAggregators[];
-
-    constructor(that: IDataseries) {
-        this.name = that.name;
-        this.createdAt = that.createdAt;
-        this.query = that.query;
-        this.indexName = that.indexName;
-        this.data = that.data;
-        this.selectors = that.selectors;
-    }
 }
 
 export interface IDataseriesModel extends IDataseries, Document {

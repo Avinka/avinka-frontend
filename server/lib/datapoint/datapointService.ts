@@ -1,7 +1,7 @@
 import {Client} from "elasticsearch";
 import {Activity} from "../activity/activity";
 
-export class CounterService {
+export class DatapointService {
 
     readonly client: Client;
     readonly indexName;

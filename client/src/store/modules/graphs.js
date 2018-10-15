@@ -1,31 +1,34 @@
 import graphService from '../../api/graphApi';
 // initial state
 const state = {
-  all: []
+  all: {}
 };
 
 // getters
 const getters = {
   all: (state) => {
     return state.all;
+  },
+  getGraphById: (state) => (id) => {
+    return state[id];
   }
 };
 
 // actions
 const actions = {
-  async getAllGraphs ({ commit }) {
+  async getAllGraphs({commit}) {
     const graphs = await graphService.getAllGraphs();
     commit('setGraphs', graphs);
   },
-  async getAllDashboardGraphs ({ commit }, dashboardId) {
+  async getAllDashboardGraphs({commit}, dashboardId) {
     const graphs = await graphService.getAllDashboardGraphs(dashboardId);
     commit('setGraphs', graphs);
   },
-  async deleteGraph ({ state, commit }, graph) {
-    await graphService.deleteGraph(graph);
-    commit('deleteGraph', graph);
+  async deleteGraph({state, commit}, graphId) {
+    await graphService.deleteGraph(graphId);
+    commit('deleteGraph', graphId);
   },
-  async createGraph ({ commit }, graphId) {
+  async createGraph({commit}, graphId) {
     const newGraph = await graphService.createGraph(graphId);
     commit('createGraph', newGraph);
     return newGraph;
@@ -34,14 +37,14 @@ const actions = {
 
 // mutations
 const mutations = {
-  setGraphs (state, graphs) {
-    state.all = graphs;
+  setGraphs(state, graphs) {
+    graphs.map((x) => { state.all[x._id] = x });
   },
-  deleteGraph (state, graphId) {
-    state.all = state.all.filter(item => item._id !== graphId);
+  deleteGraph(state, graphId) {
+    delete state.all[graphId];
   },
-  createGraph (state, graph) {
-    state.all.push(graph);
+  createGraph(state, graph) {
+    state.all[graph._id] = graph;
   }
 };
 
