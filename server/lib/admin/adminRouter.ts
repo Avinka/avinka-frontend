@@ -1,5 +1,5 @@
 import {Request, Response} from "express";
-import {ActivityService} from "activity/activityService";
+import {ActivityService} from "../activity/activityService";
 
 export class AdminRouter {
 
@@ -14,19 +14,17 @@ export class AdminRouter {
             .get(async (req: Request, res: Response) => {
                 this.activityService.client.indices.delete({
                     index: this.activityService.indexName
-                })
+                });
                 res.status(200).send()
-
-            })
+            });
         app.route('/admin/generateData')
             .get(async (req: Request, res: Response) => {
-                this.activityService.generateData()
+                this.activityService.generateData();
                 res.status(200).send()
-
-            })
+            });
         app.route('/admin/deleteData')
             .get(async (req: Request, res: Response) => {
-                this.activityService.deleteData()
+                this.activityService.deleteData();
                 res.status(200).send()
             })
     }

@@ -7,6 +7,7 @@
     "build": "tsc",
     "dev": "ts-node ./lib/server.ts",
     "start": "nodemon ./dist/server.js",
+    "start-debug": "tsc-watch --onSuccess \"nodemon dist/server.js\"",
     "prod": "npm run build && npm run start",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -26,6 +27,10 @@
   },
   "devDependencies": {
     "@types/mongodb": "^3.1.9",
-    "@types/mongoose": "^5.2.17"
+    "@types/mongoose": "^5.2.17",
+    "concurrently": "^2.2.0",
+    "nodemon": "^1.9.2",
+    "tsc-watch": "^1.0.30",
+    "typescript": "3.1.3"
   }
 }

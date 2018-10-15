@@ -1,4 +1,8 @@
-tsc && DEBUG=express:* node --inspect dist/server.js
+## Backend app commands ##
+
+````bash
+yarn start-debug
+````
 
 ### Activity queries ###
 

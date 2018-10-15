@@ -1,8 +1,5 @@
 <template>
   <div>
-    <!--<md-button class="md-icon-button" @click="formVisible=!formVisible">
-      <md-icon>add</md-icon>
-    </md-button>-->
     <form v-if="formVisible" novalidate>
       <md-card-content>
         <md-field>
