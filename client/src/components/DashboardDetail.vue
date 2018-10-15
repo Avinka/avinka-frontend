@@ -18,7 +18,7 @@
 <script>
   import GraphList from './GraphList';
   import GraphAddForm from '@/components/GraphAddForm';
-  import CreateOrFindGraphDialog from './CreateOrFindGraphDialog';
+  import CreateOrFindGraphDialog from './GraphCreateOrFindDialog';
 
   export default {
     name: 'DashboardDetail',
