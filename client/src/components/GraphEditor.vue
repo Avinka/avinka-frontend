@@ -46,8 +46,8 @@
         }
       };
     },
-    async created() {
-      await this.$store.dispatch('graphStore/getGraphDataseries', this.graph._id);
+    created() {
+      // this.$store.dispatch('graphStore/getGraphDataseries', this.graph._id);
     }
   };
 </script>

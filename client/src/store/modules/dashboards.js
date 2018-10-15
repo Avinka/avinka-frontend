@@ -32,6 +32,10 @@ const actions = {
   async addGraphToDashboard({ commit }, {dashboardId, graphId}) {
     const graphDashboardMapping = await dashboardService.addGraphToDashboard(dashboardId, graphId);
     commit('createGraphDashboardMapping', graphDashboardMapping);
+  },
+  async removeGraphFromDashboard({ commit }, {dashboardId, graphId}) {
+    await dashboardService.removeGraphFromDashboard(dashboardId, graphId);
+    commit('removeGraphDashboardMapping', {dashboardId, graphId});
   }
 };
 
@@ -52,6 +56,9 @@ const mutations = {
   },
   createGraphDashboardMapping(state, graphDashboardMapping) {
     // TODO fill with logic
+  },
+  removeGraphDashboardMapping(state, {dashboardId, graphId}) {
+
   }
 };
 

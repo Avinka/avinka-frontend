@@ -1,4 +1,4 @@
-import graphService from '../../api/graphApi';
+import graphApi from '../../api/graphApi';
 import dataseriesApi from '../../api/dataseriesApi';
 import selectorApi from '../../api/selectorApi';
 
@@ -7,14 +7,17 @@ const state = {
   counters: []
 };
 
+const findGraphById = (id) => state.graphs.find((graph) => graph._id === id);
+
 // getters
 const getters = {
   all: (state) => {
     return state.graphs;
   },
-  getByGraphById: (state) => (id) => {
-    return state.graph.find((graph) => graph._id === id);
+  allByIds: (state) => (graphIds) => {
+    return state.graphs;
   },
+  getByGraphById: (state) => findGraphById,
   getCountersByDataseriesId: (state) => (id) => {
     return state.counters.find((counter) => counter._id === id);
   }
@@ -23,25 +26,25 @@ const getters = {
 // actions
 const actions = {
   async getAllGraphs({commit}) {
-    const graphs = await graphService.getAllGraphs();
+    const graphs = await graphApi.getAllGraphs();
     commit('addGraphs', graphs);
   },
   async getAllDashboardGraphs({commit}, dashboardId) {
-    const graphs = await graphService.getAllDashboardGraphs(dashboardId);
+    const graphs = await graphApi.getAllDashboardGraphs(dashboardId);
     commit('addGraphs', graphs);
   },
   async deleteGraph({state, commit}, graphId) {
-    await graphService.deleteGraph(graphId);
+    await graphApi.deleteGraph(graphId);
     commit('deleteGraph', graphId);
   },
   async createGraph({commit}, graphId) {
-    const newGraph = await graphService.createGraph(graphId);
+    const newGraph = await graphApi.createGraph(graphId);
     commit('addGraph', newGraph);
     return newGraph;
   },
   async getGraphDataseries ({ commit }, graphId) {
-    const data = await dataseriesApi.getGraphDataseries(graphId);
-    commit('setGraphDataseries', data);
+    const graphDataseries = await graphApi.getGraphDataseries(graphId);
+    commit('setGraphDataseries', graphDataseries);
   },
   async deleteGraphDataseries ({ state, commit }, dataseriesId) {
     await dataseriesApi.deleteDataseries(dataseriesId);
@@ -50,7 +53,7 @@ const actions = {
   },
   async createGraphDataseries ({ commit }, {graphId, dataseries}) {
     const newDataseries = await dataseriesApi.createDataseries(dataseries);
-    const newGraphDataseriesMapping = await graphService.addDataseriesToGraph(graphId, dataseries);
+    const newGraphDataseriesMapping = await graphApi.addDataseriesToGraph(graphId, dataseries);
     commit('createGraphDataseries', {graphId, newDataseries});
   },
   async addSelectorToDataseries({ commit }, {dataseriesId, selector}) {
@@ -70,9 +73,17 @@ const mutations = {
     state.graphs = graphs;
   },
   deleteGraph(state, graphId) {
-    state.graphs.splice(state.graphs.find((graph) => graph._id === graphId));
+    const start = state.graphs.findIndex((graph) => {
+      return graph._id === graphId;
+    });
+    state.graphs.splice(
+      start, 1
+    );
   },
   addGraph(state, graph) {
+    state.graphs.push(graph);
+  },
+  setGraphDataseries(state, graph) {
     state.graphs.push(graph);
   }
 };
