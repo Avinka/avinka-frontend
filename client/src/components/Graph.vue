@@ -58,14 +58,14 @@
     computed: {
       dashboard () {
         return this.$store.getters['dataseries/byId'](this.$route.params.id);
-      },
+      }
     },
     created() {
-      this.$store.dispatch('dataseries/getDataseries', this.graph.dataseries[0]()._id);
+      // this.$store.dispatch('dataseries/getDataseries', this.graph.dataseries[0]()._id);
     },
     methods: {
-      async deleteGraph() {
-        await this.$store.dispatch('graphStore/deleteGraph', this.graph._id);
+      deleteGraph() {
+        this.$store.dispatch('graphStore/deleteGraph', this.graph._id);
         this.$log.debug('Throwing event graph-deleted');
         this.$emit('deleted', {_id: this.graph._id});
       }

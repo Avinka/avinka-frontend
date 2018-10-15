@@ -8,7 +8,7 @@
       <p>
         {{dashboard.description}}
       </p>
-      <graph-list v-on:graph-deleted="" :graphs="graphs"></graph-list>
+      <graph-list v-on:graph-deleted="onGraphDeleted" :graphs="graphs"></graph-list>
     </md-content>
     <create-or-find-graph-dialog v-on:graph-created="onGraphCreated" v-bind:show-add-graph-dialog-prop="showAddGraphDialogProp"></create-or-find-graph-dialog>
   </div>

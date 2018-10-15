@@ -34,8 +34,9 @@ const actions = {
     commit('addGraphs', graphs);
   },
   async deleteGraph({state, commit}, graphId) {
-    await graphApi.deleteGraph(graphId);
+    const deleteResult = await graphApi.deleteGraph(graphId);
     commit('deleteGraph', graphId);
+    return deleteResult;
   },
   async createGraph({commit}, graphId) {
     const newGraph = await graphApi.createGraph(graphId);
