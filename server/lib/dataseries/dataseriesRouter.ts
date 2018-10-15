@@ -31,7 +31,7 @@ export class DataseriesRouter {
             .get(async (req: Request, res: Response) => {
                 const id = req.params.id;
                 const result: IDataseries = await this.Dataseries.findOne({_id: id}).exec();
-                if(result != null) {
+                if (result != null) {
                     res.status(200).send(result);
                 } else {
                     res.status(404);
@@ -51,16 +51,13 @@ export class DataseriesRouter {
             .get(async (req: Request, res: Response) => {
                 const graphId = req.params.id;
                 let graph: IGraphModel = await this.Graph.findOne({_id: graphId}, 'dataseries').populate('dataseries').exec();
-                if(graph != null) {
+                if (graph != null) {
                     let result = [];
                     for (const data of graph.dataseries) {
-                        let query = data.query;
-                        if (query != null) {
-                            const datapoints = await this.datapointService.get(query);
-                            let dataseries = new Dataseries(data);
-                            dataseries.datapoints = datapoints;
-                            result.push(dataseries);
-                        }
+                        const datapoints = await this.datapointService.get(data.selectors);
+                        let dataseries = new Dataseries(data);
+                        dataseries.datapoints = datapoints;
+                        result.push(dataseries);
                     }
                     res.status(200).send(new Result(result));
                 } else {
@@ -80,8 +77,8 @@ export class DataseriesRouter {
             .post(async (req: Request, res: Response) => {
                 const id = req.params.id;
                 const dataseries: IDataseries = await this.Dataseries.findOne({_id: id}).exec();
-                if (dataseries != null && dataseries.query != null) {
-                    const result = await this.datapointService.get(dataseries.query);
+                if (dataseries != null) {
+                    const result = await this.datapointService.get(dataseries.selectors);
                     res.status(200).send(new DataPoints(id, result));
                 } else {
                     res.status(404);

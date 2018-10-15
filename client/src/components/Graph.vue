@@ -61,11 +61,13 @@
       },
     },
     created() {
-      this.$store.dispatch('dataseries/getDataseries', this.graph._id);
+      this.$store.dispatch('dataseries/getDataseriesByGraphId', this.graph._id);
     },
     methods: {
-      deleteGraph() {
-        this.$store.dispatch('graphStore/deleteGraph', this.graph._id);
+      async deleteGraph() {
+        await this.$store.dispatch('graphStore/deleteGraph', this.graph._id);
+        this.$log.debug('Throwing event graph-deleted');
+        this.$emit('deleted', {_id: this.graph._id});
       }
     }
   };

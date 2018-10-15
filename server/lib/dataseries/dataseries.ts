@@ -5,7 +5,6 @@ export interface IDataseries {
     _id: any;
     name: string;
     createdAt: Date;
-    query: Object;
     indexName: string;
     selectors: ISelector[];
 }
@@ -14,7 +13,6 @@ export class Dataseries implements IDataseries {
     _id: any;
     name: string;
     createdAt: Date;
-    query: Object;
     indexName: string;
     selectors: ISelector[];
     datapoints: {};
