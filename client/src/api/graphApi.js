@@ -27,5 +27,10 @@ export default {
     const result = await axios.post('http://localhost:8080/api/graph/' + graphId + '/dataseries', {_id: dataseriesId});
     Vue.$log.debug(result);
     return result.data;
+  },
+  async getGraphDataseries(graphId) {
+    const result = await axios.get('http://localhost:8080/api/graph/' + graphId + '/dataseries');
+    Vue.$log.debug(result);
+    return result.data;
   }
 };

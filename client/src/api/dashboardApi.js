@@ -26,5 +26,10 @@ export default {
     const result = await axios.post('http://localhost:8080/api/dashboard/' + dashboardId + '/graph', {graphId});
     Vue.$log.debug(result);
     return result.data;
+  },
+  async removeGraphFromDashboard(dashboardId, graphId) {
+    const result = await axios.delete('http://localhost:8080/api/dashboard/' + dashboardId + '/graph/' + graphId);
+    Vue.$log.debug(result);
+    return result.data;
   }
 };
