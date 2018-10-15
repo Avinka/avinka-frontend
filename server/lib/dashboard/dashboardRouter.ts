@@ -55,6 +55,18 @@ export class DashboardRouter {
                 // @ts-ignore
                 res.status(200).send(result.graphs)
             });
+        app.route('/dashboard/:id/graph/:graphId')
+            .delete(async (req: Request, res: Response) => {
+                // TODO add validation
+                const dashboardId = req.params.id;
+                const graphId = req.params.graphId;
+                let result = await this.Dashboard.findOne({_id: dashboardId});
+                // @ts-ignore
+                result.graphs.find((id) =>{return id === req.body.graphId}).remove();
+                await result.save();
+                res.status(201).send(result)
+            })
+
 
     }
 }
