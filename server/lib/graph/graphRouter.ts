@@ -22,7 +22,7 @@ export class GraphRouter {
             .get(async (req: Request, res: Response) => {
                 const id = req.params.id;
                 let findOne = this.Graph.findOne({_id: id});
-                if(req.query.full === 'true') {
+                if (req.query.full === 'true') {
                     findOne = findOne.populate('dataseries')
                 }
                 let result = await findOne.exec();
@@ -47,12 +47,6 @@ export class GraphRouter {
                 result.graphs.push(req.body._id);
                 await result.save();
                 res.status(201).send(result)
-            })
-            .get(async (req: Request, res: Response) => {
-                const id = req.params.id;
-                let result = await this.Graph.findOne({_id: id},'dataseries').populate('dataseries').exec();
-                // @ts-ignore
-                res.status(200).send(result.graphs)
             });
     }
 }

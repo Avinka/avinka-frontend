@@ -13,7 +13,15 @@ export class DatapointService {
         this.indexType = indexType;
     }
 
-    async get(query: Object): Promise<Object> {
+    async get(input: Object): Promise<Object> {
+        const query = {
+            'match': {
+                'object.type': {
+                    'query': 'Bot',
+                    'operator': 'OR'
+                }
+            }
+        };
         const agg = {
             'grouping': {
                 'date_histogram': {

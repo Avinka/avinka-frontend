@@ -1,6 +1,7 @@
 import graphService from '../../api/graphApi';
 import dataseriesApi from '../../api/dataseriesApi';
 import selectorApi from '../../api/selectorApi';
+import datapointApi from '../../api/datapointApi';
 
 const state = {
   graphs: [],
@@ -39,10 +40,11 @@ const actions = {
     commit('addGraph', newGraph);
     return newGraph;
   },
-  async getGraphDataseries ({ commit }, graphId) {
-    const data = await dataseriesApi.getGraphDataseries(graphId);
+  async getDataseriesByGraphId ({ commit }, graphId) {
+    const data = await dataseriesApi.getDataseriesByGraphId(graphId);
     commit('setGraphDataseries', data);
   },
+
   async deleteGraphDataseries ({ state, commit }, dataseriesId) {
     await dataseriesApi.deleteDataseries(dataseriesId);
     // TODO delete dataseries mapping
