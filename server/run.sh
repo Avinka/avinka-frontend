@@ -1,1 +1,1 @@
-tsc && DEBUG=express:* node --inspect dist/server.js
+tsc -w && DEBUG=express:* nodemon --inspect dist/server.js
