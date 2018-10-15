@@ -26,7 +26,7 @@ export class GraphRouter {
                 let dataseries: IDataseries = await this.Dataseries.create({});
                 dataseries.datapoints = await this.datapointService.get(dataseries.selectors);
                 graph.dataseries = [dataseries];
-                let result = await this.Graph.create(graph);
+                const result = await this.Graph.create(graph);
                 res.status(200).send(result)
             });
         app.route('/graph/:id')

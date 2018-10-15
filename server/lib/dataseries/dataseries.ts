@@ -1,5 +1,5 @@
 import {Document, Schema} from "mongoose";
-import {ISelector} from "query/selector";
+import {ISelector} from "../query/selector";
 
 export interface IDataseries {
     _id: any;
