@@ -8,7 +8,7 @@
       <p>
         {{dashboard.description}}
       </p>
-      <graph-list :graphs="graphs"></graph-list>
+      <graph-list v-on:graph-deleted="" :graphs="graphs"></graph-list>
     </md-content>
     <create-or-find-graph-dialog v-on:graph-created="onGraphCreated" v-bind:show-add-graph-dialog-prop="showAddGraphDialogProp"></create-or-find-graph-dialog>
   </div>
@@ -32,7 +32,7 @@
         return this.$store.getters['dashboards/byId'](this.$route.params.id);
       },
       graphs() {
-        const graphs = this.$store.getters['graphStore/all'];
+        const graphs = this.$store.getters['graphStore/allByIds'](this.dashboard.graphs);
         console.log('computed');
         console.log(graphs);
         return graphs;
@@ -56,6 +56,13 @@
       onGraphCreated(event) {
         this.$log.debug('Got an event', event);
         this.$store.dispatch('dashboards/addGraphToDashboard', {
+          dashboardId: this.$route.params.id,
+          graphId: event._id
+        }, event);
+      },
+      onGraphDeleted(event) {
+        this.$log.debug('Got an event', event);
+        this.$store.dispatch('dashboards/removeGraphFromDashboard', {
           dashboardId: this.$route.params.id,
           graphId: event._id
         }, event);
