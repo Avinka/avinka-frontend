@@ -1,7 +1,6 @@
 import graphApi from '../../api/graphApi';
 import dataseriesApi from '../../api/dataseriesApi';
 import selectorApi from '../../api/selectorApi';
-import datapointApi from '../../api/datapointApi';
 
 const state = {
   graphs: [],
@@ -41,6 +40,8 @@ const actions = {
   },
   async createGraph({commit}, graphId) {
     const newGraph = await graphApi.createGraph(graphId);
+    console.log('createGraph');
+    console.log(newGraph);
     commit('addGraph', newGraph);
     return newGraph;
   },
@@ -57,7 +58,6 @@ const actions = {
   },
   async createGraphDataseries({commit}, {graphId, dataseries}) {
     const newDataseries = await dataseriesApi.createDataseries(dataseries);
-    const newGraphDataseriesMapping = await graphApi.addDataseriesToGraph(graphId, dataseries);
     commit('createGraphDataseries', {graphId, newDataseries});
   },
   async addSelectorToDataseries({commit}, {dataseriesId, selector}) {

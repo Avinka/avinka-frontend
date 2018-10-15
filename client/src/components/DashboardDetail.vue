@@ -33,8 +33,6 @@
       },
       graphs() {
         const graphs = this.$store.getters['graphStore/allByIds'](this.dashboard.graphs);
-        console.log('computed');
-        console.log(graphs);
         return graphs;
       }
     },

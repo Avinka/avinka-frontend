@@ -55,7 +55,7 @@ export class DataseriesRouter {
                     let result = [];
                     for (const data of graph.dataseries) {
                         const datapoints = await this.datapointService.get(data.selectors);
-                        let dataseries = new Dataseries(data);
+                        let dataseries =  Dataseries.clone(data);
                         dataseries.datapoints = datapoints;
                         result.push(dataseries);
                     }

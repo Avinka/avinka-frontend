@@ -1,6 +1,5 @@
 import {Client} from "elasticsearch";
 import {Activity} from "../activity/activity";
-import {ISelector} from "../query/selector";
 
 export class DatapointService {
 
@@ -14,7 +13,7 @@ export class DatapointService {
         this.indexType = indexType;
     }
 
-    async buildElasticSearchQuery(selector: ISelector[]) {
+    async get(input: Object): Promise<Object> {
         const query = {
             'match': {
                 'object.type': {
@@ -23,11 +22,6 @@ export class DatapointService {
                 }
             }
         };
-        query;
-    }
-
-    async get(input: ISelector[]): Promise<Object> {
-        const query = this.buildElasticSearchQuery(input);
         const agg = {
             'grouping': {
                 'date_histogram': {
