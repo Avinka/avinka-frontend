@@ -2,6 +2,7 @@ import {Request, Response} from "express";
 import * as mongoose from "mongoose";
 import {DashboardSchema, IDashboardModel} from "./dashboard";
 import {Model} from "mongoose";
+import {ObjectId} from "bson";
 
 
 export class DashboardRouter {
@@ -60,11 +61,17 @@ export class DashboardRouter {
                 // TODO add validation
                 const dashboardId = req.params.id;
                 const graphId = req.params.graphId;
-                let result = await this.Dashboard.findOne({_id: dashboardId});
-                // @ts-ignore
-                result.graphs.find((id) =>{return id === req.body.graphId}).remove();
-                await result.save();
-                res.status(201).send(result)
+                this.Dashboard.findOneAndUpdate(dashboardId,
+                    {$pull: {graphs: new ObjectId(graphId)}},
+                    {upsert: true},
+                    function(err, doc) {
+                        if(err){
+                            console.log(err);
+                        }else{
+                            res.status(201).send()
+                        }
+                    }
+                );
             })
 
 

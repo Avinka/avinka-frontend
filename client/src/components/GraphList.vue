@@ -14,7 +14,6 @@
 </template>
 
 <script>
-  import { mapState, mapActions } from 'vuex';
   import Graph from './Graph';
 
   export default {
@@ -22,9 +21,6 @@
     props: ['graphs'],
     components: {
       Graph
-    },
-    created() {
-      console.log(this.graphs);
     },
     methods: {
       onGraphDeleted(event) {

@@ -35,8 +35,9 @@ const actions = {
     commit('addGraphs', graphs);
   },
   async deleteGraph({state, commit}, graphId) {
-    await graphApi.deleteGraph(graphId);
+    const deleteResult = await graphApi.deleteGraph(graphId);
     commit('deleteGraph', graphId);
+    return deleteResult;
   },
   async createGraph({commit}, graphId) {
     const newGraph = await graphApi.createGraph(graphId);
@@ -46,7 +47,7 @@ const actions = {
   async getDataseriesByGraphId({commit}, graphId) {
     const dataseries = await dataseriesApi.getDataseriesByGraphId(graphId);
     if (dataseries != null) {
-      commit('setGraphDataseries', graphId, dataseries);
+      commit('setGraphDataseries', graphId, dataseries.data);
     }
   },
   async deleteGraphDataseries({state, commit}, dataseriesId) {

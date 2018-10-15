@@ -51,7 +51,7 @@ export class DataseriesRouter {
             .get(async (req: Request, res: Response) => {
                 const graphId = req.params.id;
                 let graph: IGraphModel = await this.Graph.findOne({_id: graphId}, 'dataseries').populate('dataseries').exec();
-                if (graph != null) {
+                if (graph != null && graph.dataseries != null) {
                     let result = [];
                     for (const data of graph.dataseries) {
                         const datapoints = await this.datapointService.get(data.selectors);
