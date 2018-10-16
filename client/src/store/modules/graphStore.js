@@ -46,12 +46,6 @@ const actions = {
     commit('addGraph', newGraph);
     return newGraph;
   },
-  async getDataseriesByGraphId({commit}, graphId) {
-    const dataseries = await dataseriesApi.getDataseriesByGraphId(graphId);
-    if (dataseries != null) {
-      commit('setGraphDataseries', graphId, dataseries.data);
-    }
-  },
   async deleteGraphDataseries({state, commit}, dataseriesId) {
     await dataseriesApi.deleteDataseries(dataseriesId);
     // TODO delete dataseries mapping

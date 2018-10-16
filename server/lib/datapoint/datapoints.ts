@@ -1,11 +1,7 @@
 import {ObjectId} from "bson";
 
 export class DataPoints  {
-    datasetId: any;
+    dataseriesId: any,
+    name: string;
     data: Object;
-
-    constructor(datasetId: any, data: Object) {
-        this.datasetId = datasetId;
-        this.data = data;
-    }
 }

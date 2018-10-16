@@ -1,5 +1,7 @@
 import {Client} from "elasticsearch";
 import {Activity} from "../activity/activity";
+import {Dataseries, IDataseries} from "../dataseries/dataseries";
+import {DataPoints} from "./datapoints";
 
 export class DatapointService {
 
@@ -13,7 +15,7 @@ export class DatapointService {
         this.indexType = indexType;
     }
 
-    async get(input: Object): Promise<Object> {
+    async get(dataseries: IDataseries): Promise<Object> {
         const query = {
             'match': {
                 'object.type': {
@@ -52,6 +54,10 @@ export class DatapointService {
             const value = x['doc_count'];
             counts[date] = value;
         });
-        return counts;
+        let result = new DataPoints();
+        result.dataseriesId = dataseries._id;
+        result.name = dataseries.name;
+        result.data = counts;
+        return result;
     }
 }

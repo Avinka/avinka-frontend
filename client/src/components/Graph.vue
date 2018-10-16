@@ -14,22 +14,20 @@
     </div>
     <md-list>
       <md-list-item v-if="!graph.dataseries || graph.dataseries.length===0">
-        <graph-editor :graph="foobar"></graph-editor>
+        <graph-editor :graph="graph"></graph-editor>
       </md-list-item>
       <md-list-item v-for="dataseries in graph.dataseries">
         <div>
-          {{ dataseries }}
-          <!--<md-button @click="showGraphEditor=!showGraphEditor">-->
-            <!--Dataseries (color)-->
-          <!--</md-button>-->
-          <!--<line-chart :data="dataseries.datapoints"></line-chart>-->
+          <md-button @click="showGraphEditor=!showGraphEditor">
+            Dataseries (color)
+          </md-button>
         </div>
         <div v-show="showGraphEditor">
           <graph-editor :graph="foobar"></graph-editor>
         </div>
       </md-list-item>
+      <line-chart :data="datapoints"></line-chart>
     </md-list>
-
   </div>
 </template>
 
@@ -57,12 +55,12 @@
     },
 
     computed: {
-      foobar () {
-        this.$store.getters['graphStore/getByGraphById'](this.graph._id);
+      datapoints () {
+        this.$store.getters['datapointStore/getByDataseriesIds'](this.graph.dataseries.map(x => x._id));
       }
     },
     created() {
-      this.$store.dispatch('graphStore/getDataseriesByGraphId', this.graph._id);
+       this.$store.dispatch('datapointStore/getDatapointsByIds', this.graph.dataseries.map(x => x._id));
     },
     methods: {
       deleteGraph() {

@@ -16,14 +16,20 @@ export class DatapointRouter {
     public routes(app): void {
         app.route('/datapoints/')
             .get(async (req: Request, res: Response) => {
-                const dataseries = await this.Dataseries.findOne(req.query.dataseriesId);
+                let ids = req.query.dataseriesIds.split(',');
+                const dataseries = await this.Dataseries.find({_id: {$in: ids}}).exec();
                 if (dataseries) {
-                    const datapoints = await this.dataPointService.get(dataseries);
-                    if (datapoints) {
-                        return res.status(200).send(datapoints);
+                    let result = [];
+                    for (let d of dataseries) {
+                        const datapoints = await this.dataPointService.get(d);
+                        if (datapoints) {
+                            result.push(datapoints);
+                        }
                     }
+                    res.status(200).send({'data': result});
+                    return;
                 }
                 res.status(404);
-            })
+            });
     }
 }
