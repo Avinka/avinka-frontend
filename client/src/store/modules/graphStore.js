@@ -54,7 +54,7 @@ const actions = {
     commit('createGraphDataseries', {graphId, newDataseries});
   },
   async addSelectorToDataseries({commit}, {dataseriesId, selector}) {
-    const newSelector = selectorApi.createSelector(selector);
+    const newSelector = await selectorApi.createSelector(selector);
     const selectorDataseriesMapping = await dataseriesApi.addSelectorToDataseries(dataseriesId, newSelector._id);
     commit('addSelectorToDataseries', dataseriesId, newSelector);
   },
