@@ -9,6 +9,12 @@ export default {
     Vue.$log.debug(result);
     return result.data;
   },
+  async getDataseriesByGraphId(id) {
+    Vue.$log.debug('getDataseriesByGraphId:' + id);
+    const result = await axios.get('http://localhost:8080/api/dataseries/graph/' + id);
+    Vue.$log.debug(result);
+    return result.data;
+  },
   async getAllDataseries() {
     const result = await axios.get('http://localhost:8080/api/dataseries?full=true');
     Vue.$log.debug(result);

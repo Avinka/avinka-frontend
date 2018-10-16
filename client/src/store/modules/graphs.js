@@ -1,4 +1,5 @@
 import graphService from '../../api/graphApi';
+import Vue from "vue";
 // initial state
 const state = {
   all: {}
@@ -30,6 +31,7 @@ const actions = {
   },
   async createGraph({commit}, graphId) {
     const newGraph = await graphService.createGraph(graphId);
+    Vue.$log.debug(newGraph);
     commit('createGraph', newGraph);
     return newGraph;
   }

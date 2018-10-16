@@ -40,29 +40,32 @@ const actions = {
   },
   async createGraph({commit}, graphId) {
     const newGraph = await graphApi.createGraph(graphId);
+    console.log('createGraph');
+    console.log(newGraph);
     commit('addGraph', newGraph);
     return newGraph;
   },
-  async getGraphDataseries ({ commit }, graphId) {
-    const graphDataseries = await graphApi.getGraphDataseries(graphId);
-    commit('setGraphDataseries', graphDataseries);
+  async getDataseriesByGraphId({commit}, graphId) {
+    const dataseries = await dataseriesApi.getDataseriesByGraphId(graphId);
+    if (dataseries != null) {
+      commit('setGraphDataseries', graphId, dataseries.data);
+    }
   },
-  async deleteGraphDataseries ({ state, commit }, dataseriesId) {
+  async deleteGraphDataseries({state, commit}, dataseriesId) {
     await dataseriesApi.deleteDataseries(dataseriesId);
     // TODO delete dataseries mapping
     commit('deleteDataseries', dataseriesId);
   },
-  async createGraphDataseries ({ commit }, {graphId, dataseries}) {
+  async createGraphDataseries({commit}, {graphId, dataseries}) {
     const newDataseries = await dataseriesApi.createDataseries(dataseries);
-    const newGraphDataseriesMapping = await graphApi.addDataseriesToGraph(graphId, dataseries);
     commit('createGraphDataseries', {graphId, newDataseries});
   },
-  async addSelectorToDataseries({ commit }, {dataseriesId, selector}) {
+  async addSelectorToDataseries({commit}, {dataseriesId, selector}) {
     const newSelector = selectorApi.createSelector(selector);
     const selectorDataseriesMapping = await dataseriesApi.addSelectorToDataseries(dataseriesId, newSelector._id);
     commit('addSelectorToDataseries', {dataseriesId, newSelector});
   },
-  async removeSelectorFromDataseries({ commit }, {dataseriesId, selectorId}) {
+  async removeSelectorFromDataseries({commit}, {dataseriesId, selectorId}) {
     const selectorDataseriesMapping = await dataseriesApi.removeSelectorFromDataseries(dataseriesId, selectorId);
     const deleted = selectorApi.deleteSelector(selectorId);
     commit('addSelectorToDataseries', selectorDataseriesMapping);
@@ -84,8 +87,10 @@ const mutations = {
   addGraph(state, graph) {
     state.graphs.push(graph);
   },
-  setGraphDataseries(state, graph) {
-    state.graphs.push(graph);
+  setGraphDataseries(state, graphid, dataseries) {
+    const graph = state.graphs.find(x => x._id === graphid);
+    let update = graph.dataseries.find(x => x._id === dataseries._id);
+    update = dataseries;
   }
 };
 

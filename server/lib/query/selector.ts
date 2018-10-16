@@ -13,11 +13,13 @@ export class Selector implements ISelector {
     operator: string;
     createdAt: Date;
 
-    constructor(that: ISelector) {
-        this.key = that.key;
-        this.value = that.value;
-        this.operator = that.operator;
-        this.createdAt = that.createdAt;
+    static clone(that: ISelector): Selector {
+        let selector: Selector = new Selector();
+        selector.key = that.key;
+        selector.value = that.value;
+        selector.operator = that.operator;
+        selector.createdAt = that.createdAt;
+        return selector;
     }
 }
 

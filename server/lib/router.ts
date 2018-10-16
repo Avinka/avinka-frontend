@@ -27,7 +27,7 @@ export class Router {
     readonly adminRouter: AdminRouter = new AdminRouter(this.activityService);
     readonly datapointRounter: DatapointRouter = new DatapointRouter(this.datapointService);
     readonly dashboardRouter: DashboardRouter = new DashboardRouter();
-    readonly graphRouter: GraphRouter = new GraphRouter();
+    readonly graphRouter: GraphRouter = new GraphRouter(this.datapointService);
     readonly dataSeriesRouter: DataseriesRouter = new DataseriesRouter(this.datapointService);
     readonly selectorRouter: SelectorRouter = new SelectorRouter();
 

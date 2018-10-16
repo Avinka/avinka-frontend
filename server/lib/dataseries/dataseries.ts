@@ -1,13 +1,33 @@
-import {Document, Schema, Model, model} from "mongoose";
-import {ISelector} from "query/selector";
+import {Document, Schema} from "mongoose";
+import {ISelector} from "../query/selector";
 
 export interface IDataseries {
+    _id: any;
     name: string;
     createdAt: Date;
-    query: Object;
     indexName: string;
     selectors: ISelector[];
-    //aggregators: IAggregators[];
+    datapoints: {};
+}
+
+export class Dataseries implements IDataseries {
+    _id: any;
+    name: string;
+    createdAt: Date;
+    indexName: string;
+    selectors: ISelector[];
+    datapoints: {};
+
+    static clone(that: IDataseries): Dataseries {
+        let result: Dataseries = new Dataseries();
+        result._id = that._id;
+        result.name = that.name;
+        result.createdAt = that.createdAt;
+        result.indexName = that.indexName;
+        result.selectors = that.selectors;
+        result.datapoints = that.datapoints;
+        return result;
+    }
 }
 
 export interface IDataseriesModel extends IDataseries, Document {
@@ -18,6 +38,6 @@ export const DataseriesSchema: Schema = new Schema({
     createdAt: {type: Date, default: Date.now},
     query: String,
     indexName: String,
-    selectors: [{ type: Schema.Types.ObjectId, ref: 'Selector' }]
+    selectors: [{type: Schema.Types.ObjectId, ref: 'Selector'}]
     // aggregators: [{ type: Schema.Types.ObjectId, ref: 'Aggregator' }]
 });

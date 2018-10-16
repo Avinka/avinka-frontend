@@ -61,7 +61,7 @@
       }
     },
     created() {
-      // this.$store.dispatch('dataseries/getDataseries', this.graph.dataseries[0]()._id);
+      this.$store.dispatch('graphStore/getDataseriesByGraphId', this.graph._id);
     },
     methods: {
       deleteGraph() {
