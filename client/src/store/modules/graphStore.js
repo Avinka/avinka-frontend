@@ -16,7 +16,7 @@ const getters = {
     return state.graphs;
   },
   allByIds: (state) => (graphIds) => {
-    return state.graphs;
+    return state.graphs.filter((graph) => { return graphIds.includes(graph._id) });
   },
   getByGraphById: (state) => findGraphById,
   getCountersByDataseriesId: (state) => (id) => {
@@ -41,8 +41,6 @@ const actions = {
   },
   async createGraph({commit}, graphId) {
     const newGraph = await graphApi.createGraph(graphId);
-    console.log('createGraph');
-    console.log(newGraph);
     commit('addGraph', newGraph);
     return newGraph;
   },
@@ -58,7 +56,7 @@ const actions = {
   async addSelectorToDataseries({commit}, {dataseriesId, selector}) {
     const newSelector = selectorApi.createSelector(selector);
     const selectorDataseriesMapping = await dataseriesApi.addSelectorToDataseries(dataseriesId, newSelector._id);
-    commit('addSelectorToDataseries', {dataseriesId, newSelector});
+    commit('addSelectorToDataseries', dataseriesId, newSelector);
   },
   async removeSelectorFromDataseries({commit}, {dataseriesId, selectorId}) {
     const selectorDataseriesMapping = await dataseriesApi.removeSelectorFromDataseries(dataseriesId, selectorId);
@@ -87,6 +85,15 @@ const mutations = {
     _.forEach(dataseries, (dataserie) => {
       const index = graph.dataseries.findIndex(x => x._id === dataserie._id);
       graph.dataseries[index] = dataserie;
+    });
+  },
+  addSelectorToDataseries(state, dataseriesId, newSelector) {
+    _.forEach(state.graphs, (graph) => {
+      _.forEach(graph.dataseries, (dataserie) => {
+        if (dataserie._id === dataseriesId) {
+          dataserie.selectors.push(newSelector);
+        }
+      });
     });
   }
 };

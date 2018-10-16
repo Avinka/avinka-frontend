@@ -61,7 +61,9 @@ export class GraphRouter {
             })
             .delete(async (req: Request, res: Response) => {
                 const graph  = await this.Graph.findOne({_id: req.params.id}).exec();
-                await this.Dataseries.deleteMany({_id: {$in: graph.dataseries}});
+                if (graph.dataseries) {
+                    await this.Dataseries.deleteMany({_id: {$in: graph.dataseries}});
+                }
                 await graph.remove();
                 res.status(200);
             })
