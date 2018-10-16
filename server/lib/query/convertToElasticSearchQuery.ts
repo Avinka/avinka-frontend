@@ -13,25 +13,15 @@ export function convertToElasticSearchQuery(selector: ISelector): Query {
 }
 
 export interface Query {
-    toJSON(): string
 }
-
+//This will work for string, date, number 
 export class MatchQuery implements Query {
-    key: string;
-    value: any;
+    match: {}
 
     constructor(key: string, value: any) {
-        this.key = key;
-        this.value = value;
-    }
-
-    toJSON(): string {
         let pair = {};
-        pair[this.key] = this.value;
-        const json = {
-            'match' : pair
-        }
-        return JSON.stringify(json);
+        pair[key] = value;
+        this.match = pair;
     }
 }
 

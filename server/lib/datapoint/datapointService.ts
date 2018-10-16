@@ -19,14 +19,18 @@ export class DatapointService {
     async get(dataseries: IDataseries): Promise<Object> {
         let query;
         if (dataseries.selectors && dataseries.selectors.length > 0) {
-            const filters: Array<string> = dataseries.selectors.map(x => convertToElasticSearchQuery(x).toJSON());
+            const filters: Array<Object> = dataseries.selectors.map(x => convertToElasticSearchQuery(x));
             query = {
-                    "match_all": {},
-                'filter': filters
+                "bool": {
+                    "must": [
+                        {"match_all": {}}
+                    ],
+                    "filter": filters
+                }
             }
         } else {
             query = {
-                    "match_all": {}
+                "match_all": {}
             }
         }
         const agg = {

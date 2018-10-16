@@ -17,7 +17,7 @@ export class DatapointRouter {
         app.route('/datapoints/')
             .get(async (req: Request, res: Response) => {
                 let ids = req.query.dataseriesIds.split(',');
-                const dataseries = await this.Dataseries.find({_id: {$in: ids}}).exec();
+                const dataseries = await this.Dataseries.find({_id: {$in: ids}}).populate("selectors").exec();
                 if (dataseries) {
                     let result = {};
                     for (let d of dataseries) {
