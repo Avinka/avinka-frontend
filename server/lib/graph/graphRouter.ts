@@ -44,7 +44,7 @@ export class GraphRouter {
                     if(graph != null) {
                         res.status(200).send(graph);
                     } else {
-                        res.status(404);
+                        res.status(404).send()
                     }
                 } else {
                     let result = await this.Graph.find({_id: {$in:req.params.id.split(',')}})
@@ -65,7 +65,7 @@ export class GraphRouter {
                     await this.Dataseries.deleteMany({_id: {$in: graph.dataseries}});
                 }
                 await graph.remove();
-                res.status(200);
+                res.status(200).send();
             })
             .put(async (req: Request, res: Response) => {
                 const id = req.params.id;

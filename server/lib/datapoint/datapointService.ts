@@ -4,7 +4,7 @@ import {Dataseries, IDataseries} from "../dataseries/dataseries";
 import {DataPoints} from "./datapoints";
 import {convertToElasticSearchQuery} from "../query/convertToElasticSearchQuery";
 
-export class    DatapointService {
+export class DatapointService {
 
     readonly client: Client;
     readonly indexName;
@@ -17,13 +17,18 @@ export class    DatapointService {
     }
 
     async get(dataseries: IDataseries): Promise<Object> {
-        const filters: Array<string> = dataseries.selectors.map(x => convertToElasticSearchQuery(x).toJSON());
-        const query = {
-            'match': {
-                "match_all": {}
-            },
-            'filter' : filters
-        };
+        let query;
+        if (dataseries.selectors && dataseries.selectors.length > 0) {
+            const filters: Array<string> = dataseries.selectors.map(x => convertToElasticSearchQuery(x).toJSON());
+            query = {
+                    "match_all": {},
+                'filter': filters
+            }
+        } else {
+            query = {
+                    "match_all": {}
+            }
+        }
         const agg = {
             'grouping': {
                 'date_histogram': {
