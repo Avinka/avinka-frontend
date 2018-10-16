@@ -24,7 +24,7 @@
             New hot graphs
           </h3>
         </md-toolbar>
-        <graph-list :graphs="graphs"></graph-list>
+        <graph-list v-on:graph-deleted="onGraphDeleted" :graphs="graphs"></graph-list>
       </div>
     </div>
   </div>
@@ -54,6 +54,11 @@
     },
     created() {
       this.$store.dispatch('graphStore/getAllGraphs');
+    },
+    methods: {
+      onGraphDeleted(event) {
+        // FIXME figure how to handle these cases - reverse mapping on dashboards? or remove?
+      }
     }
   };
 </script>

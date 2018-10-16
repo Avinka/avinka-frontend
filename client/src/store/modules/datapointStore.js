@@ -1,4 +1,5 @@
 import datapointApi from '../../api/datapointApi';
+import _ from 'lodash';
 
 const state = {
   datapoints: []
@@ -21,7 +22,16 @@ const actions = {
 
 const mutations = {
   addDatapoints(state, datapoints) {
-    state.datapoints = Object.values(datapoints);
+    _.forEach(Object.values(datapoints), (newDatapointObj) => {
+      const index = state.datapoints.findIndex((datapoint) => {
+        return newDatapointObj.dataseriesId === datapoint.dataseriesId;
+      });
+      if (index !== -1) {
+        state.datapoints[index] = newDatapointObj;
+      } else {
+        state.datapoints.push(newDatapointObj);
+      }
+    });
   }
 };
 

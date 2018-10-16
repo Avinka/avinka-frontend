@@ -60,10 +60,12 @@
       },
       onGraphDeleted(event) {
         this.$log.debug('Got an event', event);
+        this.$log.debug('before remove', this.dashboard);
         this.$store.dispatch('dashboards/removeGraphFromDashboard', {
           dashboardId: this.$route.params.id,
           graphId: event._id
         }, event);
+        this.$log.debug('after remove', this.dashboard);
       }
     }
   };
