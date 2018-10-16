@@ -1,9 +1,9 @@
 <template>
     <div>
-      <div v-if="!graph.dataseries || !graph.dataserie.selectors || graph.dataserie.selectors.length===0">
+      <div v-if="!graph.dataseries || !graph.dataseries.selectors || graph.dataseries.selectors.length===0">
         Add a selector to create a new data series
       </div>
-      <div v-if="!graph.dataseries || !graph.dataserie.selectors || graph.dataserie.selectors.length===0">
+      <div v-if="!graph.dataseries || !graph.dataseries.selectors || graph.dataseries.selectors.length===0">
         <selector-add-form></selector-add-form>
       </div>
       <md-list v-for="dataserie in graph.dataseries">
