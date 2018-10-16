@@ -18,7 +18,14 @@ export class GraphRouter {
     public routes(app): void {
         app.route('/graph')
             .get(async (req: Request, res: Response) => {
-                let graph = await this.Graph.find().exec();
+                let graph = await this.Graph.find().populate({
+                    path: 'dataseries',
+                    model: 'Dataseries',
+                    populate: {
+                        path: 'selectors',
+                        model: 'Selector'
+                    }
+                }).exec();
                 res.status(200).send(graph)
             })
             .post(async (req: Request, res: Response) => {
@@ -32,11 +39,24 @@ export class GraphRouter {
             });
         app.route('/graph/:id')
             .get(async (req: Request, res: Response) => {
-                const graph = this.Graph.findOne({_id: req.params.id}).populate('dataseries').exec();
-                if(graph != null) {
-                    res.status(200).send(graph);
+                if(!req.params.id.includes(',')) {
+                    const graph = this.Graph.findOne({_id: req.params.id}).populate('dataseries').exec();
+                    if(graph != null) {
+                        res.status(200).send(graph);
+                    } else {
+                        res.status(404);
+                    }
                 } else {
-                    res.status(404);
+                    let result = await this.Graph.find({_id: {$in:req.params.id.split(',')}})
+                        .populate({
+                            path: 'dataseries',
+                            model: 'Dataseries',
+                            populate: {
+                                path: 'selectors',
+                                model: 'Selector'
+                            }
+                        }).exec();
+                    res.status(200).send(result)
                 }
             })
             .delete(async (req: Request, res: Response) => {
