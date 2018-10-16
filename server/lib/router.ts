@@ -28,7 +28,7 @@ export class Router {
     readonly datapointRounter: DatapointRouter = new DatapointRouter(this.datapointService);
     readonly dashboardRouter: DashboardRouter = new DashboardRouter();
     readonly graphRouter: GraphRouter = new GraphRouter(this.datapointService);
-    readonly dataSeriesRouter: DataseriesRouter = new DataseriesRouter(this.datapointService);
+    readonly dataSeriesRouter: DataseriesRouter = new DataseriesRouter();
     readonly selectorRouter: SelectorRouter = new SelectorRouter();
 
     public routes(app): void {
