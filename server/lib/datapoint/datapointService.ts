@@ -3,6 +3,7 @@ import {Activity} from "../activity/activity";
 import {Dataseries, IDataseries} from "../dataseries/dataseries";
 import {DataPoints} from "./datapoints";
 import {convertToElasticSearchQuery} from "../query/convertToElasticSearchQuery";
+import {Query} from "../query/query";
 
 export class DatapointService {
 
@@ -15,36 +16,9 @@ export class DatapointService {
         this.indexName = indexName;
         this.indexType = indexType;
     }
-
     async get(dataseries: IDataseries): Promise<Object> {
-        let query;
-        if (dataseries.selectors && dataseries.selectors.length > 0) {
-            const filters: Array<Object> = dataseries.selectors.map(x => convertToElasticSearchQuery(x));
-            query = {
-                "bool": {
-                    "must": [
-                        {"match_all": {}}
-                    ],
-                    "filter": filters
-                }
-            }
-        } else {
-            query = {
-                "match_all": {}
-            }
-        }
-        const agg = {
-            'grouping': {
-                'date_histogram': {
-                    'field': 'published',
-                    'interval': 3600000,
-                    'offset': 0,
-                    'order': {'_key': 'asc'},
-                    'keyed': false,
-                    'min_doc_count': 0
-                }
-            }
-        };
+        const query = this.buildQuery(dataseries);
+        const agg = this.buildAggregation(dataseries);
         const body = {
             'query': query,
             '_source': false,
@@ -68,5 +42,38 @@ export class DatapointService {
         result.name = dataseries.name || 'default';
         result.data = counts;
         return result;
+    }
+
+     buildQuery(dataseries: Dataseries): Object {
+        if (dataseries.selectors && dataseries.selectors.length > 0) {
+            const filters: Array<Query> = dataseries.selectors.map(x => convertToElasticSearchQuery(x));
+            return {
+                "bool": {
+                    "must": [
+                        {"match_all": {}}
+                    ],
+                    "filter": filters
+                }
+            }
+        } else {
+            return {
+                "match_all": {}
+            }
+        }
+    }
+
+     buildAggregation(dataseries: Dataseries): Object {
+        return {
+            'grouping': {
+                'date_histogram': {
+                    'field': 'published',
+                    'interval': 3600000,
+                    'offset': 0,
+                    'order': {'_key': 'asc'},
+                    'keyed': false,
+                    'min_doc_count': 0
+                }
+            }
+        };
     }
 }
