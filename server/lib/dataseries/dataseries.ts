@@ -7,7 +7,6 @@ export interface IDataseries {
     createdAt: Date;
     indexName: string;
     selectors: ISelector[];
-    datapoints: {};
 }
 
 export class Dataseries implements IDataseries {
@@ -16,7 +15,6 @@ export class Dataseries implements IDataseries {
     createdAt: Date;
     indexName: string;
     selectors: ISelector[];
-    datapoints: {};
 
     static clone(that: IDataseries): Dataseries {
         let result: Dataseries = new Dataseries();
@@ -25,7 +23,6 @@ export class Dataseries implements IDataseries {
         result.createdAt = that.createdAt;
         result.indexName = that.indexName;
         result.selectors = that.selectors;
-        result.datapoints = that.datapoints;
         return result;
     }
 }

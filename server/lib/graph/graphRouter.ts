@@ -24,25 +24,26 @@ export class GraphRouter {
             .post(async (req: Request, res: Response) => {
                 let graph: Graph = req.body;
                 let dataseries: IDataseries = await this.Dataseries.create({});
-                dataseries.datapoints = await this.datapointService.get(dataseries.selectors);
                 graph.dataseries = [dataseries];
-                const result = await this.Graph.create(graph);
+                let result = await this.Graph.create(graph);
+                //Only the id of the dataseries is persisted, therefore we need to add it again
+                result.dataseries = [dataseries];
                 res.status(200).send(result)
             });
         app.route('/graph/:id')
             .get(async (req: Request, res: Response) => {
-                const id = req.params.id;
-                let findOne = this.Graph.findOne({_id: id});
-                if (req.query.full === 'true') {
-                    findOne = findOne.populate('dataseries')
+                const graph = this.Graph.findOne({_id: req.params.id}).populate('dataseries').exec();
+                if(graph != null) {
+                    res.status(200).send(graph);
+                } else {
+                    res.status(404);
                 }
-                let result = await findOne.exec();
-                res.status(200).send(result)
             })
             .delete(async (req: Request, res: Response) => {
-                const id = req.params.id;
-                let result = await this.Graph.deleteOne({_id: id}).exec();
-                res.status(200).send(result)
+                const graph  = await this.Graph.findOne({_id: req.params.id}).exec();
+                await this.Dataseries.deleteMany({_id: {$in: graph.dataseries}});
+                await graph.remove();
+                res.status(200);
             })
             .put(async (req: Request, res: Response) => {
                 const id = req.params.id;
@@ -55,7 +56,7 @@ export class GraphRouter {
                 const graphId = req.params.id;
                 let result = await this.Graph.findOne({_id: graphId});
                 // @ts-ignore
-                result.graphs.push(req.body._id);
+                result.dataseries.push(req.body._id);
                 await result.save();
                 res.status(201).send(result)
             });

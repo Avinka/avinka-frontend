@@ -44,6 +44,7 @@ export class DatapointService {
             type: this.indexType,
             body: body
         });
+        //TODO return undefined if there is no result
         const buckets = aggregation.aggregations.grouping.buckets;
         let counts = {};
         buckets.map(x => {
