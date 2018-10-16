@@ -56,9 +56,7 @@
 
     computed: {
       datapoints () {
-        let datapoints = this.$store.getters['datapointStore/getByDataseriesIds'](this.graph.dataseries.map(x => x._id));
-        //datapoints = datapoints.map((datapoint) => { delete datapoint['dataseriesId']; return datapoint });
-        return datapoints;
+        return this.$store.getters['datapointStore/getByDataseriesIds'](this.graph.dataseries.map(x => x._id));
       }
     },
     created() {
