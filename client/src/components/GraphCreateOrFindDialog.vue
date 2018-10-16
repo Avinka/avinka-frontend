@@ -4,11 +4,10 @@
       <md-dialog-title>Add a graph</md-dialog-title>
 
       <md-tabs md-dynamic-height>
-        <md-tab md-label="Find">
-        </md-tab>
-
         <md-tab md-label="Create">
           <graph-add-form v-on:graph-created="onGraphCreated"></graph-add-form>
+        </md-tab>
+        <md-tab md-label="Find">
         </md-tab>
       </md-tabs>
 
@@ -23,7 +22,7 @@
   import GraphAddForm from '@/components/GraphAddForm';
 
   export default {
-    name: 'CreateOrFindGraphDialog',
+    name: 'GraphCreateOrFindDialog',
     props: ['showAddGraphDialogProp'],
     components: {
       GraphAddForm
@@ -43,6 +42,7 @@
         this.$log.debug('Got an event', event);
         this.$log.debug('Rethrowing to parent');
         this.$emit('graph-created', event);
+        this.showAddGraphDialogProp = !this.showAddGraphDialogProp;
       }
     }
   };
