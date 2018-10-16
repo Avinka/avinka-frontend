@@ -1,6 +1,7 @@
 import graphApi from '../../api/graphApi';
 import dataseriesApi from '../../api/dataseriesApi';
 import selectorApi from '../../api/selectorApi';
+import _ from 'lodash';
 
 const state = {
   graphs: [],
@@ -89,8 +90,10 @@ const mutations = {
   },
   setGraphDataseries(state, graphid, dataseries) {
     const graph = state.graphs.find(x => x._id === graphid);
-    let update = graph.dataseries.find(x => x._id === dataseries._id);
-    update = dataseries;
+    _.forEach(dataseries, (dataserie) => {
+      const index = graph.dataseries.findIndex(x => x._id === dataserie._id);
+      graph.dataseries[index] = dataserie;
+    });
   }
 };
 
