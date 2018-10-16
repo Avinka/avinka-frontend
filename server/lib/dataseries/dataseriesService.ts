@@ -15,7 +15,7 @@ export class DataseriesService {
     async get(id: any): Promise<Object> {
         const dataseries: IDataseries = await this.Dataseries.findOne({_id: id}).exec();
         if (dataseries != null) {
-            return await this.dataPointService.get(dataseries.selectors);
+            return await this.dataPointService.get(dataseries);
         }
         return null;
     }
