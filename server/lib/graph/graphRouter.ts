@@ -65,7 +65,7 @@ export class GraphRouter {
                     await this.Dataseries.deleteMany({_id: {$in: graph.dataseries}});
                 }
                 await graph.remove();
-                res.status(200);
+                res.status(200).send();
             })
             .put(async (req: Request, res: Response) => {
                 const id = req.params.id;
