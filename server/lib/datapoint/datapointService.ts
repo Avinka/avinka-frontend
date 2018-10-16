@@ -2,8 +2,9 @@ import {Client} from "elasticsearch";
 import {Activity} from "../activity/activity";
 import {Dataseries, IDataseries} from "../dataseries/dataseries";
 import {DataPoints} from "./datapoints";
+import {convertToElasticSearchQuery} from "../query/convertToElasticSearchQuery";
 
-export class DatapointService {
+export class    DatapointService {
 
     readonly client: Client;
     readonly indexName;
@@ -16,13 +17,12 @@ export class DatapointService {
     }
 
     async get(dataseries: IDataseries): Promise<Object> {
+        const filters: Array<string> = dataseries.selectors.map(x => convertToElasticSearchQuery(x).toJSON());
         const query = {
             'match': {
-                'object.type': {
-                    'query': 'Bot',
-                    'operator': 'OR'
-                }
-            }
+                "match_all": {}
+            },
+            'filter' : filters
         };
         const agg = {
             'grouping': {
