@@ -19,14 +19,14 @@ export class DatapointRouter {
                 let ids = req.query.dataseriesIds.split(',');
                 const dataseries = await this.Dataseries.find({_id: {$in: ids}}).exec();
                 if (dataseries) {
-                    let result = [];
+                    let result = {};
                     for (let d of dataseries) {
                         const datapoints = await this.dataPointService.get(d);
                         if (datapoints) {
-                            result.push(datapoints);
+                            result[d._id] = datapoints;
                         }
                     }
-                    res.status(200).send({'data': result});
+                    res.status(200).send(result);
                     return;
                 }
                 res.status(404);

@@ -5,6 +5,7 @@ import dashboards from './modules/dashboards';
 import graphs from './modules/graphs';
 import graphStore from './modules/graphStore';
 import dataseries from './modules/dataseries';
+import datapointStore from './modules/datapointStore';
 import selectors from './modules/selectors';
 
 Vue.use(Vuex);
@@ -17,6 +18,7 @@ export default new Vuex.Store({
     graphs,
     graphStore,
     dataseries,
+    datapointStore,
     selectors
   },
   strict: debug

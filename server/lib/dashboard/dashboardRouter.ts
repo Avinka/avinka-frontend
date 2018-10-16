@@ -52,7 +52,18 @@ export class DashboardRouter {
             })
             .get(async (req: Request, res: Response) => {
                 const id = req.params.id;
-                let result = await this.Dashboard.findOne({_id: id}).populate('graphs').exec();
+                let result = await this.Dashboard.findOne({_id: id})
+                    .populate({
+                        path: 'graphs',
+                        populate: {
+                            path: 'dataseries',
+                            model: 'Dataseries',
+                            populate: {
+                                path: 'selectors',
+                                model: 'Selector'
+                            }
+                        }
+                    }).exec();
                 // @ts-ignore
                 res.status(200).send(result.graphs)
             });

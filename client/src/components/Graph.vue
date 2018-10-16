@@ -23,7 +23,7 @@
           </md-button>
         </div>
         <div v-show="showGraphEditor">
-          <graph-editor :graph="foobar"></graph-editor>
+          <graph-editor :graph="graph"></graph-editor>
         </div>
       </md-list-item>
       <line-chart :data="datapoints"></line-chart>
@@ -56,11 +56,13 @@
 
     computed: {
       datapoints () {
-        this.$store.getters['datapointStore/getByDataseriesIds'](this.graph.dataseries.map(x => x._id));
+        let datapoints = this.$store.getters['datapointStore/getByDataseriesIds'](this.graph.dataseries.map(x => x._id));
+        //datapoints = datapoints.map((datapoint) => { delete datapoint['dataseriesId']; return datapoint });
+        return datapoints;
       }
     },
     created() {
-       this.$store.dispatch('datapointStore/getDatapointsByIds', this.graph.dataseries.map(x => x._id));
+       this.$store.dispatch('datapointStore/getDataPointsByDataseriesIds', this.graph.dataseries.map(x => x._id));
     },
     methods: {
       deleteGraph() {

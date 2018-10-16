@@ -1,6 +1,4 @@
-import graphApi from "../../api/graphApi";
-import dataseriesApi from "../../api/dataseriesApi";
-import selectorApi from "../../api/selectorApi";
+import datapointApi from '../../api/datapointApi';
 
 const state = {
   datapoints: []
@@ -9,22 +7,21 @@ const state = {
 // getters
 const getters = {
   getByDataseriesIds: (state) => (ids) => {
-    return state.datapoints.find((datapoint) => datapoint.data.find);
+    return state.datapoints.filter((datapoint) => ids.includes(datapoint.dataseriesId));
   }
 };
 
 // actions
 const actions = {
-  async getAllGraphs({commit}) {
-    const graphs = await graphApi.getAllGraphs();
-    commit('addGraphs', graphs);
+  async getDataPointsByDataseriesIds({commit}, dataseriesIds) {
+    const datapoints = await datapointApi.getDataPointsByDataseriesIds(dataseriesIds);
+    commit('addDatapoints', datapoints);
   }
-
 };
 
 const mutations = {
-  addGraphs(state, graphs) {
-    state.graphs = graphs;
+  addDatapoints(state, datapoints) {
+    state.datapoints = Object.values(datapoints);
   }
 };
 

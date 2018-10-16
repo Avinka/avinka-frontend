@@ -56,7 +56,7 @@ export class DatapointService {
         });
         let result = new DataPoints();
         result.dataseriesId = dataseries._id;
-        result.name = dataseries.name;
+        result.name = dataseries.name || 'default';
         result.data = counts;
         return result;
     }
