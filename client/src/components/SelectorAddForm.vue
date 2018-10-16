@@ -38,6 +38,7 @@
 <script>
   export default {
     name: 'SelectorAddForm',
+    props: ['dataseries'],
     data() {
       return {
         sending: false,
@@ -45,19 +46,18 @@
       };
     },
     methods: {
-      validateSelector() {
-        this.saveSelector();
+      async validateSelector() {
+        await this.saveSelector();
       },
       async saveSelector() {
-        const newSelector = await this.$store.dispatch('selectors/createSelector', {
-          key: this.form.key,
-          value: this.form.value,
-          operator: this.form.operator
+        const newSelector = await this.$store.dispatch('graphStore/addSelectorToDataseries', {
+          selector: {
+            key: this.form.key,
+            value: this.form.value,
+            operator: this.form.operator
+          },
+          dataseriesId: this.dataseries._id
         });
-        this.$log.debug('Got selector created data', newSelector);
-        // this.$emit('selector-created', selector);
-        const dataseriesId = null;
-        const dataseriesSelectorMapping = await this.$store.dataseries.addSelectorToDataseries({dataseriesId, selectorId: newSelector._id});
       }
     }
   };
