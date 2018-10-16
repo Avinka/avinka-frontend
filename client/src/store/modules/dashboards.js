@@ -31,7 +31,7 @@ const actions = {
   },
   async addGraphToDashboard({ commit }, {dashboardId, graphId}) {
     const graphDashboardMapping = await dashboardService.addGraphToDashboard(dashboardId, graphId);
-    commit('createGraphDashboardMapping', graphDashboardMapping);
+    commit('createGraphDashboardMapping', {dashboardId, graphId});
   },
   async removeGraphFromDashboard({ commit }, {dashboardId, graphId}) {
     await dashboardService.removeGraphFromDashboard(dashboardId, graphId);
@@ -54,11 +54,13 @@ const mutations = {
   createDashboard (state, dashboard) {
     state.all.push(dashboard);
   },
-  createGraphDashboardMapping(state, graphDashboardMapping) {
-    // TODO fill with logic
-  },
+  createGraphDashboardMapping(state, {dashboardId, graphId}) {
+    const index = state.all.findIndex(item => item._id === dashboardId);
+    state.all[index].graphs.push(graphId);
+    },
   removeGraphDashboardMapping(state, {dashboardId, graphId}) {
-
+    const index = state.all.findIndex(item => item._id === dashboardId);
+    state.all[index].graphs = state.all[index].graphs.filter(item => item._id !== graphId);
   }
 };
 
