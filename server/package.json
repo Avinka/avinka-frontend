@@ -9,7 +9,7 @@
     "start": "nodemon ./dist/server.js",
     "start-debug": "tsc-watch --onSuccess \"nodemon --inspect dist/server.js\"",
     "prod": "npm run build && npm run start",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "author": "",
   "license": "ISC",
@@ -26,10 +26,13 @@
     "winston": "^3.1.0"
   },
   "devDependencies": {
+    "@types/jest": "^23.3.5",
     "@types/mongodb": "^3.1.9",
     "@types/mongoose": "^5.2.17",
     "concurrently": "^2.2.0",
+    "jest": "^23.6.0",
     "nodemon": "^1.9.2",
+    "ts-jest": "^23.10.4",
     "tsc-watch": "^1.0.30",
     "typescript": "^3.1.3"
   }
