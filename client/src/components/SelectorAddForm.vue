@@ -38,7 +38,7 @@
 <script>
   export default {
     name: 'SelectorAddForm',
-    props: ['dataseries'],
+    props: ['dataseriesId'],
     data() {
       return {
         sending: false,
@@ -56,8 +56,9 @@
             value: this.form.value,
             operator: this.form.operator
           },
-          dataseriesId: this.dataseries._id
+          dataseriesId: this.dataseriesId
         });
+        this.$emit('selector-created', newSelector);
       }
     }
   };

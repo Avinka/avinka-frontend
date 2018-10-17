@@ -30,6 +30,10 @@ const actions = {
     const graphs = await graphApi.getAllGraphs();
     commit('addGraphs', graphs);
   },
+  async getGraphById({commit}, graphId) {
+    const graph = await graphApi.getGraphById();
+    commit('addGraph', graph);
+  },
   async getAllDashboardGraphs({commit}, dashboardId) {
     const graphs = await graphApi.getAllDashboardGraphs(dashboardId);
     commit('addGraphs', graphs);
@@ -56,7 +60,7 @@ const actions = {
   async addSelectorToDataseries({commit}, {dataseriesId, selector}) {
     const newSelector = await selectorApi.createSelector(selector);
     const selectorDataseriesMapping = await dataseriesApi.addSelectorToDataseries(dataseriesId, newSelector._id);
-    commit('addSelectorToDataseries', dataseriesId, newSelector);
+    commit('addSelectorToDataseries', {dataseriesId, newSelector});
   },
   async removeSelectorFromDataseries({commit}, {dataseriesId, selectorId}) {
     const selectorDataseriesMapping = await dataseriesApi.removeSelectorFromDataseries(dataseriesId, selectorId);
@@ -77,6 +81,14 @@ const mutations = {
       start, 1
     );
   },
+  replaceOrAddGraph(state, graph) {
+    const existingGraphIndex = state.graphs.findIndex(x => x._id === graph._id);
+    if (existingGraphIndex === -1) {
+      state.graphs.push(graph);
+    } else {
+      state.graphs[existingGraphIndex] = graph;
+    }
+  },
   addGraph(state, graph) {
     state.graphs.push(graph);
   },
@@ -87,7 +99,7 @@ const mutations = {
       graph.dataseries[index] = dataserie;
     });
   },
-  addSelectorToDataseries(state, dataseriesId, newSelector) {
+  addSelectorToDataseries(state, {dataseriesId, newSelector}) {
     _.forEach(state.graphs, (graph) => {
       _.forEach(graph.dataseries, (dataserie) => {
         if (dataserie._id === dataseriesId) {

@@ -46,6 +46,7 @@ export class DataseriesRouter {
                 // @ts-ignore
                 result.selectors.push(req.body._id);
                 await result.save();
+                result = await this.Dataseries.findOne({_id: dataseriesId}).populate('selectors');
                 res.status(200).send(result);
             });
     }
