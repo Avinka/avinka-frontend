@@ -1,4 +1,4 @@
-import {Client} from "elasticsearch";
+import {Client, SearchResponse} from "elasticsearch";
 import {Activity} from "../activity/activity";
 import {Dataseries, IDataseries} from "../dataseries/dataseries";
 import {DataPoints} from "./datapoints";
@@ -24,24 +24,17 @@ export class DatapointService {
             '_source': false,
             'aggregations': agg
         };
-        const aggregation = await this.client.search<Activity>({
+        const response = await this.client.search<Activity>({
             index: this.indexName,
             type: this.indexType,
             body: body
         });
-        //TODO return undefined if there is no result
-        const buckets = aggregation.aggregations.grouping.buckets;
-        let counts = {};
-        buckets.map(x => {
-            const date = x['key_as_string'];
-            const value = x['doc_count'];
-            counts[date] = value;
-        });
-        let result = new DataPoints();
-        result.dataseriesId = dataseries._id;
-        result.name = dataseries.name || 'default';
-        result.data = counts;
-        return result;
+
+        let datapoints = this.buildDataPoints(response);
+
+        datapoints.dataseriesId = dataseries._id;
+        datapoints.name = dataseries.name || 'default';
+        return datapoints;
     }
 
      buildQuery(dataseries: Dataseries): Object {
@@ -60,6 +53,19 @@ export class DatapointService {
                 "match_all": {}
             }
         }
+    }
+
+    buildDataPoints(response: SearchResponse<Activity>): DataPoints {
+        const buckets = response.aggregations.grouping.buckets;
+        let counts = {};
+        buckets.map(x => {
+            const date = x['key_as_string'];
+            const value = x['doc_count'];
+            counts[date] = value;
+        });
+        let result = new DataPoints();
+        result.data = counts;
+        return result;
     }
 
      buildAggregation(dataseries: Dataseries): Object {
