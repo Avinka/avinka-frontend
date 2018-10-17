@@ -16,7 +16,9 @@ const getters = {
     return state.graphs;
   },
   allByIds: (state) => (graphIds) => {
-    return state.graphs.filter((graph) => { return graphIds.includes(graph._id) });
+    return state.graphs.filter((graph) => {
+      return graphIds.includes(graph._id)
+    });
   },
   getByGraphById: (state) => findGraphById,
   getCountersByDataseriesId: (state) => (id) => {
@@ -49,6 +51,11 @@ const actions = {
     // TODO delete dataseries mapping
     commit('deleteDataseries', dataseriesId);
   },
+  async updateGraphValue({commit}, {graphId, key, value}) {
+    const graph = findGraphById(graphId);
+    await graphApi.updateGraph(graph);
+    commit('updateGraphValue', {graphId, key, value});
+  },
   async createGraphDataseries({commit}, {graphId, dataseries}) {
     const newDataseries = await dataseriesApi.createDataseries(dataseries);
     commit('createGraphDataseries', {graphId, newDataseries});
@@ -66,6 +73,11 @@ const actions = {
 };
 
 const mutations = {
+  updateGraphValue(state, {graphId, key, value}) {
+    console.log(graphId + ' ' + key + ' ' + value);
+    const graph = state.graphs.find(x => x._id === graphId);
+    graph[key] = value;
+  },
   addGraphs(state, graphs) {
     state.graphs = graphs;
   },

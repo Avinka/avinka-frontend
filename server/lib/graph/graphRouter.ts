@@ -68,8 +68,7 @@ export class GraphRouter {
                 res.status(200).send();
             })
             .put(async (req: Request, res: Response) => {
-                const id = req.params.id;
-                let result = await this.Graph.updateOne({_id: id}, req.body).exec();
+                const result = await this.Graph.updateOne({_id: req.params.id}, req.body).exec();
                 res.status(200).send(result)
             });
         app.route('/graph/:id/dataseries')

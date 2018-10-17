@@ -3,7 +3,7 @@
     <md-content>
       <md-toolbar md-elevation="1">
         <h3 class="md-title" style="flex: 1">{{dashboard.name}}</h3>
-        <md-button class="md-primary md-raised" v-on:click="toggleForm()">Add graph</md-button>
+        <md-button class="md-primary md-raised" v-on:click="create()">Add graph</md-button>
       </md-toolbar>
       <p>
         {{dashboard.description}}
@@ -66,6 +66,18 @@
           graphId: event._id
         }, event);
         this.$log.debug('after remove', this.dashboard);
+      },
+      async create() {
+        const graph = await this.$store.dispatch('graphStore/createGraph', {
+          name: 'new graph',
+          description: ''
+        });
+        this.$log.debug('Got graph created data', graph);
+        this.$emit('graph-created', graph);
+        this.$store.dispatch('dashboards/addGraphToDashboard', {
+          dashboardId: this.$route.params.id,
+          graphId: graph._id
+        }, graph);
       }
     }
   };

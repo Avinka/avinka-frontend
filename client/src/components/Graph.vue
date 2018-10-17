@@ -1,7 +1,11 @@
 <template>
   <div style="padding-bottom: 1em" class="md-elevation-1">
     <md-toolbar md-elevation="0" class="md-dense md-primary">
-      <h3 class="md-title">{{graph.name}}</h3>
+      <h3 class="md-title">
+        <span v-if="!updateGraphName" v-on:click="updateGraphName=true">{{graph.name}}</span>
+        <input @keydown.enter="saveGraphName" v-on:blur="saveGraphName" v-if="updateGraphName" type="text"
+               name="graphName" :value="graph.name"/>
+      </h3>
       <md-button class="md-icon-button md-alignment-top-right" @click="showGraphEditor=!showGraphEditor">
         <md-icon class="md-alignment-top-right">settings</md-icon>
       </md-button>
@@ -49,20 +53,25 @@
     },
     data() {
       return {
+        updateGraphName: false,
         myData: null,
         showGraphEditor: false
       };
     },
 
     computed: {
-      datapoints () {
+      datapoints() {
         return this.$store.getters['datapointStore/getByDataseriesIds'](this.graph.dataseries.map(x => x._id));
       }
     },
     created() {
-       this.$store.dispatch('datapointStore/getDataPointsByDataseriesIds', this.graph.dataseries.map(x => x._id));
+      this.$store.dispatch('datapointStore/getDataPointsByDataseriesIds', this.graph.dataseries.map(x => x._id));
     },
     methods: {
+      saveGraphName(event) {
+        this.updateGraphName = false;
+        this.$store.dispatch('graphStore/updateGraphValue', {graphId: this.graph._id, key: 'name', value: event.target.value});
+      },
       deleteGraph() {
         this.$store.dispatch('graphStore/deleteGraph', this.graph._id);
         this.$log.debug('Throwing event graph-deleted');

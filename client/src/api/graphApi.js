@@ -1,8 +1,12 @@
 import axios from 'axios';
 import Vue from 'vue';
 
-// TODO error handling
 export default {
+  async updateGraph(graph) {
+    const result = await axios.put('http://localhost:8080/api/graph/' + graph._id, graph);
+    Vue.$log.debug(result);
+    return result.data;
+  },
   async getAllGraphs() {
     const result = await axios.get('http://localhost:8080/api/graph?full=true');
     Vue.$log.debug(result);

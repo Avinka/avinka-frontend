@@ -1,4 +1,4 @@
-<template>
+  <template>
   <div>
     <md-dialog :md-active.sync="showAddGraphDialogProp">
       <md-dialog-title>Add a graph</md-dialog-title>
@@ -10,7 +10,6 @@
         <md-tab md-label="Find">
         </md-tab>
       </md-tabs>
-
       <md-dialog-actions>
         <md-button class="md-primary" @click="showAddGraphDialogProp=false">Close</md-button>
       </md-dialog-actions>
