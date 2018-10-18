@@ -1,8 +1,8 @@
 import {ISelector, Selector} from "./selector";
-import {MatchQuery, ESQuery, RangeQuery} from "./ESQuery";
+import {MatchQuery, ESQuery, RangeQuery} from "./esquery";
 import {Query} from "../datapoint/Query";
 
-export class ESQueryBuilder {
+export class EsQueryBuilder {
 
     static buildFromQuery(query: Query): ESQuery {
         if (query.isEmpty()) {
@@ -48,5 +48,4 @@ export class ESQueryBuilder {
             }
         }
     }
-
 }

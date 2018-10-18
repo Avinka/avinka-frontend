@@ -1,10 +1,8 @@
 import {Client, SearchResponse} from "elasticsearch";
 import {Activity} from "../activity/activity";
-import {Dataseries, IDataseries} from "../dataseries/dataseries";
 import {DataPoints} from "./datapoints";
-import {ESQuery} from "../query/ESQuery";
 import {Query} from "./Query";
-import {ESQueryBuilder} from "../query/ESQueryBuilder";
+import {EsQueryBuilder} from "../query/esQueryBuilder";
 
 export class DatapointService {
 
@@ -19,7 +17,7 @@ export class DatapointService {
     }
 
     async get(query: Query): Promise<DataPoints> {
-        const esQuery = ESQueryBuilder.buildFromQuery(query)
+        const esQuery = EsQueryBuilder.buildFromQuery(query)
         const agg = this.buildAggregation(query);
         const body = {
             'query': esQuery,
