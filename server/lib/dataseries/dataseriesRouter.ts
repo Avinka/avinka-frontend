@@ -3,6 +3,7 @@ import * as mongoose from "mongoose";
 import {DataseriesSchema, IDataseries, Dataseries, IDataseriesModel} from "./dataseries";
 import {Model} from "mongoose";
 import {GraphSchema, IGraphModel} from "../graph/graph";
+import {ObjectId} from "bson";
 
 export class DataseriesRouter {
 
@@ -48,6 +49,23 @@ export class DataseriesRouter {
                 await result.save();
                 result = await this.Dataseries.findOne({_id: dataseriesId}).populate('selectors');
                 res.status(200).send(result);
+            });
+
+        app.route('/dataseries/:id/selector/:selectorId')
+            .delete(async (req: Request, res: Response) => {
+                const dataseriesId = req.params.id;
+                const selectorId = req.params.selectorId;
+                this.Dataseries.findOneAndUpdate(dataseriesId,
+                    {$pull: {selectors: new ObjectId(selectorId)}},
+                    {upsert: true},
+                    function(err, doc) {
+                        if(err){
+                            console.log(err);
+                        }else{
+                            res.status(200).send()
+                        }
+                    }
+                );
             });
     }
 }

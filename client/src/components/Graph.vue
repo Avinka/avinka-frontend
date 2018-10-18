@@ -6,27 +6,12 @@
         <md-icon class="md-alignment-top-right">settings</md-icon>
       </md-button>
       <md-button class="md-icon-button md-alignment-top-right" @click="deleteGraph()">
-        <md-icon>delete</md-icon>
+        <md-icon>clear</md-icon>
       </md-button>
     </md-toolbar>
-
-    <div v-if="myData" style="padding-top: 1em">
-    </div>
     <md-list>
-      <md-list-item v-if="!graph.dataseries || graph.dataseries.length===0">
-        <graph-editor :graph="graph"></graph-editor>
-      </md-list-item>
-      <md-list-item v-for="dataseries in graph.dataseries">
-        <div>
-          <md-button @click="showGraphEditor=!showGraphEditor">
-            Dataseries (color)
-          </md-button>
-        </div>
-        <div v-show="showGraphEditor">
-          <graph-editor :graph="graph"></graph-editor>
-        </div>
-      </md-list-item>
       <line-chart :data="datapoints"></line-chart>
+      <graph-editor v-if="showGraphEditor" :graph="graph"></graph-editor>
     </md-list>
   </div>
 </template>
@@ -53,7 +38,6 @@
         showGraphEditor: false
       };
     },
-
     computed: {
       datapoints () {
         return this.$store.getters['datapointStore/getByDataseriesIds'](this.graph.dataseries.map(x => x._id));

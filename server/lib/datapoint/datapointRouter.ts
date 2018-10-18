@@ -21,6 +21,10 @@ export class DatapointRouter {
                 if (dataseries) {
                     let result = {};
                     for (let d of dataseries) {
+                        if(!d.name) {
+                            d.name = '';
+                            d.selectors.forEach(x=> d.name += x.key + x.operator + x.value)
+                        }
                         const datapoints = await this.dataPointService.get(d);
                         if (datapoints) {
                             result[d._id] = datapoints;

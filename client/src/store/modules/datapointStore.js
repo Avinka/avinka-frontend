@@ -27,6 +27,7 @@ const mutations = {
         return newDatapointObj.dataseriesId === datapoint.dataseriesId;
       });
       if (index !== -1) {
+        state.datapoints.splice(index, 1);
         state.datapoints[index] = newDatapointObj;
       } else {
         state.datapoints.push(newDatapointObj);
