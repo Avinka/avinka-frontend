@@ -1,18 +1,15 @@
 <template>
     <md-list>
       <md-list-item v-if="dataseries.selectors">
-        <div class="md-layout md-gutter md-alignment-left">
-          <md-button @click="showDataseriesEditor=!showDataseriesEditor">
-            <md-icon v-if="!showDataseriesEditor">expand_more</md-icon>
-            <md-icon v-if="showDataseriesEditor">expand_less</md-icon>
-          </md-button>
-          <span v-for="selector in dataseries.selectors" class="md-layout-item md-medium-size-33 md-small-size-50 md-xsmall-size-100">
-            <md-button v-on:click="deleteSelector(dataseries._id, selector._id)" class="md-icon-button">
-              <md-icon>delete</md-icon>
+          <span>
+            <md-button @click="showDataseriesEditor=!showDataseriesEditor">
+              <md-icon v-if="!showDataseriesEditor">expand_more</md-icon>
+              <md-icon v-if="showDataseriesEditor">expand_less</md-icon>
             </md-button>
-            {{selector.key}}{{selector.operator}}{{selector.value}}
           </span>
-        </div>
+          <span v-for="selector in dataseries.selectors" class="md-layout-item md-medium-size-33 md-small-size-50 md-xsmall-size-100">
+            <md-chip md-deletable  v-on:click="deleteSelector(dataseries._id, selector._id)">{{selector.key}}{{selector.operator}}{{selector.value}}</md-chip>
+          </span>
       </md-list-item>
       <md-list-item v-if="showDataseriesEditor && (!dataseries.selectors || dataseries.selectors.length===0)">
         <div>

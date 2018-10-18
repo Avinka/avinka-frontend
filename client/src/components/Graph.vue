@@ -13,10 +13,8 @@
         <md-icon>clear</md-icon>
       </md-button>
     </md-toolbar>
-    <md-list>
-      <line-chart :data="datapoints"></line-chart>
-      <graph-editor v-if="showGraphEditor" :graph="graph"></graph-editor>
-    </md-list>
+    <line-chart :data="datapoints"></line-chart>
+    <graph-editor v-if="showGraphEditor" :graph="graph"></graph-editor>
   </div>
 </template>
 
