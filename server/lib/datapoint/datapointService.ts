@@ -2,8 +2,9 @@ import {Client, SearchResponse} from "elasticsearch";
 import {Activity} from "../activity/activity";
 import {Dataseries, IDataseries} from "../dataseries/dataseries";
 import {DataPoints} from "./datapoints";
-import {convertToElasticSearchQuery} from "../query/convertToElasticSearchQuery";
-import {Query} from "../query/query";
+import {ESQuery} from "../query/ESQuery";
+import {Query} from "./Query";
+import {ESQueryBuilder} from "../query/ESQueryBuilder";
 
 export class DatapointService {
 
@@ -16,11 +17,12 @@ export class DatapointService {
         this.indexName = indexName;
         this.indexType = indexType;
     }
-    async get(dataseries: IDataseries): Promise<Object> {
-        const query = this.buildQuery(dataseries);
-        const agg = this.buildAggregation(dataseries);
+
+    async get(query: Query): Promise<DataPoints> {
+        const esQuery = ESQueryBuilder.buildFromQuery(query)
+        const agg = this.buildAggregation(query);
         const body = {
-            'query': query,
+            'query': esQuery,
             '_source': false,
             'aggregations': agg
         };
@@ -29,30 +31,7 @@ export class DatapointService {
             type: this.indexType,
             body: body
         });
-
-        let datapoints = this.buildDataPoints(response);
-
-        datapoints.dataseriesId = dataseries._id;
-        datapoints.name = dataseries.name || 'default';
-        return datapoints;
-    }
-
-     buildQuery(dataseries: Dataseries): Object {
-        if (dataseries.selectors && dataseries.selectors.length > 0) {
-            const filters: Array<Query> = dataseries.selectors.map(x => convertToElasticSearchQuery(x));
-            return {
-                "bool": {
-                    "must": [
-                        {"match_all": {}}
-                    ],
-                    "filter": filters
-                }
-            }
-        } else {
-            return {
-                "match_all": {}
-            }
-        }
+        return  this.buildDataPoints(response);
     }
 
     buildDataPoints(response: SearchResponse<Activity>): DataPoints {
@@ -68,12 +47,12 @@ export class DatapointService {
         return result;
     }
 
-     buildAggregation(dataseries: Dataseries): Object {
+    buildAggregation(query: Query): Object {
         return {
             'grouping': {
                 'date_histogram': {
                     'field': 'published',
-                    'interval': 3600000,
+                    'interval': query.agg_interval || '1h',
                     'offset': 0,
                     'order': {'_key': 'asc'},
                     'keyed': false,

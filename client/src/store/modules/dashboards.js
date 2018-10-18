@@ -28,6 +28,7 @@ const actions = {
   async createDashboard ({ commit }, dashboard) {
     const newDashboard = await dashboardService.createDashboard(dashboard);
     commit('createDashboard', newDashboard);
+    return newDashboard;
   },
   async addGraphToDashboard({ commit }, {dashboardId, graphId}) {
     const graphDashboardMapping = await dashboardService.addGraphToDashboard(dashboardId, graphId);

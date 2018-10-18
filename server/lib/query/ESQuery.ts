@@ -1,7 +1,7 @@
-export interface Query {
+export interface ESQuery {
 }
 
-export class MatchQuery implements Query {
+export class MatchQuery implements ESQuery {
     match: {};
 
     constructor(key: string, value: any) {
@@ -9,7 +9,7 @@ export class MatchQuery implements Query {
     }
 }
 
-export class RangeQuery implements Query {
+export class RangeQuery implements ESQuery {
     range: {};
 
     constructor(key: string, value: any, operator: string) {

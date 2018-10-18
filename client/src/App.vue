@@ -14,7 +14,7 @@
         <md-bottom-bar-item to="/analytics" md-label="Analytics" md-icon="timeline" class="md-primary"></md-bottom-bar-item>
         <md-bottom-bar-item to="/ab-testing" md-label="AB Testing" md-icon="web" class="md-primary"></md-bottom-bar-item>
         <md-bottom-bar-item to="/notifications" md-label="Notifications" md-icon="alarm" class="md-primary"></md-bottom-bar-item>
-        <md-bottom-bar-item to="/administration" md-label="Administration" md-icon="settings" class="md-primary"></md-bottom-bar-item>
+        <md-bottom-bar-item to="/admin" md-label="Administration" md-icon="settings" class="md-primary"></md-bottom-bar-item>
       </md-bottom-bar>
     </div>
   </div>

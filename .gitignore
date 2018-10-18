@@ -23,6 +23,7 @@ selenium-debug.log
 .idea/codeStyles/
 .idea/dbnavigator.xml
 **/.idea
+/coverage
 
 **/ITERATION
 

@@ -1,8 +1,10 @@
 import {Request, Response} from "express";
 import {DatapointService} from "./datapointService";
 import {Model} from "mongoose";
-import {DataseriesSchema, IDataseriesModel} from "../dataseries/dataseries";
+import {DataseriesSchema, IDataseries, IDataseriesModel} from "../dataseries/dataseries";
 import * as mongoose from "mongoose";
+import {Query} from "./Query";
+import {DataPoints} from "./datapoints";
 
 export class DatapointRouter {
 
@@ -16,17 +18,22 @@ export class DatapointRouter {
     public routes(app): void {
         app.route('/datapoints/')
             .get(async (req: Request, res: Response) => {
+                let query = new Query();
+                query.since = new Date(decodeURIComponent(req.query.since));
+                query.until = new Date(decodeURIComponent(req.query.until));
                 let ids = req.query.dataseriesIds.split(',');
-                const dataseries = await this.Dataseries.find({_id: {$in: ids}}).populate("selectors").exec();
+                const dataseries: IDataseries[] = await this.Dataseries.find({_id: {$in: ids}}).populate("selectors").exec();
                 if (dataseries) {
                     let result = {};
                     for (let d of dataseries) {
-                        if(!d.name) {
+                        if (!d.name) {
                             d.name = '';
-                            d.selectors.forEach(x=> d.name += x.key + x.operator + x.value)
                         }
-                        const datapoints = await this.dataPointService.get(d);
+                        query.selectors = d.selectors;
+                        let datapoints: DataPoints = await this.dataPointService.get(query);
                         if (datapoints) {
+                            datapoints.dataseriesId = d._id;
+                            datapoints.name = d.selectors.map(x => x.key + x.operator + x.value).join() || 'default';
                             result[d._id] = datapoints;
                         }
                     }

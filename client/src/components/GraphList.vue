@@ -6,6 +6,8 @@
       md-description="Time to fill this dashboard with amazing graphs and visualizations"
       v-if="graphs.length === 0"
     >
+      <md-button class="md-primary md-raised">Create new Graph</md-button>
+
     </md-empty-state>
     <div>
       <graph v-on:deleted="onGraphDeleted" v-for="graph in graphs" :graph="graph"></graph>

@@ -4,7 +4,6 @@ import Vue from 'vue';
 export default {
   async updateGraph(graph) {
     const result = await axios.put('http://localhost:8080/api/graph/' + graph._id, graph);
-    Vue.$log.debug(result);
     return result.data;
   },
   async getAllGraphs() {
@@ -12,7 +11,6 @@ export default {
     Vue.$log.debug(result);
     return result.data;
   },
-  // TODO move to dashboard
   async getAllDashboardGraphs(dashboardId) {
     const result = await axios.get('http://localhost:8080/api/dashboard/' + dashboardId + '/graph');
     Vue.$log.debug(result);

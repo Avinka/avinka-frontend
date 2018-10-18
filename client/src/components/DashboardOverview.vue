@@ -6,25 +6,17 @@
         <md-card style="padding-top: 10px">
           <md-card-header>
             <md-card-header-text>
-              <div class="md-title">Your Dashboards</div>
+              <div class="md-title">Dashboards</div>
             </md-card-header-text>
           </md-card-header>
           <md-card-content>
+            <md-button type="submit" class="md-primary" v-on:click="create()">Create new Dashboard</md-button>
             <dashboard-list></dashboard-list>
           </md-card-content>
         </md-card>
         <md-card>
-          <dashboard-add-form></dashboard-add-form>
+          <!--<dashboard-add-form></dashboard-add-form>-->
         </md-card>
-      </div>
-
-      <div class="md-layout-item">
-        <md-toolbar>
-          <h3 class="md-title">
-            New hot graphs
-          </h3>
-        </md-toolbar>
-        <graph-list v-on:graph-deleted="onGraphDeleted" :graphs="graphs"></graph-list>
       </div>
     </div>
   </div>
@@ -56,6 +48,10 @@
       this.$store.dispatch('graphStore/getAllGraphs');
     },
     methods: {
+      async create() {
+       const newDashboard = await this.$store.dispatch('dashboards/createDashboard', {name: 'new dashboard'});
+       this.$router.push({ name: 'DashboardDetail', params: { id: newDashboard._id }});
+      },
       onGraphDeleted(event) {
         // FIXME figure how to handle these cases - reverse mapping on dashboards? or remove?
       }

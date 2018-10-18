@@ -4,22 +4,23 @@ export interface ISelector {
     key: string;
     value: string;
     operator: string;
-    createdAt: Date;
+    createdAt?: Date;
 }
 
 export class Selector implements ISelector {
     key: string;
     value: string;
     operator: string;
-    createdAt: Date;
+    createdAt?: Date;
 
+    constructor(key: string, value: string, operator: string, createdAt?: Date) {
+        this.key = key;
+        this.value = value;
+        this.operator = operator;
+        this.createdAt = createdAt;
+    }
     static clone(that: ISelector): Selector {
-        let selector: Selector = new Selector();
-        selector.key = that.key;
-        selector.value = that.value;
-        selector.operator = that.operator;
-        selector.createdAt = that.createdAt;
-        return selector;
+        return new Selector(that.key, that.value, that.operator, that.createdAt);
     }
 }
 

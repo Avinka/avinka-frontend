@@ -11,9 +11,9 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect: { name: 'DashboardOverview' }
-      // name: 'Home',
-      // component: Home
+      // redirect: { name: 'Home' }
+       name: 'Home',
+       component: Home
     }, {
       path: '/analytics/',
       name: 'DashboardOverview',
