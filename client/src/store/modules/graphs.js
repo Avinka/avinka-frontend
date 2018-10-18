@@ -1,5 +1,5 @@
 import graphService from '../../api/graphApi';
-import Vue from "vue";
+import Vue from 'vue';
 // initial state
 const state = {
   all: {}

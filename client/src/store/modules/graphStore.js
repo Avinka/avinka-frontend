@@ -60,19 +60,22 @@ const actions = {
     await graphApi.updateGraph(graph);
     commit('updateGraphValue', {graphId, key, value});
   },
-  async createGraphDataseries({commit}, {graphId, dataseries}) {
+  async createGraphDataseries({commit}, {graphId, dataseries = {}}) {
     const newDataseries = await dataseriesApi.createDataseries(dataseries);
+    const newGraphDataseriesMapping = await graphApi.addDataseriesToGraph(graphId, newDataseries._id);
     commit('createGraphDataseries', {graphId, newDataseries});
   },
   async addSelectorToDataseries({commit}, {dataseriesId, selector}) {
     const newSelector = await selectorApi.createSelector(selector);
     const selectorDataseriesMapping = await dataseriesApi.addSelectorToDataseries(dataseriesId, newSelector._id);
     commit('addSelectorToDataseries', {dataseriesId, newSelector});
+    await this.dispatch('datapointStore/getDataPointsByDataseriesIds', [dataseriesId]);
   },
-  async removeSelectorFromDataseries({commit}, {dataseriesId, selectorId}) {
+  async deleteAndRemoveSelectorFromDataseries({commit}, {dataseriesId, selectorId}) {
     const selectorDataseriesMapping = await dataseriesApi.removeSelectorFromDataseries(dataseriesId, selectorId);
     const deleted = selectorApi.deleteSelector(selectorId);
-    commit('addSelectorToDataseries', selectorDataseriesMapping);
+    commit('removeSelectorFromDataseries', {dataseriesId, selectorId});
+    await this.dispatch('datapointStore/getDataPointsByDataseriesIds', [dataseriesId]);
   }
 };
 
@@ -102,7 +105,11 @@ const mutations = {
     }
   },
   addGraph(state, graph) {
-    state.graphs.push(graph);
+    state.graphs.unshift(graph);
+  },
+  createGraphDataseries(state, {graphId, newDataseries}) {
+    const graph = state.graphs.find(x => x._id === graphId);
+    graph.dataseries.push(newDataseries);
   },
   setGraphDataseries(state, graphid, dataseries) {
     const graph = state.graphs.find(x => x._id === graphid);
@@ -116,6 +123,18 @@ const mutations = {
       _.forEach(graph.dataseries, (dataserie) => {
         if (dataserie._id === dataseriesId) {
           dataserie.selectors.push(newSelector);
+        }
+      });
+    });
+  },
+  removeSelectorFromDataseries(state, {dataseriesId, selectorId}) {
+    _.forEach(state.graphs, (graph) => {
+      _.forEach(graph.dataseries, (dataserie) => {
+        if (dataserie._id === dataseriesId) {
+          const index = dataserie.selectors.findIndex((selector) => selector._id === selectorId);
+          if (index !== -1) {
+            dataserie.selectors.splice(index, 1);
+          }
         }
       });
     });

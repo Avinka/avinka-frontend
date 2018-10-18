@@ -1,6 +1,5 @@
-import { Document, Schema, Model, model} from "mongoose";
+import { Document, Schema} from "mongoose";
 import {IDataseries} from "../dataseries/dataseries";
-import {ISelector} from "../query/selector";
 
 export interface IGraph {
     _id: any;

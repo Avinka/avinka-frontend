@@ -1,31 +1,23 @@
 <template>
     <div>
-      <md-list v-for="dataserie in graph.dataseries">
-        <md-list-item>
-          <div class="md-layout md-gutter md-alignment-left">
-            <span v-for="selector in dataserie.selectors" class="md-layout-item md-medium-size-33 md-small-size-50 md-xsmall-size-100">
-              <md-icon>delete</md-icon>{{selector.key}}{{selector.operator}}{{selector.value}}
-            </span>
-          </div>
-          <div class="md-layout md-alignment-left">
-            <span v-if="!dataserie.selectors || dataserie.selectors.length===0">
-              Add a selector to create a new data series
-            </span>
-          </div>
+      <md-list>
+        <md-list-item v-for="dataserie in graph.dataseries">
+          <dataseries-list-item :dataseries="dataserie"></dataseries-list-item>
         </md-list-item>
         <md-list-item>
-          <selector-add-form :dataseriesId="dataserie._id"></selector-add-form>
+          <md-button v-on:click="addDataSeries">Add dataseries</md-button>
         </md-list-item>
       </md-list>
-      </div>
+    </div>
 </template>
 
 <script>
   import SelectorAddForm from './SelectorAddForm';
+  import DataseriesListItem from './DataseriesListItem';
 
   export default {
     name: 'GraphEditor',
-    components: {SelectorAddForm},
+    components: {SelectorAddForm, DataseriesListItem},
     props: ['graph'],
     comments: [
       SelectorAddForm
@@ -36,6 +28,14 @@
         form: {
         }
       };
+    },
+    methods: {
+      deleteSelector(dataseriesId, selectorId) {
+        this.$store.dispatch('graphStore/deleteAndRemoveSelectorFromDataseries', {dataseriesId, selectorId});
+      },
+      addDataSeries() {
+        this.$store.dispatch('graphStore/createGraphDataseries', {graphId: this.graph._id});
+      }
     }
   };
 </script>
