@@ -1,6 +1,10 @@
 export interface ESQuery {
 }
 
+export class MatchAllQuery implements  ESQuery {
+    match_all: {};
+}
+
 export class MatchQuery implements ESQuery {
     match: {};
 

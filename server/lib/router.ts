@@ -12,6 +12,7 @@ import * as mongoose from "mongoose";
 import {DatapointService} from "./datapoint/datapointService";
 import {DatapointRouter} from "./datapoint/datapointRouter";
 import {SelectorRouter} from "./query/selectorRouter";
+import {DataPointModel} from "./datapoint/datapointModel";
 
 export class Router {
     //TODO move this into an own class
@@ -22,10 +23,11 @@ export class Router {
 
     readonly activityService = new ActivityService(this.elasticSearchClient, this.indexName, this.indexType);
     readonly datapointService = new DatapointService(this.elasticSearchClient, this.indexName, this.indexType);
+    readonly datapointModel = new DataPointModel(this.datapointService);
 
     readonly activityRouter: ActivityRouter = new ActivityRouter(this.activityService);
     readonly adminRouter: AdminRouter = new AdminRouter(this.activityService);
-    readonly datapointRounter: DatapointRouter = new DatapointRouter(this.datapointService);
+    readonly datapointRounter: DatapointRouter = new DatapointRouter(this.datapointModel);
     readonly dashboardRouter: DashboardRouter = new DashboardRouter();
     readonly graphRouter: GraphRouter = new GraphRouter(this.datapointService);
     readonly dataSeriesRouter: DataseriesRouter = new DataseriesRouter();

@@ -1,10 +1,11 @@
 import {ISelector} from "../query/selector";
 
-export class Query {
+export class DataPointQuery {
     since?: Date;
     until?: Date;
     agg_interval?: string;
-    selectors: ISelector[] = [];
+    dataseriesIds: any[] = [];
+    selectors: ISelector[];
 
     isEmpty() {
         return this.since && this.until && this.selectors.length == 0;

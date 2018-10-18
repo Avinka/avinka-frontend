@@ -1,8 +1,8 @@
 import {Client, SearchResponse} from "elasticsearch";
 import {Activity} from "../activity/activity";
 import {DataPoints} from "./datapoints";
-import {Query} from "./Query";
 import {EsQueryBuilder} from "../query/esQueryBuilder";
+import {DataPointQuery} from "./datapointQuery";
 
 export class DatapointService {
 
@@ -16,7 +16,7 @@ export class DatapointService {
         this.indexType = indexType;
     }
 
-    async get(query: Query): Promise<DataPoints> {
+    async get(query: DataPointQuery): Promise<DataPoints> {
         const esQuery = EsQueryBuilder.buildFromQuery(query)
         const agg = this.buildAggregation(query);
         const body = {
@@ -45,7 +45,7 @@ export class DatapointService {
         return result;
     }
 
-    buildAggregation(query: Query): Object {
+    buildAggregation(query: DataPointQuery): Object {
         return {
             'grouping': {
                 'date_histogram': {

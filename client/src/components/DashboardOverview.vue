@@ -15,7 +15,6 @@
           </md-card-content>
         </md-card>
         <md-card>
-          <!--<dashboard-add-form></dashboard-add-form>-->
         </md-card>
       </div>
     </div>

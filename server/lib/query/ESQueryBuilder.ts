@@ -1,20 +1,20 @@
 import {ISelector, Selector} from "./selector";
 import {MatchQuery, ESQuery, RangeQuery} from "./esquery";
-import {Query} from "../datapoint/Query";
+import {DataPointQuery} from "../datapoint/datapointQuery";
 
 export class EsQueryBuilder {
 
-    static buildFromQuery(query: Query): ESQuery {
+    static buildFromQuery(query: DataPointQuery): ESQuery {
         if (query.isEmpty()) {
             return {"match_all": {}}
         }
         let filters = query.selectors.map(x => this.buildFromSelector(x));
 
         if (query.since) {
-            filters.push(new RangeQuery("published", new Date(query.since).toISOString(), 'gte'));
+            filters.push(new RangeQuery("published", query.since.toISOString(), 'gte'));
         }
         if (query.until) {
-            filters.push(new RangeQuery("published", new Date(query.until).toISOString(), 'lte'));
+            filters.push(new RangeQuery("published", query.until.toISOString(), 'lte'));
         }
         return {
             "bool": {
