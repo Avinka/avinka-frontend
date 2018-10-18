@@ -14,8 +14,8 @@ const getters = {
 
 // actions
 const actions = {
-  async getDataPointsByDataseriesIds({commit}, dataseriesIds) {
-    const datapoints = await datapointApi.getDataPointsByDataseriesIds(dataseriesIds);
+  async getDataPointsByDataseriesIds({commit}, {dataseriesIds, since, until, window, aggInterval}) {
+    const datapoints = await datapointApi.getDataPointsByDataseriesIds(dataseriesIds, since, until, window, aggInterval);
     commit('addDatapoints', datapoints);
   }
 };
