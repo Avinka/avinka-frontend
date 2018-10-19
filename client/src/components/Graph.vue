@@ -27,13 +27,10 @@
           <md-card-content>
             <div class="md-layout md-gutter">
               <div class="md-layout-item md-size-20 md-small-size-50">
-                <md-radio v-model="radio" value="window">Moving window <small>(m/d/h/min)</small></md-radio>
+                <md-radio v-model="radio" value="window">Moving window <small>(d/h/m/s/w)</small></md-radio>
               </div>
               <div class="md-layout-item md-size-15 md-small-size-50">
                 <md-radio v-model="radio" value="frame">Time frame</md-radio>
-              </div>
-              <div class="md-layout-item md-size-20 md-small-size-50">
-                <md-button @click="refreshData">Test</md-button>
               </div>
               <div class="md-layout-item md-size-20 md-small-size-50">
                 <md-button @click="showDatePickComponent=false">Close</md-button>
@@ -43,7 +40,7 @@
               <div class="md-layout-item md-size-50 md-small-size-50">
                 <md-field>
                   <label>Window</label>
-                  <md-input v-model="windowSize"></md-input>
+                  <md-input v-on:keydown.enter="refreshData" v-on:blur="refreshData" v-model="windowSize"></md-input>
                 </md-field>
               </div>
             </div>
@@ -135,6 +132,20 @@
         daily_min_: ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24']
       };
     },
+    watch: {
+      since: {
+        handler(val) {
+          this.refreshData();
+        },
+        deep: true
+      },
+      until: {
+        handler(val) {
+          this.refreshData();
+        },
+        deep: true
+      }
+    },
     computed: {
       datapoints() {
         return this.$store.getters['datapointStore/getByDataseriesIds'](this.graph.dataseries.map(x => x._id));
@@ -158,6 +169,7 @@
         this.$emit('deleted', {_id: this.graph._id});
       },
       refreshData() {
+        this.$log.debug('Refreshing data');
         const queryObject = {
           dataseriesIds: this.graph.dataseries.map(x => x._id)
         };
