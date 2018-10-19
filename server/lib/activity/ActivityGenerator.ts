@@ -38,7 +38,7 @@ export class ActivityGenerator {
 
         const randomIntSecond = ActivityGenerator.getRandomInt(1, 59);
         const second = randomIntSecond < 10 ? '0' + randomIntSecond : randomIntSecond;
-        const date = new Date(2018, 9, 1, hour, minute, second);
+        const date = new Date(2018, ActivityGenerator.getRandomInt(7, 11), ActivityGenerator.getRandomInt(1, 27), hour, minute, second);
         return date;
     }
 
