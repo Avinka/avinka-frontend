@@ -50,7 +50,7 @@ export class DatapointService {
             'grouping': {
                 'date_histogram': {
                     'field': 'published',
-                    'interval': query.agg_interval || '1h',
+                    'interval': 3600000,
                     'offset': 0,
                     'order': {'_key': 'asc'},
                     'keyed': false,

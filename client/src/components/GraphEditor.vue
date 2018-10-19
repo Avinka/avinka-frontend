@@ -2,7 +2,7 @@
     <div>
       <md-list>
         <md-list-item v-for="dataserie in graph.dataseries">
-          <dataseries-list-item :dataseries="dataserie"></dataseries-list-item>
+          <dataseries-list-item v-on:selector-change="triggerGraphPropertyChangeEvent" v-on:dataseries-deleted="onDataseriesDeleted" :dataseries="dataserie"></dataseries-list-item>
         </md-list-item>
         <md-list-item>
           <md-button v-on:click="addDataSeries">Add dataseries</md-button>
@@ -30,11 +30,17 @@
       };
     },
     methods: {
-      deleteSelector(dataseriesId, selectorId) {
-        this.$store.dispatch('graphStore/deleteAndRemoveSelectorFromDataseries', {dataseriesId, selectorId});
+      async addDataSeries() {
+        await this.$store.dispatch('graphStore/createGraphDataseries', {graphId: this.graph._id});
+        this.triggerGraphPropertyChangeEvent();
       },
-      addDataSeries() {
-        this.$store.dispatch('graphStore/createGraphDataseries', {graphId: this.graph._id});
+      onDataseriesDeleted(event) {
+        this.$log.debug('Received an event:', event);
+        this.$store.dispatch('graphStore/removeDataseriesFromGraph', {graphId: this.graph._id, dataseriesId: event.dataseriesId});
+        this.triggerGraphPropertyChangeEvent();
+      },
+      triggerGraphPropertyChangeEvent() {
+        this.$emit('graph-property-change');
       }
     }
   };

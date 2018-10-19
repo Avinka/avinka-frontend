@@ -92,7 +92,7 @@
     </div>
     <br/>
     <line-chart :data="datapoints"></line-chart>
-    <graph-editor v-if="showGraphEditor" :graph="graph"></graph-editor>
+    <graph-editor v-on:graph-property-change="refreshData" v-if="showGraphEditor" :graph="graph"></graph-editor>
   </div>
 </template>
 
@@ -109,7 +109,7 @@
       GraphEditor
     },
     props: {
-      graph: {}
+      graphId: null
     },
     data() {
       return {
@@ -138,9 +138,13 @@
     computed: {
       datapoints() {
         return this.$store.getters['datapointStore/getByDataseriesIds'](this.graph.dataseries.map(x => x._id));
+      },
+      graph() {
+        return this.$store.getters['graphStore/getByGraphById'](this.graphId);
       }
     },
     created() {
+      this.$store.dispatch('graphStore/getGraphById', this.graphId);
       this.$store.dispatch('datapointStore/getDataPointsByDataseriesIds', {dataseriesIds: this.graph.dataseries.map(x => x._id)});
     },
     methods: {

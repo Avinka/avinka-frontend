@@ -10,7 +10,7 @@
 
     </md-empty-state>
     <div>
-      <graph v-on:deleted="onGraphDeleted" v-for="graph in graphs" :graph="graph"></graph>
+      <graph v-on:deleted="onGraphDeleted" v-for="graph in graphs" :graphId="graph._id"></graph>
     </div>
   </div>
 </template>

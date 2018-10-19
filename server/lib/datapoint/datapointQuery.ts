@@ -8,6 +8,10 @@ export class DataPointQuery {
     selectors: ISelector[];
 
     isEmpty() {
-        return this.since && this.until && this.selectors.length == 0;
+        return !this.since && !this.until && this.selectors.length == 0;
+    }
+
+    hasNoTime() {
+        return !this.since && !this.until;
     }
 }

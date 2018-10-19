@@ -20,8 +20,8 @@ export default {
     Vue.$log.debug(result);
     return result.data;
   },
-  async deleteDataseries(dataseries) {
-    const result = await axios.delete('http://localhost:8080/api/dataseries/' + dataseries._id);
+  async deleteDataseries(dataseriesId) {
+    const result = await axios.delete('http://localhost:8080/api/dataseries/' + dataseriesId);
     Vue.$log.debug(result);
   },
   async createDataseries(dataseries) {

@@ -2,13 +2,16 @@
     <md-list>
       <md-list-item v-if="dataseries.selectors">
           <span>
+            <md-button @click="deleteDataseries">
+              <md-icon>delete</md-icon>
+            </md-button>
             <md-button @click="showDataseriesEditor=!showDataseriesEditor">
               <md-icon v-if="!showDataseriesEditor">expand_more</md-icon>
               <md-icon v-if="showDataseriesEditor">expand_less</md-icon>
             </md-button>
           </span>
           <span v-for="selector in dataseries.selectors" class="md-layout-item md-medium-size-33 md-small-size-50 md-xsmall-size-100">
-            <md-chip md-deletable  v-on:click="deleteSelector(dataseries._id, selector._id)">{{selector.key}}{{selector.operator}}{{selector.value}}</md-chip>
+            <md-chip md-deletable v-on:click="deleteSelector(dataseries._id, selector._id)">{{selector.key}}{{selector.operator}}{{selector.value}}</md-chip>
           </span>
       </md-list-item>
       <md-list-item v-if="showDataseriesEditor && (!dataseries.selectors || dataseries.selectors.length===0)">
@@ -17,7 +20,7 @@
         </div>
       </md-list-item>
       <md-list-item v-if="showDataseriesEditor">
-        <selector-add-form :dataseriesId="dataseries._id"></selector-add-form>
+        <selector-add-form v-on:selector-created="onSelectorCreated" :dataseriesId="dataseries._id"></selector-add-form>
       </md-list-item>
     </md-list>
 </template>
@@ -40,6 +43,15 @@
     methods: {
       deleteSelector(dataseriesId, selectorId) {
         this.$store.dispatch('graphStore/deleteAndRemoveSelectorFromDataseries', {dataseriesId, selectorId});
+        this.$emit('selector-deleted', selectorId);
+        this.$emit('selector-change');
+      },
+      deleteDataseries() {
+        this.$store.dispatch('graphStore/deleteDataseries', {dataseriesId: this.dataseries._id});
+        this.$emit('dataseries-deleted', {dataseriesId: this.dataseries._id});
+      },
+      onSelectorCreated(event) {
+        this.$emit('selector-change');
       }
     }
   };

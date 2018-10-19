@@ -1,10 +1,11 @@
 import axios from 'axios';
+import moment from 'moment';
 
 export default {
   async getDataPointsByDataseriesIds(dataseriesIds, since, until, window, aggInterval) {
     let url = 'http://localhost:8080/api/datapoints/?dataseriesIds=' + dataseriesIds.join(',');
     if (window) {
-      url += '&window=' + window + '&until=' + encodeURIComponent(new Date().toISOString()) + '&agg_interval=' + aggInterval;
+      url += '&window=' + window + '&since=' + encodeURIComponent(moment().subtract(100, 'days').toISOString()) + '&until=' + encodeURIComponent(new Date().toISOString()) + '&agg_interval=' + aggInterval;
     } else if (since && until) {
       url += '&since=' + encodeURIComponent(since.toISOString()) + '&until=' + encodeURIComponent(until.toISOString()) + '&agg_interval=' + aggInterval;
     }

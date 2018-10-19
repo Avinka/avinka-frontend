@@ -4,6 +4,7 @@ import {Graph, GraphSchema, IGraphModel} from "./graph";
 import {Model} from "mongoose";
 import {DataseriesSchema, IDataseries, IDataseriesModel} from "../dataseries/dataseries";
 import {DatapointService} from "../datapoint/datapointService";
+import {ObjectId} from "bson";
 
 export class GraphRouter {
 
@@ -40,7 +41,7 @@ export class GraphRouter {
         app.route('/graph/:id')
             .get(async (req: Request, res: Response) => {
                 if(!req.params.id.includes(',')) {
-                    const graph = this.Graph.findOne({_id: req.params.id}).populate('dataseries').exec();
+                    const graph = await this.Graph.findOne({_id: req.params.id}).populate('dataseries').exec();
                     if(graph != null) {
                         res.status(200).send(graph);
                     } else {
@@ -80,6 +81,22 @@ export class GraphRouter {
                 result.dataseries.push(req.body._id);
                 await result.save();
                 res.status(201).send(result)
+            });
+        app.route('/graph/:id/dataseries/:dataseriesId')
+            .delete(async (req: Request, res: Response) => {
+                const graphId = req.params.id;
+                const dataseriesId = req.params.dataseriesId;
+                this.Graph.findOneAndUpdate(graphId,
+                    {$pull: {dataseries: new ObjectId(dataseriesId)}},
+                    {upsert: true},
+                    function(err, doc) {
+                        if(err){
+                            console.log(err);
+                        }else{
+                            res.status(200).send()
+                        }
+                    }
+                );
             });
     }
 }

@@ -11,6 +11,12 @@ export default {
     Vue.$log.debug(result);
     return result.data;
   },
+  async getGraphById(graphId) {
+    const result = await axios.get('http://localhost:8080/api/graph/' + graphId);
+    Vue.$log.debug(result);
+    return result.data;
+  },
+  // TODO move to dashboard
   async getAllDashboardGraphs(dashboardId) {
     const result = await axios.get('http://localhost:8080/api/dashboard/' + dashboardId + '/graph');
     Vue.$log.debug(result);
@@ -27,6 +33,11 @@ export default {
   },
   async addDataseriesToGraph(graphId, dataseriesId) {
     const result = await axios.post('http://localhost:8080/api/graph/' + graphId + '/dataseries', {_id: dataseriesId});
+    Vue.$log.debug(result);
+    return result.data;
+  },
+  async removeDataseriesFromGraph(graphId, dataseriesId) {
+    const result = await axios.delete('http://localhost:8080/api/graph/' + graphId + '/dataseries/' + dataseriesId);
     Vue.$log.debug(result);
     return result.data;
   },

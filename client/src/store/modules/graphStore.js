@@ -17,7 +17,7 @@ const getters = {
   },
   allByIds: (state) => (graphIds) => {
     return state.graphs.filter((graph) => {
-      return graphIds.includes(graph._id)
+      return graphIds.includes(graph._id);
     });
   },
   getByGraphById: (state) => findGraphById,
@@ -33,7 +33,7 @@ const actions = {
     commit('addGraphs', graphs);
   },
   async getGraphById({commit}, graphId) {
-    const graph = await graphApi.getGraphById();
+    const graph = await graphApi.getGraphById(graphId);
     commit('addGraph', graph);
   },
   async getAllDashboardGraphs({commit}, dashboardId) {
@@ -50,10 +50,8 @@ const actions = {
     commit('addGraph', newGraph);
     return newGraph;
   },
-  async deleteGraphDataseries({state, commit}, dataseriesId) {
+  async deleteDataseries({state, commit}, {dataseriesId}) {
     await dataseriesApi.deleteDataseries(dataseriesId);
-    // TODO delete dataseries mapping
-    commit('deleteDataseries', dataseriesId);
   },
   async updateGraphValue({commit}, {graphId, key, value}) {
     const graph = findGraphById(graphId);
@@ -65,17 +63,19 @@ const actions = {
     const newGraphDataseriesMapping = await graphApi.addDataseriesToGraph(graphId, newDataseries._id);
     commit('createGraphDataseries', {graphId, newDataseries});
   },
+  async removeDataseriesFromGraph({commit}, {graphId, dataseriesId}) {
+    await graphApi.removeDataseriesFromGraph(graphId, dataseriesId);
+    commit('removeDataseriesFromGraph', {graphId, dataseriesId});
+  },
   async addSelectorToDataseries({commit}, {dataseriesId, selector}) {
     const newSelector = await selectorApi.createSelector(selector);
     const selectorDataseriesMapping = await dataseriesApi.addSelectorToDataseries(dataseriesId, newSelector._id);
     commit('addSelectorToDataseries', {dataseriesId, newSelector});
-    await this.dispatch('datapointStore/getDataPointsByDataseriesIds', [dataseriesId]);
   },
   async deleteAndRemoveSelectorFromDataseries({commit}, {dataseriesId, selectorId}) {
     const selectorDataseriesMapping = await dataseriesApi.removeSelectorFromDataseries(dataseriesId, selectorId);
     const deleted = selectorApi.deleteSelector(selectorId);
     commit('removeSelectorFromDataseries', {dataseriesId, selectorId});
-    await this.dispatch('datapointStore/getDataPointsByDataseriesIds', [dataseriesId]);
   }
 };
 
@@ -105,7 +105,12 @@ const mutations = {
     }
   },
   addGraph(state, graph) {
-    state.graphs.unshift(graph);
+    const index = state.graphs.findIndex(x => x._id === graph._id);
+    if (index === -1) {
+      state.graphs.push(graph);
+    } else {
+      graph[index] = graph;
+    }
   },
   createGraphDataseries(state, {graphId, newDataseries}) {
     const graph = state.graphs.find(x => x._id === graphId);
@@ -117,6 +122,11 @@ const mutations = {
       const index = graph.dataseries.findIndex(x => x._id === dataserie._id);
       graph.dataseries[index] = dataserie;
     });
+  },
+  removeDataseriesFromGraph(state, {graphId, dataseriesId}) {
+    const graphIndex = state.graphs.findIndex(x => x._id === graphId);
+    const dataseriesIndex = state.graphs[graphIndex].dataseries.findIndex(x => x._id === dataseriesId);
+    state.graphs[graphIndex].dataseries.splice(dataseriesIndex, 1);
   },
   addSelectorToDataseries(state, {dataseriesId, newSelector}) {
     _.forEach(state.graphs, (graph) => {

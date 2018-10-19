@@ -14,11 +14,15 @@ export class DatapointRouter {
         app.route('/datapoints/')
             .get(async (req: Request, res: Response) => {
                 let query = new DataPointQuery();
-                query.since = new Date(decodeURIComponent(req.query.since));
-                query.until = new Date(decodeURIComponent(req.query.until));
+                if (req.query.since) {
+                    query.since = new Date(decodeURIComponent(req.query.since));
+                }
+                if (req.query.until) {
+                    query.until = new Date(decodeURIComponent(req.query.until));
+                }
                 query.dataseriesIds = req.query.dataseriesIds.split(',');
 
-                const result = this.model.getDataPoints(query);
+                const result = await this.model.getDataPoints(query);
 
                 if(result) {
                     res.status(200).send(result);
