@@ -18,17 +18,27 @@ export class DashboardRouter {
             .post(async (req: Request, res: Response) => {
                 // TODO add validation
                 let result = await this.Dashboard.create(req.body);
-                res.status(200).send(result)
+                res.status(201).send(result)
             });
         app.route('/dashboard/:id')
             .get(async (req: Request, res: Response) => {
                 const id = req.params.id;
-                let findOne = this.Dashboard.findOne({_id: id});
-                if(req.query.full === 'true') {
-                    findOne = findOne.populate('graphs')
+                try {
+                    let findOne = this.Dashboard.findOne({_id: id});
+                    if(req.query.full === 'true') {
+                        findOne = findOne.populate('graphs')
+                    }
+                    let result = await findOne.exec();
+                    if(!result) {
+                        res.status(404).send();
+                        return;
+                    }
+                    res.status(200).send(result)
+                } catch (err) {
+                    // TODO check if it is a server error or mal formed id
+                    res.status(400).send()
                 }
-                let result = await findOne.exec();
-                res.status(200).send(result)
+
             })
             .delete(async (req: Request, res: Response) => {
                 const id = req.params.id;

@@ -23,11 +23,15 @@ export class ActivityRouter {
             .post(async (req: Request, res: Response) => {
                 try {
                     let result = await this.activityService.create(req.body);
-                    res.status(200).send(result)
+                    res.status(201).send(result)
                 } catch (err) {
                     res.status(400).send(err.toString());
                 }
             });
-
+        app.route('/activity/key-value-options')
+            .get(async (req: Request, res: Response) => {
+                const keyValueOptions = await this.activityService.getKeyValueOptions();
+                res.status(200).send(keyValueOptions);
+            });
     }
 }

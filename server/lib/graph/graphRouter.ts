@@ -36,26 +36,31 @@ export class GraphRouter {
                 let result = await this.Graph.create(graph);
                 //Only the id of the dataseries is persisted, therefore we need to add it again
                 result.dataseries = [dataseries];
-                res.status(200).send(result)
+                res.status(201).send(result)
             });
         app.route('/graph/:id')
             .get(async (req: Request, res: Response) => {
-                if(!req.params.id.includes(',')) {
-                    const graph = await this.Graph.findOne({_id: req.params.id}).populate({
-                        path: 'dataseries',
-                        model: 'Dataseries',
-                        populate: {
-                            path: 'selectors',
-                            model: 'Selector'
+                if (!req.params.id.includes(',')) {
+                    try {
+                        const graph = await this.Graph.findOne({_id: req.params.id}).populate({
+                            path: 'dataseries',
+                            model: 'Dataseries',
+                            populate: {
+                                path: 'selectors',
+                                model: 'Selector'
+                            }
+                        }).exec();
+                        if (graph != null) {
+                            res.status(200).send(graph);
+                        } else {
+                            res.status(404).send()
                         }
-                    }).exec();
-                    if(graph != null) {
-                        res.status(200).send(graph);
-                    } else {
-                        res.status(404).send()
+                    } catch (err) {
+                        // TODO check if server error or invalid id
+                        res.status(400).send()
                     }
                 } else {
-                    let result = await this.Graph.find({_id: {$in:req.params.id.split(',')}})
+                    let result = await this.Graph.find({_id: {$in: req.params.id.split(',')}})
                         .populate({
                             path: 'dataseries',
                             model: 'Dataseries',
@@ -68,7 +73,7 @@ export class GraphRouter {
                 }
             })
             .delete(async (req: Request, res: Response) => {
-                const graph  = await this.Graph.findOne({_id: req.params.id}).exec();
+                const graph = await this.Graph.findOne({_id: req.params.id}).exec();
                 if (graph.dataseries) {
                     await this.Dataseries.deleteMany({_id: {$in: graph.dataseries}});
                 }
@@ -96,10 +101,10 @@ export class GraphRouter {
                 this.Graph.findOneAndUpdate(graphId,
                     {$pull: {dataseries: new ObjectId(dataseriesId)}},
                     {upsert: true},
-                    function(err, doc) {
-                        if(err){
+                    function (err, doc) {
+                        if (err) {
                             console.log(err);
-                        }else{
+                        } else {
                             res.status(200).send()
                         }
                     }

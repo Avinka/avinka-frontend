@@ -2,6 +2,7 @@ import {Client} from "elasticsearch";
 import {v4 as uuid} from 'uuid';
 import {Activity} from "./activity";
 import {ActivityGenerator} from "./ActivityGenerator";
+import _ from 'lodash';
 
 export class ActivityService {
 
@@ -59,6 +60,16 @@ export class ActivityService {
     }
     async deleteData(): Promise<void> {
         this.delete('{ "query": { "match_all": {}}}')
+    }
+
+    async getKeyValueOptions() {
+        const result = await this.client.indices.getMapping({index: 'active-objects-current'});
+        console.log(result);
+
+        const keys = [];
+        _.values(result["active-objects-current"].mappings.activity.properties, function(val) {
+            keys.push()
+        });
     }
 
 }
