@@ -41,7 +41,14 @@ export class GraphRouter {
         app.route('/graph/:id')
             .get(async (req: Request, res: Response) => {
                 if(!req.params.id.includes(',')) {
-                    const graph = await this.Graph.findOne({_id: req.params.id}).populate('dataseries').exec();
+                    const graph = await this.Graph.findOne({_id: req.params.id}).populate({
+                        path: 'dataseries',
+                        model: 'Dataseries',
+                        populate: {
+                            path: 'selectors',
+                            model: 'Selector'
+                        }
+                    }).exec();
                     if(graph != null) {
                         res.status(200).send(graph);
                     } else {

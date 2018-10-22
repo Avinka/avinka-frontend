@@ -50,7 +50,7 @@
         await this.saveSelector();
       },
       async saveSelector() {
-        const newSelector = await this.$store.dispatch('graphStore/addSelectorToDataseries', {
+        const newSelector = await this.$store.dispatch('graphStore2/addSelectorToDataseries', {
           selector: {
             key: this.form.key,
             value: this.form.value,

@@ -40,14 +40,17 @@
         showDataseriesEditor: false
       };
     },
+    mounted() {
+        console.log(this.dataseries);
+    },
     methods: {
       deleteSelector(dataseriesId, selectorId) {
-        this.$store.dispatch('graphStore/deleteAndRemoveSelectorFromDataseries', {dataseriesId, selectorId});
+        this.$store.dispatch('graphStore2/deleteAndRemoveSelectorFromDataseries', {dataseriesId, selectorId});
         this.$emit('selector-deleted', selectorId);
         this.$emit('selector-change');
       },
       deleteDataseries() {
-        this.$store.dispatch('graphStore/deleteDataseries', {dataseriesId: this.dataseries._id});
+        this.$store.dispatch('graphStore2/deleteDataseries', {dataseriesId: this.dataseries._id});
         this.$emit('dataseries-deleted', {dataseriesId: this.dataseries._id});
       },
       onSelectorCreated(event) {

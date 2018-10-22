@@ -32,13 +32,13 @@
         return this.$store.getters['dashboards/byId'](this.$route.params.id);
       },
       graphs() {
-        const graphs = this.$store.getters['graphStore/allByIds'](this.dashboard.graphs);
+        const graphs = this.$store.getters['graphStore2/allByIds'](this.dashboard.graphs);
         return graphs;
       }
     },
     created() {
       this.$store.dispatch('dashboards/getDashboard', this.$route.params.id);
-      this.$store.dispatch('graphStore/getAllDashboardGraphs', this.$route.params.id);
+      this.$store.dispatch('graphStore2/getAllDashboardGraphs', this.$route.params.id);
     },
     data() {
       return {
@@ -68,7 +68,7 @@
         this.$log.debug('after remove', this.dashboard);
       },
       async create() {
-        const graph = await this.$store.dispatch('graphStore/createGraph', {
+        const graph = await this.$store.dispatch('graphStore2/createGraph', {
           name: 'new graph',
           description: ''
         });

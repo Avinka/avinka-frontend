@@ -1,14 +1,21 @@
 import datapointApi from '../../api/datapointApi';
 import _ from 'lodash';
+import Vue from 'vue';
 
 const state = {
-  datapoints: []
+  datapoints: {}
 };
 
 // getters
 const getters = {
   getByDataseriesIds: (state) => (ids) => {
-    return state.datapoints.filter((datapoint) => ids.includes(datapoint.dataseriesId));
+    const datapointSeries = [];
+    _.forEach(ids, (id) => {
+      if (state.datapoints[id]) {
+        datapointSeries.push(state.datapoints[id]);
+      }
+    });
+    return datapointSeries;
   }
 };
 
@@ -22,16 +29,8 @@ const actions = {
 
 const mutations = {
   addDatapoints(state, datapoints) {
-    _.forEach(Object.values(datapoints), (newDatapointObj) => {
-      const index = state.datapoints.findIndex((datapoint) => {
-        return newDatapointObj.dataseriesId === datapoint.dataseriesId;
-      });
-      if (index !== -1) {
-        state.datapoints.splice(index, 1);
-        state.datapoints[index] = newDatapointObj;
-      } else {
-        state.datapoints.push(newDatapointObj);
-      }
+    _.forEach(datapoints, (newDatapointObj, id) => {
+      Vue.set(state.datapoints, id, newDatapointObj);
     });
   }
 };

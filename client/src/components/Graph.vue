@@ -151,20 +151,20 @@
         return this.$store.getters['datapointStore/getByDataseriesIds'](this.graph.dataseries.map(x => x._id));
       },
       graph() {
-        return this.$store.getters['graphStore/getByGraphById'](this.graphId);
+        return this.$store.getters['graphStore2/getByGraphById'](this.graphId);
       }
     },
     created() {
-      this.$store.dispatch('graphStore/getGraphById', this.graphId);
+      this.$store.dispatch('graphStore2/getGraphById', this.graphId);
       this.$store.dispatch('datapointStore/getDataPointsByDataseriesIds', {dataseriesIds: this.graph.dataseries.map(x => x._id)});
     },
     methods: {
       saveGraphName(event) {
         this.updateGraphName = false;
-        this.$store.dispatch('graphStore/updateGraphValue', {graphId: this.graph._id, key: 'name', value: event.target.value});
+        this.$store.dispatch('graphStore2/updateGraphValue', {graphId: this.graph._id, key: 'name', value: event.target.value});
       },
       deleteGraph() {
-        this.$store.dispatch('graphStore/deleteGraph', this.graph._id);
+        this.$store.dispatch('graphStore2/deleteGraph', this.graph._id);
         this.$log.debug('Throwing event graph-deleted');
         this.$emit('deleted', {_id: this.graph._id});
       },

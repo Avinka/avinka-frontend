@@ -40,11 +40,11 @@
     },
     computed: {
       graphs() {
-        return this.$store.getters['graphStore/all'];
+        return this.$store.getters['graphStore2/all'];
       }
     },
     created() {
-      this.$store.dispatch('graphStore/getAllGraphs');
+      this.$store.dispatch('graphStore2/getAllGraphs');
     },
     methods: {
       async create() {

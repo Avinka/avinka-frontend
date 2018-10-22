@@ -2,13 +2,14 @@ import graphApi from '../../api/graphApi';
 import dataseriesApi from '../../api/dataseriesApi';
 import selectorApi from '../../api/selectorApi';
 import _ from 'lodash';
+import Vue from 'vue';
 
 const state = {
-  graphs: [],
-  counters: []
+  graphs: {},
+  counters: {}
 };
 
-const findGraphById = (id) => state.graphs.find((graph) => graph._id === id);
+const findGraphById = (id) => state.graphs[id];
 
 // getters
 const getters = {
@@ -16,13 +17,13 @@ const getters = {
     return state.graphs;
   },
   allByIds: (state) => (graphIds) => {
-    return state.graphs.filter((graph) => {
-      return graph !== null && graphIds.includes(graph._id);
+    return Object.values(state.graphs).filter((graph) => {
+      return graphIds.includes(graph._id);
     });
   },
   getByGraphById: (state) => findGraphById,
   getCountersByDataseriesId: (state) => (id) => {
-    return state.counters.find((counter) => counter._id === id);
+    return state.counters[id];
   }
 };
 
@@ -81,56 +82,38 @@ const actions = {
 
 const mutations = {
   updateGraphValue(state, {graphId, key, value}) {
-    console.log(graphId + ' ' + key + ' ' + value);
-    const graph = state.graphs.find(x => x._id === graphId);
-    graph[key] = value;
+    const graph = Vue.set(state.graphs[graphId], key, value);
   },
   addGraphs(state, graphs) {
-    state.graphs = graphs;
+    _.forEach(graphs, (graph) => {
+      Vue.set(state.graphs, graph._id, graph);
+    });
   },
   deleteGraph(state, graphId) {
-    const start = state.graphs.findIndex((graph) => {
-      return graph._id === graphId;
-    });
-    state.graphs.splice(
-      start, 1
-    );
-    // state.graphs[start] = null;
+    Vue.delete(state.graphs, graphId);
   },
   replaceOrAddGraph(state, graph) {
-    const existingGraphIndex = state.graphs.findIndex(x => x._id === graph._id);
-    if (existingGraphIndex === -1) {
-      state.graphs.push(graph);
-    } else {
-      state.graphs[existingGraphIndex] = graph;
-    }
+    Vue.set(state.graphs, graph._id, graph);
   },
   addGraph(state, graph) {
-    const index = state.graphs.findIndex(x => x._id === graph._id);
-    if (index === -1) {
-      state.graphs.push(graph);
-    } else {
-      graph[index] = graph;
-    }
+    Vue.set(state.graphs, graph._id, graph);
   },
   createGraphDataseries(state, {graphId, newDataseries}) {
-    const graph = state.graphs.find(x => x._id === graphId);
-    graph.dataseries.push(newDataseries);
+    state.graphs[graphId].dataseries.push(newDataseries);
   },
-  setGraphDataseries(state, graphid, dataseries) {
-    const graph = state.graphs.find(x => x._id === graphid);
+  setGraphDataseries(state, graphId, dataseries) {
     _.forEach(dataseries, (dataserie) => {
-      const index = graph.dataseries.findIndex(x => x._id === dataserie._id);
-      graph.dataseries[index] = dataserie;
+      const index = state.graphs[graphId].dataseries.findIndex(x => x._id === dataserie._id);
+      Vue.set(state.graphs[graphId], 'dataseries', state.graphs[graphId].dataseries.filter(x => x._id === dataserie._id));
+      state.graphs[graphId].dataseries[index].push(dataserie);
     });
   },
   removeDataseriesFromGraph(state, {graphId, dataseriesId}) {
-    const graphIndex = state.graphs.findIndex(x => x._id === graphId);
-    const dataseriesIndex = state.graphs[graphIndex].dataseries.findIndex(x => x._id === dataseriesId);
-    state.graphs[graphIndex].dataseries.splice(dataseriesIndex, 1);
+    const dataseriesIndex = state.graphs[graphId].dataseries.findIndex(x => x._id === dataseriesId);
+    state.graphs[graphId].dataseries.splice(dataseriesIndex, 1);
   },
   addSelectorToDataseries(state, {dataseriesId, newSelector}) {
-    _.forEach(state.graphs, (graph) => {
+    _.forEach(state.graphs, (graph, graphId) => {
       _.forEach(graph.dataseries, (dataserie) => {
         if (dataserie._id === dataseriesId) {
           dataserie.selectors.push(newSelector);
@@ -139,7 +122,7 @@ const mutations = {
     });
   },
   removeSelectorFromDataseries(state, {dataseriesId, selectorId}) {
-    _.forEach(state.graphs, (graph) => {
+    _.forEach(state.graphs, (graph, graphId) => {
       _.forEach(graph.dataseries, (dataserie) => {
         if (dataserie._id === dataseriesId) {
           const index = dataserie.selectors.findIndex((selector) => selector._id === selectorId);

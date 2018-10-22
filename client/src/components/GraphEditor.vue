@@ -31,12 +31,12 @@
     },
     methods: {
       async addDataSeries() {
-        await this.$store.dispatch('graphStore/createGraphDataseries', {graphId: this.graph._id});
+        await this.$store.dispatch('graphStore2/createGraphDataseries', {graphId: this.graph._id});
         this.triggerGraphPropertyChangeEvent();
       },
       onDataseriesDeleted(event) {
         this.$log.debug('Received an event:', event);
-        this.$store.dispatch('graphStore/removeDataseriesFromGraph', {graphId: this.graph._id, dataseriesId: event.dataseriesId});
+        this.$store.dispatch('graphStore2/removeDataseriesFromGraph', {graphId: this.graph._id, dataseriesId: event.dataseriesId});
         this.triggerGraphPropertyChangeEvent();
       },
       triggerGraphPropertyChangeEvent() {
