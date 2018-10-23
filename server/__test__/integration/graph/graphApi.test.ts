@@ -15,36 +15,55 @@ afterEach(() => {
     mongo.disconnect();
 });
 
-describe('/dashboards', () => {
-    test('It should respond with 201 to well formed POST requests, the body should contain the newly created dashboard', (done) => {
-        const dashboard = {
-            name: 'test_dashboard_1'
+describe('/graphs', () => {
+    test('It should respond with 201 to well formed POST requests, the body should contain the newly created graph', (done) => {
+        const graph = {
+            name: 'test_graph_1'
         };
-        request.post('/dashboard')
-            .send(dashboard)
+        request.post('/graph')
+            .send(graph)
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
             .expect(201)
             .end(function(err, res) {
                 if (err) return done(err);
                 expect(res.body._id.length).toBeGreaterThan(0);
-                expect(res.body.name).toEqual('test_dashboard_1');
+                expect(res.body.name).toEqual('test_graph_1');
                 expect(res.body.createdAt.length).toBeGreaterThan(0);
                 expect(moment.duration(moment(res.body.createdAt).diff(new Date())).asSeconds()).toBeLessThan(10);
 
-                const resultBody = res.body;
-                request.get('/dashboard/' + res.body._id)
+                const firstGraph = res.body;
+                request.get('/graph/' + res.body._id)
                     .expect('Content-Type', /json/)
                     .expect(200)
                     .end(function(err, res) {
                         if (err) return done(err);
-                        expect(res.body).toEqual(resultBody);
-                        done();
+                        expect(res.body).toEqual(firstGraph);
+                        const secondGraphPayload = {
+                            name: 'test_graph_2'
+                        };
+                        request.post('/graph')
+                            .send(secondGraphPayload)
+                            .set('Accept', 'application/json')
+                            .expect('Content-Type', /json/)
+                            .expect(201)
+                            .end(function(err, res) {
+                                const secondGraphResponse = res.body;
+                                request.get('/graph/' + secondGraphResponse._id + ',' + firstGraph._id)
+                                    .expect('Content-Type', /json/)
+                                    .expect(200)
+                                    .end(function(err, res) {
+                                        expect(res.body.length).toEqual(2);
+                                        expect(res.body[1].name).toEqual(secondGraphResponse.name);
+                                        expect(res.body[0].name).toEqual(firstGraph.name);
+                                        done();
+                                    });
+                            });
                     });
             });
     });
     test('It should respond with 404 on unknown ids', (done) => {
-        request.get('/dashboard/' + new ObjectID())
+        request.get('/graph/' + new ObjectID())
             .send()
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
@@ -54,7 +73,7 @@ describe('/dashboards', () => {
             });
     });
     test('It should respond with 400 on malformed ids', (done) => {
-        request.get('/dashboard/UNKNOWN')
+        request.get('/graph/UNKNOWN')
             .send()
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
@@ -64,22 +83,22 @@ describe('/dashboards', () => {
             });
     });
     test('It should respond with 200 on a delete request and should be gone afterwards', (done) => {
-        const dashboard = {
-            name: 'test_dashboard_2'
+        const graph = {
+            name: 'test_graph_2'
         };
-        request.post('/dashboard')
-            .send(dashboard)
+        request.post('/graph')
+            .send(graph)
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
             .expect(201)
             .end(function(err, res) {
                 if (err) return done(err);
                 const resultBody = res.body;
-                request.delete('/dashboard/' + resultBody._id)
+                request.delete('/graph/' + resultBody._id)
                     .expect(200)
                     .end(function(err, res) {
                         if (err) return done(err);
-                        request.get('/dashboard/' + resultBody._id)
+                        request.get('/graph/' + resultBody._id)
                             .expect(404)
                             .end(function(err, res) {
                                 if (err) return done(err);
@@ -89,28 +108,28 @@ describe('/dashboards', () => {
             });
     });
     test('It should respond with 200 on a delete request and should be gone afterwards', (done) => {
-        const dashboard = {
-            name: 'test_dashboard_3'
+        const graph = {
+            name: 'test_graph_3'
         };
-        request.post('/dashboard')
-            .send(dashboard)
+        request.post('/graph')
+            .send(graph)
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
             .expect(201)
             .end(function(err, res) {
                 if (err) return done(err);
-                dashboard.name = 'test_dashboard_3_updated';
+                graph.name = 'test_graph_3_updated';
                 const resultBody = res.body;
-                request.put('/dashboard/' + resultBody._id)
+                request.put('/graph/' + resultBody._id)
                     .expect(200)
-                    .send(dashboard)
+                    .send(graph)
                     .end(function(err, res) {
                         if (err) return done(err);
-                        request.get('/dashboard/' + resultBody._id)
+                        request.get('/graph/' + resultBody._id)
                             .expect(200)
                             .end(function(err, res) {
                                 if (err) return done(err);
-                                expect(res.body.name).toEqual(dashboard.name);
+                                expect(res.body.name).toEqual(graph.name);
                                 done();
                             });
                     });

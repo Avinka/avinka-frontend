@@ -1,5 +1,5 @@
-import {EsQueryBuilder} from '../../lib/query/ESQueryBuilder';
-import {Selector} from '../../lib/query/selector';
+import {EsQueryBuilder} from '../../../lib/query/ESQueryBuilder';
+import {Selector} from '../../../lib/query/selector';
 
 test('convert equals selector to query', () => {
     const key = 'actor.name';
