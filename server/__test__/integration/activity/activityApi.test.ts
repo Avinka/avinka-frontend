@@ -9,11 +9,13 @@ describe('Test the root path', () => {
 });
 
 describe('Test posting activities', () => {
-    test('It should respond with 201 to well formed POST requests', () => {
+    test('It should respond with 201 to well formed POST requests', async(done) => {
         const activity = new Activity();
         activity.actor = {type: 'Person', id:'5'};
         activity.type = 'Login';
         activity.actor = {type: 'Application', id:'web'};
-        return request.post('/activity').send(activity).expect(201);
+        const result = await request.post('/activity').send(activity).then();
+        expect(result.status).toEqual(201);
+        done();
     });
 });

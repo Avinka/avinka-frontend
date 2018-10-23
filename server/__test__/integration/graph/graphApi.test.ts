@@ -16,123 +16,98 @@ afterEach(() => {
 });
 
 describe('/graphs', () => {
-    test('It should respond with 201 to well formed POST requests, the body should contain the newly created graph', (done) => {
+    test('It should respond with 201 to well formed POST requests, the body should contain the newly created graph', async (done) => {
         const graph = {
             name: 'test_graph_1'
         };
-        request.post('/graph')
-            .send(graph)
-            .set('Accept', 'application/json')
-            .expect('Content-Type', /json/)
-            .expect(201)
-            .end(function(err, res) {
-                if (err) return done(err);
-                expect(res.body._id.length).toBeGreaterThan(0);
-                expect(res.body.name).toEqual('test_graph_1');
-                expect(res.body.createdAt.length).toBeGreaterThan(0);
-                expect(moment.duration(moment(res.body.createdAt).diff(new Date())).asSeconds()).toBeLessThan(10);
 
-                const firstGraph = res.body;
-                request.get('/graph/' + res.body._id)
-                    .expect('Content-Type', /json/)
-                    .expect(200)
-                    .end(function(err, res) {
-                        if (err) return done(err);
-                        expect(res.body).toEqual(firstGraph);
-                        const secondGraphPayload = {
-                            name: 'test_graph_2'
-                        };
-                        request.post('/graph')
-                            .send(secondGraphPayload)
-                            .set('Accept', 'application/json')
-                            .expect('Content-Type', /json/)
-                            .expect(201)
-                            .end(function(err, res) {
-                                const secondGraphResponse = res.body;
-                                request.get('/graph/' + secondGraphResponse._id + ',' + firstGraph._id)
-                                    .expect('Content-Type', /json/)
-                                    .expect(200)
-                                    .end(function(err, res) {
-                                        expect(res.body.length).toEqual(2);
-                                        expect(res.body[1].name).toEqual(secondGraphResponse.name);
-                                        expect(res.body[0].name).toEqual(firstGraph.name);
-                                        done();
-                                    });
-                            });
-                    });
-            });
-    });
-    test('It should respond with 404 on unknown ids', (done) => {
-        request.get('/graph/' + new ObjectID())
-            .send()
+        const postResult = await request.post('/graph')
             .set('Accept', 'application/json')
-            .expect('Content-Type', /json/)
-            .expect(404)
-            .end(function(err, res) {
-                done()
-            });
-    });
-    test('It should respond with 400 on malformed ids', (done) => {
-        request.get('/graph/UNKNOWN')
-            .send()
-            .set('Accept', 'application/json')
-            .expect('Content-Type', /json/)
-            .expect(400)
-            .end(function(err, res) {
-                done()
-            });
-    });
-    test('It should respond with 200 on a delete request and should be gone afterwards', (done) => {
-        const graph = {
-            name: 'test_graph_2'
-        };
-        request.post('/graph')
             .send(graph)
+            .then();
+        expect(postResult.status).toEqual(201);
+        expect(postResult.body._id.length).toBeGreaterThan(0);
+        expect(postResult.body.name).toEqual('test_graph_1');
+        expect(postResult.body.createdAt.length).toBeGreaterThan(0);
+        expect(moment.duration(moment(postResult.body.createdAt).diff(new Date())).asSeconds()).toBeLessThan(10);
+
+        const singleGetResult = await request.get('/graph/' + postResult.body._id)
             .set('Accept', 'application/json')
-            .expect('Content-Type', /json/)
-            .expect(201)
-            .end(function(err, res) {
-                if (err) return done(err);
-                const resultBody = res.body;
-                request.delete('/graph/' + resultBody._id)
-                    .expect(200)
-                    .end(function(err, res) {
-                        if (err) return done(err);
-                        request.get('/graph/' + resultBody._id)
-                            .expect(404)
-                            .end(function(err, res) {
-                                if (err) return done(err);
-                                done();
-                            });
-                    });
-            });
-    });
-    test('It should respond with 200 on a delete request and should be gone afterwards', (done) => {
-        const graph = {
-            name: 'test_graph_3'
+            .then();
+        expect(singleGetResult.status).toEqual(200);
+        expect(singleGetResult.body).toEqual(postResult.body);
+
+        const secondGraph = {
+            name: 'test_graph_1'
         };
-        request.post('/graph')
-            .send(graph)
+        const postResult2 = await request.post('/graph')
             .set('Accept', 'application/json')
-            .expect('Content-Type', /json/)
-            .expect(201)
-            .end(function(err, res) {
-                if (err) return done(err);
-                graph.name = 'test_graph_3_updated';
-                const resultBody = res.body;
-                request.put('/graph/' + resultBody._id)
-                    .expect(200)
-                    .send(graph)
-                    .end(function(err, res) {
-                        if (err) return done(err);
-                        request.get('/graph/' + resultBody._id)
-                            .expect(200)
-                            .end(function(err, res) {
-                                if (err) return done(err);
-                                expect(res.body.name).toEqual(graph.name);
-                                done();
-                            });
-                    });
-            });
+            .send(secondGraph)
+            .then();
+
+        const multiGetResult = await request.get('/graph/' + postResult2.body._id + ',' + postResult.body._id)
+            .then();
+            expect(multiGetResult.status).toEqual(200);
+            expect(multiGetResult.body.length).toEqual(2);
+            expect(multiGetResult.body[1].name).toEqual(postResult2.body.name);
+            expect(multiGetResult.body[0].name).toEqual(postResult.body.name);
+        done();
+    });
+
+    test('It should respond with 404 on unknown ids', async (done) => {
+        const result = await request.get('/graph/' + new ObjectID())
+            .set('Accept', 'application/json')
+            .send()
+            .then();
+        expect(result.status).toEqual(404);
+        done();
+    });
+
+    test('It should respond with 400 on malformed ids', async (done) => {
+        const result = await request.get('/graph/UNKNOWN')
+            .set('Accept', 'application/json')
+            .send()
+            .then();
+        expect(result.status).toEqual(400);
+        done()
+    });
+
+    test('It should respond with 200 on a delete request and should be gone afterwards', async (done) => {
+        const graph = {
+            name: 'test_graph_1'
+        };
+        const postResult = await request.post('/graph')
+            .set('Accept', 'application/json')
+            .send(graph)
+            .then();
+
+        const deleteResult = await request.delete('/graph/' + postResult.body._id)
+            .then();
+        expect(deleteResult.status).toEqual(200);
+
+        const singleGetResult = await request.get('/graph/' + postResult.body._id)
+            .then();
+        expect(singleGetResult.status).toEqual(404);
+        done();
+    });
+    test('It should respond with 200 on a delete request and should be gone afterwards', async (done) => {
+        const graph = {
+            name: 'test_graph_1'
+        };
+        const postResult = await request.post('/graph')
+            .set('Accept', 'application/json')
+            .send(graph)
+            .then();
+
+        graph['_id'] = postResult.body._id;
+        graph.name = 'test_graph_3_updated';
+        const putResult = await request.put('/graph/' + postResult.body._id)
+            .send(graph)
+            .then();
+        expect(putResult.body.name).toEqual(graph.name);
+
+        const response = await request.get('/graph/' + postResult.body._id);
+        expect(response.body.name).toEqual(graph.name);
+        done();
     });
 });
