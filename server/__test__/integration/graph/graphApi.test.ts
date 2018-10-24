@@ -90,6 +90,7 @@ describe('/graphs', () => {
         expect(singleGetResult.status).toEqual(404);
         done();
     });
+
     test('It should respond with 200 on a delete request and should be gone afterwards', async (done) => {
         const graph = {
             name: 'test_graph_1'
@@ -100,7 +101,7 @@ describe('/graphs', () => {
             .then();
 
         graph['_id'] = postResult.body._id;
-        graph.name = 'test_graph_3_updated';
+        graph.name += 'updated';
         const putResult = await request.put('/graph/' + postResult.body._id)
             .send(graph)
             .then();
@@ -110,4 +111,27 @@ describe('/graphs', () => {
         expect(response.body.name).toEqual(graph.name);
         done();
     });
+
+    test('It should respond with a complete dataseries entity as default', async (done) => {
+        // Create a graph
+        const graph = {
+            name: 'test_graph'
+        };
+        const graphResult = await request.post('/graph')
+            .send(graph)
+            .set('Accept', 'application/json')
+            .then();
+
+        const singleGetGraphResult = await request.get('/graph/' + graphResult.body._id)
+            .send()
+            .set('Accept', 'application/json')
+            .then();
+        expect(singleGetGraphResult.body.name).toEqual(graph.name);
+        // default dataseries has been created
+        expect(singleGetGraphResult.body.dataseries.length).toEqual(1);
+        expect(singleGetGraphResult.body.dataseries[0].selectors.length).toEqual(0);
+
+        done();
+    });
+
 });

@@ -13,21 +13,26 @@ export class DataseriesRouter {
     public routes(app): void {
         app.route('/dataseries')
             .get(async (req: Request, res: Response) => {
-                let result = await this.Dataseries.find().exec();
+                let result = await this.Dataseries.find().populate('selectors').exec();
                 res.status(200).send(result);
             })
             .post(async (req: Request, res: Response) => {
                 let result = await this.Dataseries.create(req.body);
-                res.status(200).send(result);
+                res.status(201).send(result);
             });
         app.route('/dataseries/:id')
             .get(async (req: Request, res: Response) => {
-                const id = req.params.id;
-                const result: IDataseries = await this.Dataseries.findOne({_id: id}).exec();
-                if (result != null) {
-                    res.status(200).send(result);
-                } else {
-                    res.status(404);
+                try {
+                    const id = req.params.id;
+                    const result: IDataseries = await this.Dataseries.findOne({_id: id}).populate('selectors').exec();
+                    if (result != null) {
+                        res.status(200).send(result);
+                    } else {
+                        res.status(404).send();
+                    }
+                } catch (err) {
+                    // TODO check if server error or invalid id
+                    res.status(400).send()
                 }
             })
             .delete(async (req: Request, res: Response) => {
@@ -37,7 +42,8 @@ export class DataseriesRouter {
             })
             .put(async (req: Request, res: Response) => {
                 const id = req.params.id;
-                let result = await this.Dataseries.updateOne({_id: id}, req.body).exec();
+                await this.Dataseries.updateOne({_id: id}, req.body).exec();
+                const result = await this.Dataseries.findById(id).populate('selectors').exec();
                 res.status(200).send(result);
             });
         app.route('/dataseries/:id/selector')
@@ -47,8 +53,8 @@ export class DataseriesRouter {
                 // @ts-ignore
                 result.selectors.push(req.body._id);
                 await result.save();
-                result = await this.Dataseries.findOne({_id: dataseriesId}).populate('selectors');
-                res.status(200).send(result);
+                result = await this.Dataseries.findOne({_id: dataseriesId}).populate('selectors').exec();
+                res.status(200).send(result.selectors);
             });
 
         app.route('/dataseries/:id/selector/:selectorId')

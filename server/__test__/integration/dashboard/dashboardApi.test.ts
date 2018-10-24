@@ -82,7 +82,7 @@ describe('/dashboards', () => {
         done();
     });
 
-    test('It should respond with 200 on a delete request and should be gone afterwards', async (done) => {
+    test('It should updated after a put request', async (done) => {
         // Create a dashboard
         const dashboard = {
             name: 'test_dashboard_1'

@@ -60,16 +60,21 @@ export class GraphRouter {
                         res.status(400).send()
                     }
                 } else {
-                    let result = await this.Graph.find({_id: {$in: req.params.id.split(',')}})
-                        .populate({
-                            path: 'dataseries',
-                            model: 'Dataseries',
-                            populate: {
-                                path: 'selectors',
-                                model: 'Selector'
-                            }
-                        }).exec();
-                    res.status(200).send(result)
+                    try {
+                        let result = await this.Graph.find({_id: {$in: req.params.id.split(',')}})
+                            .populate({
+                                path: 'dataseries',
+                                model: 'Dataseries',
+                                populate: {
+                                    path: 'selectors',
+                                    model: 'Selector'
+                                }
+                            }).exec();
+                        res.status(200).send(result)
+                    } catch (err) {
+                        // TODO check if server error or invalid id
+                        res.status(400).send()
+                    }
                 }
             })
             .delete(async (req: Request, res: Response) => {
