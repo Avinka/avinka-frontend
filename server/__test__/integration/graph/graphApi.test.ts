@@ -1,32 +1,12 @@
 import app from '../../../lib/app';
 import * as moment from 'moment';
 import {ObjectID} from "bson";
-import * as mongoose from "mongoose";
-import MongodbMemoryServer from 'mongodb-memory-server';
-
-let mongoServer;
+import {startUpMongo, tearDownMongo} from "../mongohelper";
 
 const request = require('supertest')(app);
 
-beforeAll(async () => {
-    mongoServer = new MongodbMemoryServer();
-    const mongoUri = await mongoServer.getConnectionString();
-    await mongoose.connect(
-        mongoUri,
-        {useNewUrlParser: true},
-    );
-});
-
-afterAll(async () => {
-    // via https://stackoverflow.com/a/51455290/2747869
-    // Wait until indexes are created or you'll frequently get topology-destroyed errors
-    await Promise.all(
-        mongoose.modelNames().map(model => mongoose.model(model).createIndexes()),
-    );
-    await mongoose.connection.db.dropDatabase();
-    await mongoose.disconnect();
-    mongoServer.stop();
-});
+beforeAll(startUpMongo);
+afterAll(tearDownMongo);
 
 describe('/graphs', () => {
     test('It should respond with 201 to well formed POST requests, the body should contain the newly created graph', async (done) => {
