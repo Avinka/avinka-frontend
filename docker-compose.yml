@@ -11,6 +11,14 @@ services:
       - http.port=9200
       - http.cors.allow-origin=*
       - http.cors.enabled=true
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+    - esdata1:/usr/share/elasticsearch/data
   dejavu:
     image: appbaseio/dejavu:latest
     container_name: dejavu
@@ -30,4 +38,5 @@ services:
         - 27017:27017
     command: mongod --smallfiles --logpath=/dev/null # --quiet
 volumes:
-  luqs_dev_data:
+  esdata1:
+    driver: local
