@@ -59,7 +59,7 @@ export class ActivityService {
         }
     }
     async deleteData(): Promise<void> {
-        this.delete('{ "query": { "match_all": {}}}')
+        await this.delete('{ "query": { "match_all": {}}}')
     }
 
     async getKeyValueOptions() {

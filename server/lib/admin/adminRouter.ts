@@ -24,7 +24,7 @@ export class AdminRouter {
             });
         app.route('/admin/deleteData')
             .get(async (req: Request, res: Response) => {
-                this.activityService.deleteData();
+                await this.activityService.deleteData();
                 res.status(200).send()
             })
     }
