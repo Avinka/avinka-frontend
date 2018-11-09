@@ -13,13 +13,16 @@ import {DatapointService} from "./datapoint/datapointService";
 import {DatapointRouter} from "./datapoint/datapointRouter";
 import {SelectorRouter} from "./query/selectorRouter";
 import {DataPointModel} from "./datapoint/datapointModel";
+import {DashboardSchema, IDashboardModel} from "./dashboard/dashboard";
 
 export class Router {
     //TODO move this into an own class
     readonly indexName = 'active-objects-current';
     readonly indexType = 'activity';
     readonly elasticSearchClient: Client = new Client({hosts: ["127.0.0.1:9200"]});
+
     readonly Dataseries: Model<IDataseriesModel> = mongoose.model<IDataseriesModel>('Dataseries', DataseriesSchema);
+    readonly Dashboard: Model<IDashboardModel> = mongoose.model<IDashboardModel>('Dashboard', DashboardSchema);
 
     readonly activityService = new ActivityService(this.elasticSearchClient, this.indexName, this.indexType);
     readonly datapointService = new DatapointService(this.elasticSearchClient, this.indexName, this.indexType);
@@ -28,12 +31,12 @@ export class Router {
     readonly activityRouter: ActivityRouter = new ActivityRouter(this.activityService);
     readonly adminRouter: AdminRouter = new AdminRouter(this.activityService);
     readonly datapointRounter: DatapointRouter = new DatapointRouter(this.datapointModel);
-    readonly dashboardRouter: DashboardRouter = new DashboardRouter();
+    readonly dashboardRouter: DashboardRouter = new DashboardRouter(this.Dashboard);
     readonly graphRouter: GraphRouter = new GraphRouter(this.datapointService);
     readonly dataSeriesRouter: DataseriesRouter = new DataseriesRouter();
     readonly selectorRouter: SelectorRouter = new SelectorRouter();
 
-    public routes(app): void {
+     routes(app): void {
         app.route('/')
             .get((req: Request, res: Response) => {
                 res.status(200).send({
@@ -49,4 +52,5 @@ export class Router {
         this.datapointRounter.routes(app);
         this.selectorRouter.routes(app);
     }
+
 }

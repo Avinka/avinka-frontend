@@ -9,8 +9,7 @@
         "rootDir": "./lib"
     },
     "include": [
-        "lib/**/*.ts",
-        "__test__/**/**/*.ts"
+        "lib/**/*.ts"
     ],
     "exclude": [
         "node_modules"

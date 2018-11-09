@@ -4,12 +4,16 @@ import {DashboardSchema, IDashboardModel} from "./dashboard";
 import {Model} from "mongoose";
 import {ObjectId} from "bson";
 import {body, check, param, validationResult, ValidatorOptions} from 'express-validator/check';
-import MinMaxOptions = ValidatorOptions.MinMaxOptions;
+import {Client} from "elasticsearch";
 
 
 export class DashboardRouter {
 
     readonly Dashboard: Model<IDashboardModel> = mongoose.model<IDashboardModel>('Dashboard', DashboardSchema);
+
+    constructor(model: Model<IDashboardModel>) {
+        this.Dashboard = model;
+    }
 
     public routes(app): void {
         app.route('/dashboard')
@@ -27,11 +31,11 @@ export class DashboardRouter {
                 const id = req.params.id;
                 try {
                     let findOne = this.Dashboard.findOne({_id: id});
-                    if(req.query.full === 'true') {
+                    if (req.query.full === 'true') {
                         findOne = findOne.populate('graphs')
                     }
                     let result = await findOne.exec();
-                    if(!result) {
+                    if (!result) {
                         res.status(404).send();
                         return;
                     }
@@ -60,7 +64,7 @@ export class DashboardRouter {
             ], async (req: Request, res: Response) => {
                 const errors = validationResult(req);
                 if (!errors.isEmpty()) {
-                    return res.status(422).json({ errors: errors.array() });
+                    return res.status(422).json({errors: errors.array()});
                 }
                 // TODO add validation
                 const dashboardId = req.params.id;
@@ -95,10 +99,10 @@ export class DashboardRouter {
                 this.Dashboard.findOneAndUpdate(dashboardId,
                     {$pull: {graphs: new ObjectId(graphId)}},
                     {upsert: true},
-                    function(err, doc) {
-                        if(err){
+                    function (err, doc) {
+                        if (err) {
                             console.log(err);
-                        }else{
+                        } else {
                             res.status(201).send()
                         }
                     }

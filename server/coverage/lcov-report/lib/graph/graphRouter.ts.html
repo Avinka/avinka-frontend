@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for lib/graph/graphRouter.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">All files</a> / <a href="index.html">lib/graph</a> graphRouter.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">65.08% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>41/63</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">62.5% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>5/8</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">52.63% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>10/19</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">65.08% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>41/63</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line medium'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import {Request, Response} from "express";
+import * as mongoose from "mongoose";
+import {Graph, GraphSchema, IGraphModel} from "./graph";
+import {Model} from "mongoose";
+import {DataseriesSchema, IDataseries, IDataseriesModel} from "../dataseries/dataseries";
+import {DatapointService} from "../datapoint/datapointService";
+import {ObjectId} from "bson";
+&nbsp;
+export class GraphRouter {
+&nbsp;
+    readonly Graph: Model&lt;IGraphModel&gt; = mongoose.model&lt;IGraphModel&gt;('Graph', GraphSchema);
+    readonly Dataseries: Model&lt;IDataseriesModel&gt; = mongoose.model&lt;IDataseriesModel&gt;('Dataseries', DataseriesSchema);
+    readonly datapointService: DatapointService;
+&nbsp;
+    constructor(dataseriesService: DatapointService) {
+        this.datapointService = dataseriesService;
+    }
+&nbsp;
+    public routes(app): void {
+        app.route('/graph')
+            .get(<span class="fstat-no" title="function not covered" >async (r</span>eq: Request, res: Response) =&gt;<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" > {</span></span>
+                let graph = <span class="cstat-no" title="statement not covered" >await this.Graph.find().populate({</span>
+                    path: 'dataseries',
+                    model: 'Dataseries',
+                    populate: {
+                        path: 'selectors',
+                        model: 'Selector'
+                    }
+                }).exec();
+<span class="cstat-no" title="statement not covered" >                res.status(200).send(graph)</span>
+            })
+            .post(async (req: Request, res: Response) =&gt; {
+                let graph: Graph = req.body;
+                let dataseries: IDataseries = await this.Dataseries.create({});
+                graph.dataseries = [dataseries];
+                let result = await this.Graph.create(graph);
+                //Only the id of the dataseries is persisted, therefore we need to add it again
+                result.dataseries = [dataseries];
+                res.status(201).send(result)
+            });
+        app.route('/graph/:id')
+            .patch(<span class="fstat-no" title="function not covered" >async (r</span>eq: Request, res: Response) =&gt;<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" > {</span></span>
+                const id = <span class="cstat-no" title="statement not covered" >req.params.id;</span>
+<span class="cstat-no" title="statement not covered" >                await this.Graph.update({_id: id}, req.body).exec();</span>
+                let result = <span class="cstat-no" title="statement not covered" >await this.Graph.findById(id).exec();</span>
+<span class="cstat-no" title="statement not covered" >                res.status(200).send(result);</span>
+            })
+            .get(async (req: Request, res: Response) =&gt; {
+                if (!req.params.id.includes(',')) {
+                    try {
+                        const graph = await this.Graph.findOne({_id: req.params.id}).populate({
+                            path: 'dataseries',
+                            model: 'Dataseries',
+                            populate: {
+                                path: 'selectors',
+                                model: 'Selector'
+                            }
+                        }).exec();
+                        if (graph != null) {
+                            res.status(200).send(graph);
+                        } else {
+                            res.status(404).send()
+                        }
+                    } catch (err) {
+                        // TODO check if server error or invalid id
+                        res.status(400).send()
+                    }
+                } else {
+                    try {
+                        let result = await this.Graph.find({_id: {$in: req.params.id.split(',')}})
+                            .populate({
+                                path: 'dataseries',
+                                model: 'Dataseries',
+                                populate: {
+                                    path: 'selectors',
+                                    model: 'Selector'
+                                }
+                            }).exec();
+                        res.status(200).send(result)
+                    } catch (err) {
+                        // TODO check if server error or invalid id
+<span class="cstat-no" title="statement not covered" >                        res.status(400).send()</span>
+                    }
+                }
+            })
+            .delete(async (req: Request, res: Response) =&gt; {
+                const graph = await this.Graph.findOne({_id: req.params.id}).exec();
+                <span class="missing-if-branch" title="else path not taken" >E</span>if (graph.dataseries) {
+                    await this.Dataseries.deleteMany({_id: {$in: graph.dataseries}});
+                }
+                await graph.remove();
+                res.status(200).send();
+            })
+            .put(async (req: Request, res: Response) =&gt; {
+                const id = req.params.id;
+                await this.Graph.update({_id: id}, req.body).exec();
+                let result = await this.Graph.findById(id).exec();
+                res.status(200).send(result);
+            });
+        app.route('/graph/:id/dataseries')
+            .post(<span class="fstat-no" title="function not covered" >async (r</span>eq: Request, res: Response) =&gt;<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" > {</span></span>
+                // TODO add validation
+                const graphId = <span class="cstat-no" title="statement not covered" >req.params.id;</span>
+                let result = <span class="cstat-no" title="statement not covered" >await this.Graph.findOne({_id: graphId});</span>
+                // @ts-ignore
+<span class="cstat-no" title="statement not covered" >                result.dataseries.push(req.body._id);</span>
+<span class="cstat-no" title="statement not covered" >                await result.save();</span>
+<span class="cstat-no" title="statement not covered" >                res.status(201).send(result)</span>
+            });
+        app.route('/graph/:id/dataseries/:dataseriesId')
+            .delete(<span class="fstat-no" title="function not covered" >async (r</span>eq: Request, res: Response) =&gt;<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" > {</span></span>
+                const graphId = <span class="cstat-no" title="statement not covered" >req.params.id;</span>
+                const dataseriesId = <span class="cstat-no" title="statement not covered" >req.params.dataseriesId;</span>
+<span class="cstat-no" title="statement not covered" >                this.Graph.findOneAndUpdate(graphId,</span>
+                    {$pull: {dataseries: new ObjectId(dataseriesId)}},
+                    {upsert: true},
+<span class="fstat-no" title="function not covered" >                    function (</span>err, doc) {
+<span class="cstat-no" title="statement not covered" >                        if (err) {</span>
+<span class="cstat-no" title="statement not covered" >                            console.log(err);</span>
+                        } else {
+<span class="cstat-no" title="statement not covered" >                            res.status(200).send()</span>
+                        }
+                    }
+                );
+            });
+    }
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Fri Nov 09 2018 14:54:23 GMT+0100 (GMT+01:00)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

@@ -1,18 +1,31 @@
 import app from '../../../lib/app';
 import * as moment from 'moment';
-import {Mongo} from "../../../lib/core/db/mongo";
 import {ObjectID} from "bson";
+import * as mongoose from "mongoose";
+import MongodbMemoryServer from 'mongodb-memory-server';
+
+let mongoServer;
 
 const request = require('supertest')(app);
 
-let mongo = new Mongo();
-
-beforeEach(() => {
-    mongo.connect();
+beforeAll(async () => {
+    mongoServer = new MongodbMemoryServer();
+    const mongoUri = await mongoServer.getConnectionString();
+    await mongoose.connect(
+        mongoUri,
+        {useNewUrlParser: true},
+    );
 });
 
-afterEach(() => {
-    mongo.disconnect();
+afterAll(async () => {
+    // via https://stackoverflow.com/a/51455290/2747869
+    // Wait until indexes are created or you'll frequently get topology-destroyed errors
+    await Promise.all(
+        mongoose.modelNames().map(model => mongoose.model(model).createIndexes()),
+    );
+    await mongoose.connection.db.dropDatabase();
+    await mongoose.disconnect();
+    mongoServer.stop();
 });
 
 describe('/dashboards', () => {
