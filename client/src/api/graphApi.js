@@ -6,6 +6,10 @@ export default {
     const result = await axios.put('http://localhost:8080/api/graph/' + graph._id, graph);
     return result.data;
   },
+  async patchGraph(graph) {
+    const result = await axios.patch('http://localhost:8080/api/graph/' + graph._id, graph);
+    return result.data;
+  },
   async getAllGraphs() {
     const result = await axios.get('http://localhost:8080/api/graph?full=true');
     Vue.$log.debug(result);

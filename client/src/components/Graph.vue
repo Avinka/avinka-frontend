@@ -46,7 +46,7 @@
             </div>
             <div v-if="radio==='frame'" class="md-layout md-gutter md-layout-item md-size-100">
               <div class="md-layout-item md-size-40 md-small-size-50">
-                <md-datepicker v-model="since.date" />
+                <md-datepicker v-model="graph.since" />
               </div>
               <div class="md-layout-item  md-size-10 md-small-size-20">
                 <md-field>
@@ -65,7 +65,7 @@
             </div>
             <div v-if="radio==='frame'" class="md-layout md-gutter md-layout-item md-size-100">
               <div class="md-layout-item md-size-40 md-small-size-50">
-                  <md-datepicker v-model="until.date" />
+                  <md-datepicker v-model="graph.until" />
                 </div>
                 <div class="md-layout-item  md-size-10 md-small-size-20">
                   <md-field>
@@ -151,12 +151,13 @@
         return this.$store.getters['datapointStore/getByDataseriesIds'](this.graph.dataseries.map(x => x._id));
       },
       graph() {
-        return this.$store.getters['graphStore2/getByGraphById'](this.graphId);
+        const graph = this.$store.getters['graphStore2/getByGraphById'](this.graphId);
+        this.$store.dispatch('datapointStore/getDataPointsByDataseriesIds', {dataseriesIds: graph.dataseries.map(x => x._id)});
+        return graph;
       }
     },
     created() {
       this.$store.dispatch('graphStore2/getGraphById', this.graphId);
-      this.$store.dispatch('datapointStore/getDataPointsByDataseriesIds', {dataseriesIds: this.graph.dataseries.map(x => x._id)});
     },
     methods: {
       saveGraphName(event) {
@@ -184,6 +185,13 @@
           queryObject.until = this.until.date;
         }
         queryObject.aggInterval = this.aggInterval;
+        this.$store.dispatch('graphStore2/patchGraph', {
+          _id: this.graph._id,
+          since: this.since.date,
+          until: this.until.date,
+          mode: this.radio,
+          windowSize: this.windowSize
+        });
         this.$store.dispatch('datapointStore/getDataPointsByDataseriesIds', queryObject);
       }
     }
