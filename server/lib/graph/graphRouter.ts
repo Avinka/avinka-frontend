@@ -39,6 +39,12 @@ export class GraphRouter {
                 res.status(201).send(result)
             });
         app.route('/graph/:id')
+            .patch(async (req: Request, res: Response) => {
+                const id = req.params.id;
+                await this.Graph.update({_id: id}, req.body).exec();
+                let result = await this.Graph.findById(id).exec();
+                res.status(200).send(result);
+            })
             .get(async (req: Request, res: Response) => {
                 if (!req.params.id.includes(',')) {
                     try {

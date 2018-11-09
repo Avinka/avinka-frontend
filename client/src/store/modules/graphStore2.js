@@ -59,6 +59,10 @@ const actions = {
     await graphApi.updateGraph(graph);
     commit('updateGraphValue', {graphId, key, value});
   },
+  async patchGraph({commit}, graph) {
+    await graphApi.patchGraph(graph);
+    commit('patchGraph', graph);
+  },
   async createGraphDataseries({commit}, {graphId, dataseries = {}}) {
     const newDataseries = await dataseriesApi.createDataseries(dataseries);
     const newGraphDataseriesMapping = await graphApi.addDataseriesToGraph(graphId, newDataseries._id);
@@ -97,6 +101,11 @@ const mutations = {
   },
   addGraph(state, graph) {
     Vue.set(state.graphs, graph._id, graph);
+  },
+  patchGraph(state, graph) {
+    _.forOwn(graph, (value, key) => {
+      Vue.set(state.graphs[graph._id], key, value);
+    });
   },
   createGraphDataseries(state, {graphId, newDataseries}) {
     state.graphs[graphId].dataseries.push(newDataseries);
