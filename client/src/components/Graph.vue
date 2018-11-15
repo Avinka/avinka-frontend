@@ -110,6 +110,7 @@
     },
     data() {
       return {
+        changed: false,
         updateGraphName: false,
         myData: null,
         showGraphEditor: false,
@@ -117,12 +118,13 @@
         radio: 'window',
         windowSize: '24h',
         aggInterval: '10min',
-        graph: this.$store.getters['graphStore2/getByGraphById'](this.graphId),
+        graph: JSON.parse(JSON.stringify(this.$store.getters['graphStore2/getByGraphById'](this.graphId))),
         since: {
           date: new Date(),
           hour: '00',
           min: '00'
         },
+        queryObject: null,
         until: {
           date: new Date(),
           hour: '00',
@@ -136,7 +138,15 @@
     watch: {
       graph: {
         handler(val) {
+          // FIXME not quite elegant
+          const tmpQueryState = this.buildQueryObjectForGraph(this.graph);
+
+          if (this.queryObject && JSON.stringify(this.queryObject) === JSON.stringify(tmpQueryState)) {
+            return;
+          }
+          this.queryObject = tmpQueryState;
           this.refreshData();
+          this.changed = false;
         },
         deep: true
       }
@@ -179,18 +189,19 @@
           queryObject.window = this.graph.windowSize;
         } else {
           if (!this.graph.since) {
-            this.graph.since = new Date();
-            // this.since.date = new Date(Date.now() - 1000 * 60 * 60 * 24);
+            queryObject.since = new Date(Date.now() - 1000 * 60 * 60 * 24);
+          } else {
+            queryObject.since = new Date(Date.parse(this.graph.since));
           }
           if (!this.graph.until) {
-            this.graph.until = new Date();
+            queryObject.until = new Date();
+          } else {
+            queryObject.until = new Date(Date.parse(this.graph.until));
           }
           /** this.graph.since.setHours(this.graph.since.hour);
           this.graph.since.setMinutes(this.graph.since.min);
           this.graph.until.setHours(this.graph.until.hour);
           this.graph.until.setMinutes(this.graph.until.min);*/
-          queryObject.since = this.graph.since;
-          queryObject.until = this.graph.until;
         }
         queryObject.aggInterval = this.aggInterval;
         return queryObject;
