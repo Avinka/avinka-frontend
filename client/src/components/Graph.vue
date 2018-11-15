@@ -46,18 +46,18 @@
             </div>
             <div v-if="graph.mode==='frame'" class="md-layout md-gutter md-layout-item md-size-100">
               <div class="md-layout-item md-size-40 md-small-size-50">
-                <md-datepicker v-model="graph.since" />
+                <md-datepicker v-model="graph.since" md-immediately />
               </div>
               <div class="md-layout-item  md-size-10 md-small-size-20">
                 <md-field>
-                  <md-select v-model="since.hour" name="hour" id="hour" md-dense >
+                  <md-select v-model="sinceHour" name="hour" id="hour" md-dense >
                     <md-option v-for="num in daily_hours" v-bind:value="num">{{num}}</md-option>
                   </md-select>
                 </md-field>
               </div>
               <div class="md-layout-item  md-size-10 md-small-size-20">
                 <md-field>
-                  <md-select v-model="since.min" name="hour" id="hour" md-dense >
+                  <md-select v-model="sinceMinute" name="hour" id="hour" md-dense >
                     <md-option v-for="num in daily_hours" v-bind:value="num">{{num}}</md-option>
                   </md-select>
                 </md-field>
@@ -65,18 +65,18 @@
             </div>
             <div v-if="graph.mode==='frame'" class="md-layout md-gutter md-layout-item md-size-100">
               <div class="md-layout-item md-size-40 md-small-size-50">
-                  <md-datepicker v-model="graph.until" />
+                  <md-datepicker v-model="graph.until" md-immediately />
                 </div>
                 <div class="md-layout-item  md-size-10 md-small-size-20">
                   <md-field>
-                    <md-select v-model="until.hour" name="hour" id="hour" md-dense >
+                    <md-select v-model="untilHour" name="hour" id="hour" md-dense >
                       <md-option v-for="num in daily_hours" v-bind:value="num">{{num}}</md-option>
                     </md-select>
                   </md-field>
                 </div>
                 <div class="md-layout-item  md-size-10 md-small-size-20">
                   <md-field>
-                    <md-select v-model="until.min" name="hour" id="hour" md-dense >
+                    <md-select v-model="untilMinute" name="hour" id="hour" md-dense >
                       <md-option v-for="num in daily_hours" v-bind:value="num">{{num}}</md-option>
                     </md-select>
                   </md-field>
@@ -110,45 +110,49 @@
     },
     data() {
       return {
-        changed: false,
         updateGraphName: false,
-        myData: null,
         showGraphEditor: false,
         showDatePickComponent: false,
         radio: 'window',
         windowSize: '24h',
         aggInterval: '10min',
-        graph: JSON.parse(JSON.stringify(this.$store.getters['graphStore2/getByGraphById'](this.graphId))),
-        since: {
-          date: new Date(),
-          hour: '00',
-          min: '00'
-        },
+        graph: null,
+        sinceHour: '00',
+        untilHour: '00',
+        sinceMinute: '00',
+        untilMinute: '00',
         queryObject: null,
-        until: {
-          date: new Date(),
-          hour: '00',
-          min: '00'
-        },
         hour: 0,
-        daily_hours: ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24'],
+        daily_hours: ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'],
         daily_min_: ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24']
       };
     },
     watch: {
       graph: {
         handler(val) {
-          // FIXME not quite elegant
-          const tmpQueryState = this.buildQueryObjectForGraph(this.graph);
-
-          if (this.queryObject && JSON.stringify(this.queryObject) === JSON.stringify(tmpQueryState)) {
-            return;
-          }
-          this.queryObject = tmpQueryState;
-          this.refreshData();
-          this.changed = false;
+         this.onDateComponentChange();
         },
         deep: true
+      },
+      sinceMinute: {
+        handler(val) {
+          this.onDateComponentChange();
+        }
+      },
+      sinceHour: {
+        handler(val) {
+          this.onDateComponentChange();
+        }
+      },
+      untilMinute: {
+        handler(val) {
+          this.onDateComponentChange();
+        }
+      },
+      untilHour: {
+        handler(val) {
+          this.onDateComponentChange();
+        }
       }
     },
     computed: {
@@ -157,6 +161,14 @@
       }
     },
     created() {
+      this.graph = JSON.parse(JSON.stringify(this.$store.getters['graphStore2/getByGraphById'](this.graphId)));
+      const graphSince = new Date(Date.parse(this.graph.since));
+      const graphUntil = new Date(Date.parse(this.graph.until));
+
+      this.sinceMinute = '0' + graphSince.getMinutes();
+      this.sinceHour = '0' + graphSince.getHours();
+      this.untilMinute = '0' + graphUntil.getMinutes();
+      this.untilHour = '0' + graphUntil.getHours();
       this.refreshData();
     },
     methods: {
@@ -169,9 +181,22 @@
         this.$log.debug('Throwing event graph-deleted');
         this.$emit('deleted', {_id: this.graph._id});
       },
+      onDateComponentChange() {
+        // FIXME not quite elegant
+        const tmpQueryState = this.buildQueryObjectForGraph(this.graph);
+        if (this.queryObject && JSON.stringify(this.queryObject) === JSON.stringify(tmpQueryState)) {
+          return;
+        }
+        this.queryObject = tmpQueryState;
+        this.refreshData();
+      },
       refreshData() {
         this.$log.debug('Refreshing data');
         const queryObject = this.buildQueryObjectForGraph(this.graph);
+        if (this.graph.mode !== 'window') {
+          this.graph.since = queryObject.since.toISOString();
+          this.graph.until = queryObject.until.toISOString();
+        }
         this.$store.dispatch('graphStore2/patchGraph', {
           _id: this.graph._id,
           since: this.graph.since,
@@ -198,10 +223,10 @@
           } else {
             queryObject.until = new Date(Date.parse(this.graph.until));
           }
-          /** this.graph.since.setHours(this.graph.since.hour);
-          this.graph.since.setMinutes(this.graph.since.min);
-          this.graph.until.setHours(this.graph.until.hour);
-          this.graph.until.setMinutes(this.graph.until.min);*/
+          queryObject.since.setHours(parseInt(this.sinceHour));
+          queryObject.since.setMinutes(parseInt(this.sinceMinute));
+          queryObject.until.setHours(parseInt(this.untilHour));
+          queryObject.until.setMinutes(parseInt(this.untilMinute));
         }
         queryObject.aggInterval = this.aggInterval;
         return queryObject;
