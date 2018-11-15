@@ -1,19 +1,12 @@
 import app from '../../../lib/app';
 import * as moment from 'moment';
-import {Mongo} from "../../../lib/core/db/mongo";
 import {ObjectID} from "bson";
+import {startUpMongo, tearDownMongo} from "../mongohelper";
 
 const request = require('supertest')(app);
 
-let mongo = new Mongo();
-
-beforeEach(() => {
-    mongo.connect();
-});
-
-afterEach(() => {
-    mongo.disconnect();
-});
+beforeAll(startUpMongo);
+afterAll(tearDownMongo);
 
 describe('/graphs', () => {
     test('It should respond with 201 to well formed POST requests, the body should contain the newly created graph', async (done) => {

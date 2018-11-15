@@ -62,6 +62,13 @@ cd testdata
 make build generate 
 ```
 
+## Create a tag and push it to the remote repository
+```
+yarn version $VERSION
+git push origin $VERSION
+```
+
+
 ## Links
 
 - [The most promising charting lib](https://github.com/apache/incubator-echarts) IMO
