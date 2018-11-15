@@ -41,7 +41,7 @@ export class GraphRouter {
         app.route('/graph/:id')
             .patch(async (req: Request, res: Response) => {
                 const id = req.params.id;
-                await this.Graph.update({_id: id}, req.body).exec();
+                await this.Graph.update({_id: id}, {'$set': req.body}).exec();
                 let result = await this.Graph.findById(id).exec();
                 res.status(200).send(result);
             })

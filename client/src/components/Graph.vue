@@ -27,24 +27,24 @@
           <md-card-content>
             <div class="md-layout md-gutter">
               <div class="md-layout-item md-size-20 md-small-size-50">
-                <md-radio v-model="radio" value="window">Moving window <small>(d/h/m/s/w)</small></md-radio>
+                <md-radio v-model="graph.mode" value="window">Moving window <small>(d/h/m/s/w)</small></md-radio>
               </div>
               <div class="md-layout-item md-size-15 md-small-size-50">
-                <md-radio v-model="radio" value="frame">Time frame</md-radio>
+                <md-radio v-model="graph.mode" value="frame">Time frame</md-radio>
               </div>
               <div class="md-layout-item md-size-20 md-small-size-50">
                 <md-button @click="showDatePickComponent=false">Close</md-button>
               </div>
             </div>
-            <div v-if="radio==='window'" class="md-layout md-gutter">
+            <div v-if="graph.mode==='window'" class="md-layout md-gutter">
               <div class="md-layout-item md-size-50 md-small-size-50">
                 <md-field>
                   <label>Window</label>
-                  <md-input v-on:keydown.enter="refreshData" v-on:blur="refreshData" v-model="windowSize"></md-input>
+                  <md-input v-model.lazy="graph.windowSize"></md-input>
                 </md-field>
               </div>
             </div>
-            <div v-if="radio==='frame'" class="md-layout md-gutter md-layout-item md-size-100">
+            <div v-if="graph.mode==='frame'" class="md-layout md-gutter md-layout-item md-size-100">
               <div class="md-layout-item md-size-40 md-small-size-50">
                 <md-datepicker v-model="graph.since" />
               </div>
@@ -63,7 +63,7 @@
                 </md-field>
               </div>
             </div>
-            <div v-if="radio==='frame'" class="md-layout md-gutter md-layout-item md-size-100">
+            <div v-if="graph.mode==='frame'" class="md-layout md-gutter md-layout-item md-size-100">
               <div class="md-layout-item md-size-40 md-small-size-50">
                   <md-datepicker v-model="graph.until" />
                 </div>
@@ -117,6 +117,7 @@
         radio: 'window',
         windowSize: '24h',
         aggInterval: '10min',
+        graph: this.$store.getters['graphStore2/getByGraphById'](this.graphId),
         since: {
           date: new Date(),
           hour: '00',
@@ -133,13 +134,7 @@
       };
     },
     watch: {
-      since: {
-        handler(val) {
-          this.refreshData();
-        },
-        deep: true
-      },
-      until: {
+      graph: {
         handler(val) {
           this.refreshData();
         },
@@ -149,15 +144,10 @@
     computed: {
       datapoints() {
         return this.$store.getters['datapointStore/getByDataseriesIds'](this.graph.dataseries.map(x => x._id));
-      },
-      graph() {
-        const graph = this.$store.getters['graphStore2/getByGraphById'](this.graphId);
-        this.$store.dispatch('datapointStore/getDataPointsByDataseriesIds', {dataseriesIds: graph.dataseries.map(x => x._id)});
-        return graph;
       }
     },
     created() {
-      this.$store.dispatch('graphStore2/getGraphById', this.graphId);
+      this.refreshData();
     },
     methods: {
       saveGraphName(event) {
@@ -171,28 +161,39 @@
       },
       refreshData() {
         this.$log.debug('Refreshing data');
-        const queryObject = {
-          dataseriesIds: this.graph.dataseries.map(x => x._id)
-        };
-        if (this.radio === 'window') {
-          queryObject.window = this.windowSize;
-        } else {
-          this.since.date.setHours(this.since.hour);
-          this.since.date.setMinutes(this.since.min);
-          this.until.date.setHours(this.until.hour);
-          this.until.date.setMinutes(this.until.min);
-          queryObject.since = this.since.date;
-          queryObject.until = this.until.date;
-        }
-        queryObject.aggInterval = this.aggInterval;
+        const queryObject = this.buildQueryObjectForGraph(this.graph);
         this.$store.dispatch('graphStore2/patchGraph', {
           _id: this.graph._id,
-          since: this.since.date,
-          until: this.until.date,
-          mode: this.radio,
-          windowSize: this.windowSize
+          since: this.graph.since,
+          until: this.graph.until,
+          mode: this.graph.mode,
+          windowSize: this.graph.windowSize
         });
         this.$store.dispatch('datapointStore/getDataPointsByDataseriesIds', queryObject);
+      },
+      buildQueryObjectForGraph(graph) {
+        const queryObject = {
+          dataseriesIds: graph.dataseries.map(x => x._id)
+        };
+        if (graph.mode === 'window') {
+          queryObject.window = this.graph.windowSize;
+        } else {
+          if (!this.graph.since) {
+            this.graph.since = new Date();
+            // this.since.date = new Date(Date.now() - 1000 * 60 * 60 * 24);
+          }
+          if (!this.graph.until) {
+            this.graph.until = new Date();
+          }
+          /** this.graph.since.setHours(this.graph.since.hour);
+          this.graph.since.setMinutes(this.graph.since.min);
+          this.graph.until.setHours(this.graph.until.hour);
+          this.graph.until.setMinutes(this.graph.until.min);*/
+          queryObject.since = this.graph.since;
+          queryObject.until = this.graph.until;
+        }
+        queryObject.aggInterval = this.aggInterval;
+        return queryObject;
       }
     }
   };
