@@ -54,7 +54,8 @@ export class DatapointService {
                     'offset': 0,
                     'order': {'_key': 'asc'},
                     'keyed': false,
-                    'min_doc_count': 0
+                    'min_doc_count': 0,
+                    "missing": "0"
                 }
             }
         };
