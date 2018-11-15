@@ -9,6 +9,7 @@ describe('Test the root path', () => {
 });
 
 describe('Test posting activities', () => {
+    // @ts-ignore
     test('It should respond with 201 to well formed POST requests', async(done) => {
         const activity = new Activity();
         activity.actor = {type: 'Person', id:'5'};
