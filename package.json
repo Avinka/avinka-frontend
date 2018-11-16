@@ -1,9 +1,9 @@
 {
-  "name": "LuQS",
+  "name": "Avinka-Server",
   "version": "0.0.2",
   "description": "Activities",
   "main": "index.js",
-  "repository": "git@gitlab.com:pansen/LuQS.git",
+  "repository": "git@github.com:Avinka/avinka-server",
   "author": "Michael Kleen <mkleen@gmail.com>",
-  "license": "MIT"
+  "license": "Apache 2"
 }

@@ -1,4 +1,4 @@
-# LuQS
+# Avinka Server
 
 ## Prerequisites
 
